@@ -168,7 +168,7 @@
 /* ---- 모달·드로어·토스트(이 3화면에서 뜨는 것): 창 규칙 공통. 전환 애니메이션 없음(원작처럼 즉시) ---- */
 :is([data-view=nick], [data-view=lobby], [data-view=room]) :is(.layer, .layer-panel, .toast) { transition: none; }
 :is([data-view=nick], [data-view=lobby], [data-view=room]) .layer { background: rgba(0,0,0,.55); }
-:is([data-view=nick], [data-view=lobby], [data-view=room]) .layer.modal { padding: 20px; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .layer.modal { padding: 20px 20px max(20px, env(safe-area-inset-bottom)); }
 :is([data-view=nick], [data-view=lobby], [data-view=room]) .layer-panel { background: var(--se-face); color: var(--se-ink); border: 0; box-shadow: var(--se-frame); }
 :is([data-view=nick], [data-view=lobby], [data-view=room]) .layer-panel.drawer { box-shadow: 0 0 0 2px var(--se-ink), -8px 0 0 2px rgba(0,0,0,.45); }
 :is([data-view=nick], [data-view=lobby], [data-view=room]) .layer-panel .layer-head { padding: 12px 0 12px 8px; margin: 0 14px; border-bottom: 2px solid var(--se-shadow); box-shadow: 0 2px 0 var(--se-light); }
@@ -275,7 +275,7 @@
   [data-view=room] .slot canvas { width: 64px; height: 44px; }
   [data-view=room] .slot .name { font-size: 17px; }
   [data-view=room] .bottombar .btn { min-width: 0; padding: 0 16px; }
-  :is([data-view=nick], [data-view=lobby], [data-view=room]) .layer.modal { padding: 10px; }
+  :is([data-view=nick], [data-view=lobby], [data-view=room]) .layer.modal { padding: 10px 10px max(10px, env(safe-area-inset-bottom)); }
   :is([data-view=nick], [data-view=lobby], [data-view=room]) .layer-body { padding: 14px 14px; }
   :is([data-view=nick], [data-view=lobby], [data-view=room]) .layer-panel .layer-head, :is([data-view=nick], [data-view=lobby], [data-view=room]) .layer-foot { margin: 0 8px; }
 }

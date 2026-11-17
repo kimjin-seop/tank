@@ -4,6 +4,7 @@ import { loadAssets, warmup } from './game/assets.js';
 import { toast, announce, closeTop, isOverlayOpen } from './ui.js';
 import { ERR } from './i18n.js';
 import { $ } from './util.js';
+import { initViewportHeight } from './viewport.js';
 import * as Nick from './screens/nick.js';
 import * as Lobby from './screens/lobby.js';
 import * as Room from './screens/room.js';
@@ -74,6 +75,7 @@ function wire() {
 }
 
 async function boot() {
+  try { initViewportHeight(); } catch (e) { console.error(e); } // 실패해도 CSS 폴백(100dvh)으로 부팅 계속
   const root = $('#app');
   root.innerHTML = '<div class="nick-screen"><div class="muted">불러오는 중…</div></div>';
   try { await loadAssets(); } catch (e) { console.error(e); toast('리소스를 불러오지 못했습니다', 'error'); return; }

@@ -103,9 +103,13 @@ export function mount(root, app, data) {
   window.__deathFx = (variant = 'fireball', r = 30) => { const t = [...R.tanks.values()][0]; R.fx.tankDeathBlast(t?.x ?? 180, (t?.y ?? 300) - 3, r, 7, variant); };
   // 레이아웃: wide(가로 데스크톱) = 좌 조작 패널 | 캔버스 | 우 플레이어 패널, portrait = 캔버스 폭=뷰포트 폭
   gameEl.style.setProperty('--aspect', String(DISPLAY_ASPECT));
+  let lastMode = null; // { W, wide, portrait }
   function layout() {
     const W = gameEl.clientWidth, H = gameEl.clientHeight; if (!W || !H) return;
-    const wide = W >= 1024 && W > H, portrait = !wide && H > W;
+    // 입력 포커스 중(모바일 소프트 키보드로 보이는 높이만 줄어듦)에는 폭이 그대로면 직전 wide/portrait 판정 유지 → 세로가 가로로 뒤집혀 채팅이 접히지 않게
+    const typing = !!lastMode && lastMode.W === W && isTyping(document.activeElement) && gameEl.contains(document.activeElement);
+    const wide = typing ? lastMode.wide : W >= 1024 && W > H, portrait = typing ? lastMode.portrait : !wide && H > W;
+    lastMode = { W, wide, portrait };
     gameEl.classList.toggle('wide', wide); gameEl.classList.toggle('portrait', portrait);
     // 채팅 DOM 하나를 배치만 바꿈: wide = 우 플레이어 패널 아래 남는 공간, 그 외 = 캔버스 아래(그리드 chat 영역)
     const host = wide ? side : gameEl;
@@ -134,6 +138,7 @@ export function mount(root, app, data) {
     if (!f) chatLog.scrollTop = chatLog.scrollHeight;
   }
   const layoutRO = new ResizeObserver(layout); layoutRO.observe(gameEl); layoutRO.observe(chatBox); layout();
+  gameEl.addEventListener('focusout', () => setTimeout(layout, 0)); // 포커스가 빠지면 고정했던 판정을 현재 크기로 다시 계산
   // 마우스·터치로 HUD 버튼을 누른 뒤 포커스가 버튼에 남지 않게(키보드 탐색 포커스는 유지)
   gameEl.addEventListener('click', e => { const b = e.target.closest?.('button'); if (b && e.detail > 0) setTimeout(() => { if (document.activeElement === b) { b.blur(); canvas.focus({ preventScroll: true }); } }, 0); });
   const shop = new ShopView(overlay, { G, app, onClose: () => {} });

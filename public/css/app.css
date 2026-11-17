@@ -8,11 +8,15 @@
   --mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
   --shadow: 0 10px 30px rgba(0,0,0,.45);
   color-scheme: dark;
+  /* 화면 높이: JS(viewport.js)가 visualViewport 기준 --vvh 를 넣고, 없으면 100dvh → 100vh 폴백. 인앱 브라우저 하단 툴바에 버튼이 가려지지 않게 */
+  --app-h: 100vh;
+  --view-h: var(--vvh, var(--app-h));
 }
+@supports (height: 100dvh) { :root { --app-h: 100dvh; } }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font: 15px/1.45 var(--font); -webkit-font-smoothing: antialiased; }
-body { overflow: hidden; }
+body { overflow: hidden; height: var(--view-h); }
 #app { height: 100%; outline: none; }
 button, input, select, textarea { font: inherit; color: inherit; }
 .num, .tabular, output { font-variant-numeric: tabular-nums; }
@@ -84,18 +88,18 @@ input[type=range]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 
 .tab[aria-selected=true] { color: var(--text); border-bottom-color: var(--accent); font-weight: 600; }
 
 /* ---------- 레이어(모달/시트/드로어) ---------- */
-#layers { position: fixed; inset: 0; pointer-events: none; z-index: 50; }
-.layer { position: fixed; inset: 0; background: rgba(5,7,12,.6); display: flex; pointer-events: auto; opacity: 0; transition: opacity .16s; }
+#layers { position: fixed; left: 0; right: 0; top: 0; height: var(--view-h); pointer-events: none; z-index: 50; }
+.layer { position: absolute; inset: 0; background: rgba(5,7,12,.6); display: flex; pointer-events: auto; opacity: 0; transition: opacity .16s; }
 .layer.open { opacity: 1; }
-.layer.modal { align-items: center; justify-content: center; padding: 16px; }
+.layer.modal { align-items: center; justify-content: center; padding: 16px 16px max(16px, env(safe-area-inset-bottom)); }
 .layer.sheet { align-items: flex-end; justify-content: center; }
 .layer.drawer { justify-content: flex-end; }
 .layer-panel { background: var(--panel); border: 1px solid var(--line); box-shadow: var(--shadow); display: flex; flex-direction: column; max-height: 100%; outline: none; }
-.layer-panel.modal { border-radius: 14px; width: min(560px, 100%); max-height: min(88vh, 900px); transform: translateY(8px); transition: transform .16s; }
+.layer-panel.modal { border-radius: 14px; width: min(560px, 100%); max-height: min(calc(var(--view-h) * .88), 900px); transform: translateY(8px); transition: transform .16s; }
 .layer-panel.modal.confirm { width: min(380px, 100%); }
 .layer-panel.modal.wide { width: min(760px, 100%); }
-.layer-panel.sheet { width: min(760px, 100%); border-radius: 16px 16px 0 0; max-height: 78vh; transform: translateY(30px); transition: transform .18s; padding-bottom: env(safe-area-inset-bottom); }
-.layer-panel.drawer { width: min(400px, 92vw); height: 100%; border-radius: 14px 0 0 14px; transform: translateX(30px); transition: transform .18s; }
+.layer-panel.sheet { width: min(760px, 100%); border-radius: 16px 16px 0 0; max-height: calc(var(--view-h) * .78); transform: translateY(30px); transition: transform .18s; padding-bottom: env(safe-area-inset-bottom); }
+.layer-panel.drawer { width: min(400px, 92vw); height: 100%; border-radius: 14px 0 0 14px; transform: translateX(30px); transition: transform .18s; padding-bottom: env(safe-area-inset-bottom); }
 .layer.open .layer-panel { transform: none; }
 .layer-head { display: flex; align-items: center; gap: 8px; padding: 10px 10px 10px 18px; border-bottom: 1px solid var(--line); }
 .layer-head h2 { flex: 1; }
@@ -263,7 +267,7 @@ details.adv summary { cursor: pointer; color: var(--text2); min-height: 36px; di
 .wait-shop { display: grid; place-items: center; gap: 10px; padding: 40px; text-align: center; }
 
 /* ---------- 결과 ---------- */
-.result { position: absolute; inset: 0; z-index: 30; display: grid; place-items: center; background: rgba(5,7,12,.82); padding: 16px; }
+.result { position: absolute; inset: 0; z-index: 30; display: grid; place-items: center; background: rgba(5,7,12,.82); padding: 16px 16px max(16px, env(safe-area-inset-bottom)); }
 .result .card { width: min(560px, 100%); padding: 20px; display: grid; gap: 14px; max-height: 100%; overflow: auto; }
 .rank { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
 .rank th, .rank td { padding: 9px 8px; border-bottom: 1px solid var(--line); text-align: right; }
@@ -276,12 +280,12 @@ details.adv summary { cursor: pointer; color: var(--text2); min-height: 36px; di
 @media (max-width: 1023px) {
   .game { grid-template-columns: minmax(0, 1fr); grid-template-areas: "hud" "stage" "ctrl"; }
   .side { display: none; }
-  .side.open { display: block; position: absolute; right: 8px; top: 60px; width: 240px; max-height: 60vh; z-index: 10; border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); }
+  .side.open { display: block; position: absolute; right: 8px; top: 60px; width: 240px; max-height: calc(var(--view-h) * .6); z-index: 10; border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); }
 
   .room-grid { grid-template-columns: 1fr; height: auto; }
   .chat { height: 320px; }
   .shop-body { grid-template-columns: 1fr; }
-  .mine { border-left: 0; border-top: 1px solid var(--line); max-height: 34vh; }
+  .mine { border-left: 0; border-top: 1px solid var(--line); max-height: calc(var(--view-h) * .34); }
 }
 @media (max-width: 599px) {
   body { font-size: 14px; }
@@ -313,7 +317,7 @@ details.adv summary { cursor: pointer; color: var(--text2); min-height: 36px; di
 .game .hud .round { white-space: nowrap; }
 .game .ctrl { background: rgba(18,23,37,.82); }
 .game:not(.wide) .side { display: none; }
-.game:not(.wide) .side.open { display: block; position: absolute; right: 8px; top: 52px; width: 240px; max-height: 60vh; z-index: 10; border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); }
+.game:not(.wide) .side.open { display: block; position: absolute; right: 8px; top: 52px; width: 240px; max-height: calc(var(--view-h) * .6); z-index: 10; border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); }
 .maxp { font-size: 11px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .pl-fold > summary { cursor: pointer; font-size: 12px; color: var(--text2); padding: 4px 6px; list-style-position: inside; user-select: none; }
 .pl-fold[open] > summary { margin-bottom: 4px; }
@@ -429,8 +433,10 @@ input.angle-range::-moz-range-track { background: linear-gradient(to right, var(
 .game.wide .side .gchat { flex: 1 1 0; min-height: 140px; margin: 8px -8px 0; background: transparent; padding-bottom: env(safe-area-inset-bottom); }
 .game.wide .side .gchat .chat-log { flex: 1 1 0; height: auto; }
 .game.wide .side .chat-fold { display: none; }
-.game.portrait { grid-template-rows: auto auto auto auto minmax(0, 1fr); grid-template-areas: "hud" "stage" "chat" "ctrl" "side"; }
-.game.portrait .gchat { border-bottom: 1px solid var(--line); }
+.game.portrait { grid-template-rows: auto minmax(0, max-content) auto auto minmax(0, 1fr); grid-template-areas: "hud" "stage" "chat" "ctrl" "side"; }
+/* 보이는 높이가 짧을 때(인앱 하단 툴바 등) 캔버스 행이 먼저 줄어 채팅·조작을 덮지 않게: 행 높이 안에서 렌더러가 비율 유지로 맞춤 */
+.game.portrait .stage { max-height: 100%; }
+.game.portrait .gchat { border-bottom: 1px solid var(--line); min-height: auto; } /* 보이는 높이가 줄면(키보드) 채팅 행은 줄지 않고 캔버스 행이 먼저 줄어 입력줄이 조작부에 덮이지 않게 */
 /* 좁은 가로(높이 부족): 채팅 한 줄만큼 조작부를 줄여 캔버스 크기 유지 */
 @media (max-height: 500px) {
   .game:not(.wide):not(.portrait) .stage { min-height: 0; }
