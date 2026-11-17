@@ -39,7 +39,7 @@ export function mount(root, app, data) {
   const stage = h('div.stage', canvas, banner);
   const plist = h('div.plist', { role: 'list', 'aria-label': '플레이어' });
   const plFold = h('details.pl-fold', { open: true }, h('summary', '플레이어'), plist);
-  // 채팅(캔버스 바로 아래): 로그는 textContent 로만 렌더. 입력 중에는 isTyping 가드로 게임 키가 조작으로 가지 않는다
+  // 채팅(wide = 우 패널 플레이어 목록 아래, 그 외 = 캔버스 바로 아래. layout()이 같은 노드를 옮김): 로그는 textContent 로만 렌더. 입력 중에는 isTyping 가드로 게임 키가 조작으로 가지 않는다
   const chatLog = h('div.chat-log.gchat-log', { role: 'log', 'aria-label': '채팅' });
   const chatPeek = h('span.chat-peek', { 'aria-hidden': 'true' }); // 접힘 상태: 마지막 메시지 한 줄
   const chatInput = h('input', { type: 'text', maxLength: app.welcome?.limits?.chatMax || 120, placeholder: '채팅 [/]', 'aria-label': '채팅 입력', autocomplete: 'off', enterKeyHint: 'send' });
@@ -107,16 +107,27 @@ export function mount(root, app, data) {
     const W = gameEl.clientWidth, H = gameEl.clientHeight; if (!W || !H) return;
     const wide = W >= 1024 && W > H, portrait = !wide && H > W;
     gameEl.classList.toggle('wide', wide); gameEl.classList.toggle('portrait', portrait);
-    // 좁은 가로(높이 부족)는 채팅을 한 줄로 접어 시작. 사용자가 직접 바꾼 뒤에는 유지
-    if (!chatUserSet) setChatFolded(!wide && !portrait);
-    if (wide) {
-      const stageH = H - chatBox.offsetHeight; // wide: HUD는 좌 패널 상단(별도 행 없음), 채팅은 캔버스 아래
-      gameEl.style.setProperty('--cw', Math.floor(Math.max(200, Math.min(stageH * DISPLAY_ASPECT, W - 2 * PANEL_MIN))) + 'px');
+    // 채팅 DOM 하나를 배치만 바꿈: wide = 우 플레이어 패널 아래 남는 공간, 그 외 = 캔버스 아래(그리드 chat 영역)
+    const host = wide ? side : gameEl;
+    if (chatBox.parentNode !== host) {
+      const hadFocus = document.activeElement === chatInput;
+      host.append(chatBox);
+      if (hadFocus) chatInput.focus({ preventScroll: true });
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+    // wide 는 항상 펼침. 좁은 가로(높이 부족)는 한 줄로 접어 시작, 사용자가 직접 바꾼 뒤에는 그 선택 유지
+    applyChatFold(wide ? false : chatUserSet ? chatUserFolded : !portrait);
+    if (wide) { // wide: HUD는 좌 패널 상단, 채팅은 우 패널 안 → 캔버스 높이 = 전체 높이
+      gameEl.style.setProperty('--cw', Math.floor(Math.max(200, Math.min(H * DISPLAY_ASPECT, W - 2 * PANEL_MIN))) + 'px');
     }
   }
-  let chatUserSet = false;
+  let chatUserSet = false, chatUserFolded = false;
   function setChatFolded(f, user = false) {
-    if (user) chatUserSet = true;
+    if (user) { chatUserSet = true; chatUserFolded = f; }
+    applyChatFold(f);
+  }
+  function applyChatFold(f) {
+    if (chatBox.classList.contains('folded') === f && chatFold.textContent) return;
     chatBox.classList.toggle('folded', f);
     chatFold.textContent = f ? '▴' : '▾';
     chatFold.setAttribute('aria-label', f ? '채팅 펼치기' : '채팅 접기'); chatFold.setAttribute('aria-expanded', String(!f));
