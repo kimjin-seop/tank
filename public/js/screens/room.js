@@ -12,7 +12,7 @@ export function mount(root, app) {
   const sub = h('div.opt-summary');
   const slotsEl = h('div.slots', { role: 'list', 'aria-label': '참가자' });
   const log = h('div.chat-log', { role: 'log', 'aria-live': 'polite', 'aria-label': '채팅' });
-  const input = h('input', { type: 'text', maxLength: 200, placeholder: '메시지', 'aria-label': '채팅 입력', autocomplete: 'off' });
+  const input = h('input', { type: 'text', maxLength: 120, placeholder: '메시지', 'aria-label': '채팅 입력', autocomplete: 'off' });
   const form = h('form.chat-form', { onsubmit: e => { e.preventDefault(); const t = input.value.trim(); if (!t) return; net.send('chat', { text: t }); input.value = ''; } }, input, h('button.btn', { type: 'submit' }, '전송'));
   const settingsBtn = h('button.btn.small', { type: 'button', onclick: () => openSettings(app) }, '설정');
   const readyBtn = h('button.btn', { type: 'button', onclick: () => { const me = mySlot(); net.send('ready', { ready: !me?.ready }); } }, '준비');

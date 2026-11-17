@@ -135,7 +135,7 @@ export class MockServer {
       }
       case 'chat': {
         const text = String(m.text || '').trim(); if (!text) return this.err('CHAT_EMPTY', '메시지를 입력하세요', ref);
-        if (text.length > 200) return this.err('CHAT_TOO_LONG', '메시지는 200자까지 입력할 수 있습니다', ref);
+        if (text.length > 120) return this.err('CHAT_TOO_LONG', '메시지는 120자까지 입력할 수 있습니다', ref);
         this.chat(this.mine(), text);
         if (room.members.some(x => x.name === '박공격') && Math.random() < 0.5) this.after(1200, () => { const p = this.room?.members.find(x => x.name === '박공격'); if (p) this.chat(p, 'ㅋㅋ 한 판 하자'); });
         return;

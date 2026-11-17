@@ -39,6 +39,22 @@ export function mount(root, app, data) {
   const stage = h('div.stage', canvas, banner);
   const plist = h('div.plist', { role: 'list', 'aria-label': '플레이어' });
   const plFold = h('details.pl-fold', { open: true }, h('summary', '플레이어'), plist);
+  // 채팅(캔버스 바로 아래): 로그는 textContent 로만 렌더. 입력 중에는 isTyping 가드로 게임 키가 조작으로 가지 않는다
+  const chatLog = h('div.chat-log.gchat-log', { role: 'log', 'aria-label': '채팅' });
+  const chatPeek = h('span.chat-peek', { 'aria-hidden': 'true' }); // 접힘 상태: 마지막 메시지 한 줄
+  const chatInput = h('input', { type: 'text', maxLength: app.welcome?.limits?.chatMax || 120, placeholder: '채팅 [/]', 'aria-label': '채팅 입력', autocomplete: 'off', enterKeyHint: 'send' });
+  // 전송 버튼을 눌러도 입력칸 포커스(모바일 키보드)가 빠지지 않게
+  const chatSend = h('button.btn.small', { type: 'submit', onmousedown: e => e.preventDefault() }, '전송');
+  const chatFold = h('button.icon-btn.chat-fold', { type: 'button', 'aria-label': '채팅 접기', 'aria-expanded': 'true', onmousedown: e => e.preventDefault(), onclick: () => setChatFolded(!chatBox.classList.contains('folded'), true) }, '▾');
+  let chatViaEnter = false;
+  const coarse = () => window.matchMedia?.('(pointer: coarse)').matches;
+  const chatForm = h('form.chat-form', { onsubmit: e => {
+    e.preventDefault(); const t = chatInput.value.trim(); if (t) net.send('chat', { text: t }); chatInput.value = '';
+    // 데스크톱 Enter = 게임으로 복귀, 터치·버튼 전송 = 이어 쓰기
+    if (chatViaEnter && !coarse()) leaveChat(); else chatInput.focus({ preventScroll: true });
+    chatViaEnter = false;
+  } }, chatPeek, chatInput, chatSend, chatFold);
+  const chatBox = h('section.gchat', { 'aria-label': '채팅' }, chatLog, chatForm);
   const side = h('aside.side', plFold);
 
   // 각도 규약(PROTOCOL 6.3): 엔진 0..180 ↔ UI 0..90 + 좌/우
@@ -66,7 +82,7 @@ export function mount(root, app, data) {
   const fireBtn = h('button.fire-btn', { type: 'button', title: '발사 [Space]', onclick: () => tryFire() }, '발사');
   const ctrl = h('footer.ctrl', aimRowA, aimRowP, tools, h('div.fire-wrap', fireBtn));
   const overlay = h('div', { style: { position: 'absolute', inset: '0', pointerEvents: 'none', zIndex: 20 } });
-  const gameEl = h('div.game', hud, stage, side, ctrl);
+  const gameEl = h('div.game', hud, stage, chatBox, side, ctrl);
   root.append(h('div', { style: { position: 'relative', height: '100%' } }, gameEl, overlay));
 
   const R = new Renderer(canvas, stage, { bg: gameEl });
@@ -91,12 +107,22 @@ export function mount(root, app, data) {
     const W = gameEl.clientWidth, H = gameEl.clientHeight; if (!W || !H) return;
     const wide = W >= 1024 && W > H, portrait = !wide && H > W;
     gameEl.classList.toggle('wide', wide); gameEl.classList.toggle('portrait', portrait);
+    // 좁은 가로(높이 부족)는 채팅을 한 줄로 접어 시작. 사용자가 직접 바꾼 뒤에는 유지
+    if (!chatUserSet) setChatFolded(!wide && !portrait);
     if (wide) {
-      const stageH = H; // wide: HUD는 좌 패널 상단(별도 행 없음)
+      const stageH = H - chatBox.offsetHeight; // wide: HUD는 좌 패널 상단(별도 행 없음), 채팅은 캔버스 아래
       gameEl.style.setProperty('--cw', Math.floor(Math.max(200, Math.min(stageH * DISPLAY_ASPECT, W - 2 * PANEL_MIN))) + 'px');
     }
   }
-  const layoutRO = new ResizeObserver(layout); layoutRO.observe(gameEl); layout();
+  let chatUserSet = false;
+  function setChatFolded(f, user = false) {
+    if (user) chatUserSet = true;
+    chatBox.classList.toggle('folded', f);
+    chatFold.textContent = f ? '▴' : '▾';
+    chatFold.setAttribute('aria-label', f ? '채팅 펼치기' : '채팅 접기'); chatFold.setAttribute('aria-expanded', String(!f));
+    if (!f) chatLog.scrollTop = chatLog.scrollHeight;
+  }
+  const layoutRO = new ResizeObserver(layout); layoutRO.observe(gameEl); layoutRO.observe(chatBox); layout();
   // 마우스·터치로 HUD 버튼을 누른 뒤 포커스가 버튼에 남지 않게(키보드 탐색 포커스는 유지)
   gameEl.addEventListener('click', e => { const b = e.target.closest?.('button'); if (b && e.detail > 0) setTimeout(() => { if (document.activeElement === b) { b.blur(); canvas.focus({ preventScroll: true }); } }, 0); });
   const shop = new ShopView(overlay, { G, app, onClose: () => {} });
@@ -588,6 +614,21 @@ export function mount(root, app, data) {
     announce('게임 종료. 최종 순위 ' + (ranking?.[0]?.name || ''));
   }
 
+  // ---------- 채팅 ----------
+  const chatLine = m => (m.system ? h('div.chat-line.sys', m.text) : h('div.chat-line', h('b', m.from?.name || ''), m.text));
+  function chatScroll() { chatLog.scrollTop = chatLog.scrollHeight; }
+  const peekText = m => (m.system ? m.text : `${m.from?.name || ''}: ${m.text}`);
+  function chatAdd(m) { chatLog.append(chatLine(m)); while (chatLog.children.length > 100) chatLog.firstChild.remove(); chatPeek.textContent = peekText(m); chatScroll(); }
+  function focusChat() { held.clear(); chatInput.focus({ preventScroll: true }); }
+  function leaveChat() { chatInput.blur(); canvas.focus({ preventScroll: true }); }
+  chatInput.addEventListener('focus', () => held.clear());
+  chatInput.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); leaveChat(); }
+    else if (e.key === 'Enter' && !e.isComposing) chatViaEnter = true;
+  });
+  for (const m of app.chat || []) { chatLog.append(chatLine(m)); chatPeek.textContent = peekText(m); }
+  chatScroll();
+
   // ---------- 키보드 ----------
   const held = new Set(); let acc = { a: 0, p: 0 };
   function applyHeldKeys(dt) {
@@ -643,7 +684,7 @@ export function mount(root, app, data) {
       p: () => { const t = myTank(); act('parachute', { on: !t?.parachute?.on, threshold: t?.parachute?.threshold ?? 5 }); },
       s: openControl, e: () => { const have = SHIELD_ITEMS.find(id => owned(id) > 0); if (have) act('shield', { item: have }); else toast('실드가 없습니다', 'error'); },
       g: openControl, '-': () => { if (!owned('contact_trigger')) return toast('컨택트 트리거가 없습니다', 'error'); G.trigger = !G.trigger; renderQuick(); },
-      k: () => toast('훈수 금지!'),
+      k: () => toast('훈수 금지!'), '/': focusChat,
     };
     if (map[lower] && !e.ctrlKey && !e.metaKey && !(e.altKey && lower !== 's')) { e.preventDefault(); map[lower](); return; }
     if (/^[0-9]$/.test(k) && !e.ctrlKey && !e.metaKey) { e.preventDefault(); const t = aliveByNumber(+k); if (t) tankInfo(t.id); }
@@ -659,6 +700,7 @@ export function mount(root, app, data) {
   return {
     onBackToRoom() { G.backToRoom = true; app.go('room'); }, // 서버가 방을 waiting 으로 돌리면 결과 화면에 남은 사람도 모두 대기실로
     onRoom() {},
+    onChat: chatAdd,
     unmount() {
       off.forEach(f => f()); R.destroy(); layoutRO.disconnect(); delete window.__terrainCheck; delete window.__deathFx; shop.destroy?.();
       window.removeEventListener('keydown', onKeyDown); window.removeEventListener('keyup', onKeyUp); window.removeEventListener('blur', onBlur);

@@ -6,7 +6,7 @@ export const PROTOCOL_VERSION = 1;
 export const NICK_RE = /^[가-힣a-zA-Z0-9]{2,12}$/;
 export const RESERVED_NICK_RE = /^컴퓨터\d*$/; // 컴퓨터 자동 이름과 충돌 방지
 export const TITLE_MAX = 30;
-export const CHAT_MAX = 200;
+export const CHAT_MAX = 120;
 export const MAX_PLAYERS_MIN = 2;
 export const MAX_PLAYERS_MAX = 10;
 
@@ -54,7 +54,7 @@ export const ERRORS = {
   START_NOT_READY: '준비하지 않은 참가자가 있습니다',
   START_TEAMS: '팀이 둘 이상이어야 시작할 수 있습니다',
   CHAT_EMPTY: '메시지를 입력하세요',
-  CHAT_TOO_LONG: '메시지는 200자까지 입력할 수 있습니다',
+  CHAT_TOO_LONG: '메시지는 120자까지 입력할 수 있습니다',
   CHAT_RATE: '메시지를 너무 빨리 보내고 있습니다',
   // 게임 중
   NOT_YOUR_TURN: '당신의 턴이 아닙니다',

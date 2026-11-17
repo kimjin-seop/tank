@@ -15,7 +15,7 @@ export const DEFAULT_LOBBY_CONFIG = {
   chatBurst: 6,            // chatWindowMs 안 최대 메시지 수
   chatWindowMs: 10000,
   maxMsgPerSec: 60,        // 연결당 전체 메시지 속도 제한
-  chatHistory: 30,
+  chatHistory: 50,
 };
 
 const GAME_TYPES = new Set(['fire', 'aim', 'act', 'retreat', 'buy', 'sell_quote', 'sell_accept', 'sell_reject', 'shop_done']);
@@ -533,10 +533,11 @@ export class Lobby {
 
   _chat(s, msg) {
     const room = this._roomOf(s);
-    this._requireWaiting(room); // 채팅은 대기실만(5.10)
+    // 채팅은 대기실·게임 중 모두 허용(방 참가자만: _roomOf 가 NOT_IN_ROOM)
     if (typeof msg.text !== 'string') throw new ProtocolError('CHAT_EMPTY');
+    // 제어문자·0폭/방향 제어 문자는 공백으로 바꾼 뒤 앞뒤 공백 제거
     // eslint-disable-next-line no-control-regex
-    const text = msg.text.replace(/[\u0000-\u001f\u007f]/g, ' ').trim();
+    const text = msg.text.replace(/[\u0000-\u001f\u007f-\u009f​-‏‪-‮⁦-⁩﻿]/g, ' ').trim();
     if (!text) throw new ProtocolError('CHAT_EMPTY');
     if (text.length > CHAT_MAX) throw new ProtocolError('CHAT_TOO_LONG');
     const now = this.clock.now();

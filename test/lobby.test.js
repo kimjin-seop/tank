@@ -113,3 +113,40 @@ test('컴퓨터 추가 시 탱크 모양이 슬롯별로 서로 다르게 자동
   assert.equal(new Set(tanks).size, 4);
   assert.ok(tanks.every((t) => t !== 'triple' && t !== 'fixed'));
 });
+
+test('채팅: 검증(120자·제어문자·공백), 게임 중 허용, 방 격리, 재접속 시 기록 복귀', () => {
+  const { client, clock, lobby } = makeLobby();
+  const a = client('가나다'), b = client('라마바'), out = client('방밖');
+  a.say({ t: 'chat', text: '로비' });
+  assert.equal(a.last('error').code, 'NOT_IN_ROOM'); // 방 참가자만
+  a.say({ t: 'create_room', title: 'x', maxPlayers: 2 });
+  const roomId = a.last('room_joined').room.id;
+  b.say({ t: 'join_room', roomId });
+  out.say({ t: 'create_room', title: '다른방', maxPlayers: 2 });
+
+  a.say({ t: 'chat', text: '가'.repeat(121) });
+  assert.equal(a.last('error').code, 'CHAT_TOO_LONG');
+  a.say({ t: 'chat', text: ' \u0007 ‮   ' });
+  assert.equal(a.last('error').code, 'CHAT_EMPTY');
+  a.say({ t: 'chat', text: '  안\u0000녕  ' });
+  assert.deepEqual(b.last('chat').from.name, '가나다'); // 닉네임은 서버가 붙임
+  assert.equal(b.last('chat').text, '안 녕');
+  assert.equal(out.all('chat').some((m) => m.text === '안 녕'), false); // 다른 방에는 안 감
+
+  // 게임 중에도 채팅 가능
+  b.say({ t: 'ready', ready: true });
+  a.say({ t: 'start' });
+  assert.ok(a.last('game_start'));
+  clock.advance(500);
+  b.say({ t: 'chat', text: '게임중' });
+  assert.equal(a.last('chat').text, '게임중');
+
+  // 끊겼다가 토큰으로 복귀하면 방 기록(최근 50개)을 받는다
+  const token = b.last('welcome').token;
+  lobby.onClose(b);
+  const b2 = client();
+  b2.say({ t: 'hello', token });
+  const joined = b2.last('room_joined');
+  assert.ok(joined.chat.some((m) => m.text === '게임중'));
+  assert.ok(joined.chat.length <= 50);
+});

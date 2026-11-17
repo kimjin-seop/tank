@@ -409,3 +409,29 @@ input.angle-range::-moz-range-track { background: linear-gradient(to right, var(
 .game.portrait .side { display: block; position: static; width: auto; max-height: none; border: 0; border-top: 1px solid var(--line); border-radius: 0; box-shadow: none; overflow: auto; min-height: 0; background: rgba(18,23,37,.82); }
 .game.portrait .pl-toggle { display: none; }
 .game.portrait .ctrl { overflow: visible; }
+/* 게임 채팅: 캔버스 바로 아래(전 레이아웃). 로그는 고정 4줄·스크롤, 좁은 가로는 입력 한 줄로 접힘 */
+.game .gchat { grid-area: chat; display: flex; flex-direction: column; min-width: 0; min-height: 0; background: rgba(18,23,37,.82); border-top: 1px solid var(--line); }
+.game .gchat .chat-log { flex: none; min-height: 0; height: calc(var(--chat-lines, 4) * 18px + 8px); padding: 4px 10px; gap: 0; overscroll-behavior: contain; border-bottom: 1px solid var(--line); }
+.game .gchat .chat-line { font-size: 13px; line-height: 18px; }
+.game .gchat .chat-form { padding: 3px 6px; gap: 4px; border-top: 0; align-items: center; min-width: 0; }
+.game .gchat .chat-form input { flex: 1; min-height: 32px; min-width: 0; padding: 0 8px; font-size: 14px; }
+.game .gchat .chat-form .btn { min-height: 32px; padding: 0 10px; font-size: 13px; flex: none; }
+.game .gchat .chat-fold { width: 32px; height: 32px; font-size: 14px; flex: none; }
+.game .gchat .chat-peek { display: none; }
+.game .gchat.folded .chat-log { display: none; }
+.game .gchat.folded .chat-peek { display: block; flex: 0 1 auto; max-width: 45%; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; color: var(--text2); padding-left: 4px; }
+@media (pointer: coarse) { .game .gchat .chat-form input { font-size: 16px; } } /* iOS 포커스 확대 방지 */
+.game { grid-template-rows: auto minmax(0, 1fr) auto auto; grid-template-areas: "hud" "stage" "chat" "ctrl"; }
+.game.wide { grid-template-rows: auto minmax(0, 1fr) auto; grid-template-areas: "hud stage side" "ctrl stage side" "ctrl chat side"; }
+.game.wide .gchat { background: rgba(18,23,37,.62); backdrop-filter: blur(4px); }
+.game.portrait { grid-template-rows: auto auto auto auto minmax(0, 1fr); grid-template-areas: "hud" "stage" "chat" "ctrl" "side"; }
+.game.portrait .gchat { border-bottom: 1px solid var(--line); }
+/* 좁은 가로(높이 부족): 채팅 한 줄만큼 조작부를 줄여 캔버스 크기 유지 */
+@media (max-height: 500px) {
+  .game:not(.wide):not(.portrait) .stage { min-height: 0; }
+  .game:not(.wide):not(.portrait) .gchat { --chat-lines: 3; }
+  .game:not(.wide):not(.portrait) .gchat .chat-form { padding: 2px 6px; }
+  .game:not(.wide):not(.portrait) .gchat .chat-form input, .game:not(.wide):not(.portrait) .gchat .chat-form .btn, .game:not(.wide):not(.portrait) .gchat .chat-fold { min-height: 30px; height: 30px; }
+  .game:not(.wide):not(.portrait) .ctrl { gap: 4px 10px; padding-top: 4px; padding-bottom: max(4px, env(safe-area-inset-bottom)); }
+  .game:not(.wide):not(.portrait) .ctrl .qi .ql { display: none; }
+}

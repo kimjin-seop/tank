@@ -31,7 +31,7 @@
 | TARGET_NOT_FOUND / CANNOT_KICK_SELF | 대상을 찾을 수 없습니다 / 자신을 강퇴할 수 없습니다 |
 | TANK_INVALID / TEAM_INVALID / PERSONALITY_INVALID | 탱크 모양 / 팀 번호 / 컴퓨터 성향이 올바르지 않습니다 |
 | START_NEED_PLAYERS / START_NOT_READY / START_TEAMS | 2명 이상이어야 시작할 수 있습니다 / 준비하지 않은 참가자가 있습니다 / 팀이 둘 이상이어야 시작할 수 있습니다 |
-| CHAT_EMPTY / CHAT_TOO_LONG / CHAT_RATE | 메시지를 입력하세요 / 200자까지 / 너무 빨리 보내고 있습니다 |
+| CHAT_EMPTY / CHAT_TOO_LONG / CHAT_RATE | 메시지를 입력하세요 / 120자까지 / 너무 빨리 보내고 있습니다 |
 | NOT_YOUR_TURN / TURN_EXPIRED / WRONG_PHASE | 당신의 턴이 아닙니다 / 제한시간이 지났습니다 / 지금은 할 수 없는 행동입니다 |
 | INVALID_INPUT / ALREADY_READY | 입력 값이 올바르지 않습니다 / 이미 발사를 준비했습니다 |
 | NOT_YOUR_SHOP / SHOP_EXPIRED | 지금은 당신의 상점 차례가 아닙니다 / 상점 제한시간이 지났습니다 |
@@ -48,7 +48,7 @@
 ### 서버 -> 클라이언트 `welcome`
 ```js
 { t:'welcome', protocol:1, token, nickname, resumed:boolean, location:'lobby'|'room'|'game', serverTime,
-  limits:{chatMax:200, titleMax:30, maxPlayers:[2,10]},
+  limits:{chatMax:120, titleMax:30, maxPlayers:[2,10]},
   defaults:{...옵션 기본값}, schema:{옵션키:{type:'enum'|'int'|'num'|'bool', def, values?|min,max}},   // 방 옵션 폼 생성용
   tanks:[...전체], humanTanks:[...사람 선택 가능], personalities:[...8종] }
 ```
@@ -91,12 +91,12 @@
 | `kick` (H) | `id` | 대상에게 `kicked{msg}` -> `room_left{reason:'kicked'}` -> `room_list`. 그 방이 존재하는 동안 토큰·닉네임 모두 재입장 차단 |
 | `transfer_host` (H) | `id` | 수동 위임(SPEC 5.12-5 미결, 임시 제공). 자동 위임: 방장이 나가거나 유예 초과 시 가장 오래 있던 사람 |
 | `start` (H) | | 조건: 방장 제외 사람 전원 준비 + 사람+컴퓨터 >= 2 + (팀 모드면 팀 2개 이상). 실패 시 `START_*` |
-| `chat` | `text` | 대기실 전용(게임 중 `IN_GAME`). 200자, 400ms 간격 + 10초 6건 제한 |
+| `chat` | `text` | 같은 방 참가자에게만(대기실·게임 중 모두, 방 밖이면 `NOT_IN_ROOM`). 제어문자·0폭/방향 제어 문자는 공백 치환 후 앞뒤 공백 제거, 비면 `CHAT_EMPTY`, 120자 초과 `CHAT_TOO_LONG`, 400ms 간격 + 10초 6건 초과 `CHAT_RATE`. 발신자 이름은 서버가 붙인다. 로비(방 밖) 채팅은 없음 |
 
 ### 서버 -> 클라이언트
-- `room_joined {you, room, chat:[최근 30개]}` : `you`는 내 참가자 id.
+- `room_joined {you, room, chat:[최근 50개]}` : `you`는 내 참가자 id. 재접속(`hello{token}`) 복귀 때도 대기실·게임 중 모두 `room_joined`로 방 채팅 기록이 다시 온다(게임 중이면 이어서 `game_resume`).
 - `room_state {room}` : 대기실 상태가 바뀔 때마다 전체 상태를 방 전원에게.
-- `chat {from:{id,name}, text, ts}` / 시스템 `chat {system:true, key, text, ts}` (`key`: JOIN LEAVE HOST OPTIONS KICK COMPUTER START AUTO_PASS PROXY RECLAIM).
+- `chat {from:{id,name}, text, ts}`(보낸 본인 포함 방 전원에게, 게임 중에도 동일) / 시스템 `chat {system:true, key, text, ts}` (`key`: JOIN LEAVE HOST OPTIONS KICK COMPUTER START AUTO_PASS PROXY RECLAIM).
 - `room_left {reason:'leave'|'kicked'|'closed'}` : 방 목록 화면으로 이동(이어서 `room_list`).
 - `kicked {roomId, msg}` : 토스트로 표시.
 - `back_to_room` : 게임 종료 후 대기실 복귀(직후 `room_state`).
