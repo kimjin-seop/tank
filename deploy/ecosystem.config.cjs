@@ -1,4 +1,4 @@
-// pm2 설정: pm2 start deploy/ecosystem.config.js
+// pm2 설정: pm2 start deploy/ecosystem.config.cjs
 module.exports = {
   apps: [{
     name: 'scorched-earth-forever',

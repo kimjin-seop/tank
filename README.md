@@ -26,7 +26,7 @@ git clone <저장소 URL> /data/www/tank && cd /data/www/tank
 npm ci --omit=dev
 
 # 2) pm2 시작 (PORT 3100, HOST 127.0.0.1)
-pm2 start deploy/ecosystem.config.js
+pm2 start deploy/ecosystem.config.cjs
 pm2 save
 
 # 3) nginx 사이트 등록
