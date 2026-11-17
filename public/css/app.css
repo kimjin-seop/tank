@@ -184,7 +184,6 @@ details.adv summary { cursor: pointer; color: var(--text2); min-height: 36px; di
 .hud { grid-area: hud; display: flex; align-items: center; gap: 10px; padding: 6px 10px; border-bottom: 1px solid var(--line); background: var(--bg2); flex-wrap: wrap; min-height: 52px; padding-top: max(6px, env(safe-area-inset-top)); }
 .hud .who { display: flex; align-items: center; gap: 8px; font-weight: 700; min-width: 0; }
 .hud .who .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 160px; }
-.hud .round { font-size: 13px; color: var(--text2); }
 .stage { grid-area: stage; display: grid; place-items: center; overflow: hidden; background: #0B0E16; position: relative; min-height: 200px; touch-action: none; }
 .stage canvas { display: block; image-rendering: auto; }
 .stage.targeting { cursor: crosshair; }
@@ -326,7 +325,6 @@ details.adv summary { cursor: pointer; color: var(--text2); min-height: 36px; di
 .game { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto; grid-template-areas: "hud" "stage" "ctrl"; }
 .game .stage { background: transparent; min-height: 120px; }
 .game .hud { min-height: 40px; padding-top: max(4px, env(safe-area-inset-top)); padding-bottom: 4px; background: rgba(18,23,37,.82); }
-.game .hud .round { white-space: nowrap; }
 .game .ctrl { background: rgba(18,23,37,.82); }
 .game:not(.wide) .side { display: none; }
 .game:not(.wide) .side.open { display: block; position: absolute; right: 8px; top: 52px; width: 240px; max-height: calc(var(--view-h) * .6); z-index: 10; border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); }
@@ -352,17 +350,13 @@ details.adv summary { cursor: pointer; color: var(--text2); min-height: 36px; di
 .game.wide .hud { flex-wrap: wrap; align-content: flex-start; gap: 6px 8px; min-height: 0; padding: max(8px, env(safe-area-inset-top)) 12px 4px; border-bottom: 0; border-right: 1px solid var(--line); background: rgba(18,23,37,.62); backdrop-filter: blur(4px); min-width: 0; }
 .game.wide .hud .who { flex: 1 1 0; }
 .game.wide .hud .who .name { max-width: none; }
-.game.wide .hud .round { font-size: 12px; }
-/* 최소 패널(210px)에서도 턴 플레이어 이름이 4~5글자 읽히게: 라운드는 '라운드 / 1/10' 2줄로 좁히고 첫 줄 여백·마커·메뉴 버튼을 줄인다 */
+/* 최소 패널(210px)에서도 턴 플레이어 이름이 읽히게 첫 줄 여백·마커·메뉴 버튼을 줄인다. 첫 줄 = 이름 + 메뉴, 그 아래 = 상태 묶음(.stat) */
 .game.wide .hud { column-gap: 6px; }
 .game.wide .hud .who { gap: 5px; }
 .game.wide .hud .who .marker { width: 22px; height: 22px; flex: none; }
-.game.wide .hud .round { flex: none; width: min-content; white-space: normal; word-break: keep-all; font-size: 11px; line-height: 1.2; text-align: right; }
-.game.wide .hud .spacer { flex: 0 0 100%; height: 0; }
-.game.wide .hud :is(.who, .round) { order: -2; }
-.game.wide .hud .hud-btns { order: -1; }   /* 메뉴 버튼 = 패널 첫 줄 오른쪽 끝(이름·라운드 줄). 둘째 줄은 바람 | 시간만 */
-.game.wide .hud .wind { flex: 1 1 0; min-width: 56px; }
-.game.wide .hud .timer { flex: 1 1 0; min-width: 56px; }
+.game.wide .hud .spacer { display: none; }
+.game.wide .hud .who { order: -2; }
+.game.wide .hud .hud-btns { order: -1; }   /* 메뉴 버튼 = 패널 첫 줄 오른쪽 끝(이름 줄) */
 .game.wide .hud .icon-btn { flex: none; width: 32px; height: 32px; }
 @media (pointer: coarse) { .game.wide .hud .icon-btn { width: 44px; height: 44px; } }
 .game.wide .hud .energy { order: 1; flex: 1 1 100%; min-width: 0; }
@@ -421,14 +415,78 @@ input.angle-range::-moz-range-track { background: linear-gradient(to right, var(
   .range-row .step { width: 38px; height: 38px; }
   .game .hud { flex-wrap: nowrap; gap: 6px; padding-left: 8px; padding-right: 6px; }
   .game .hud .who .name { max-width: 84px; }
-  .game .hud .round { font-size: 11px; }
-  .game .hud .wind { min-width: 52px; flex: none; }
-  .game .hud .wind .wv { gap: 4px; }
-  .game .hud .wind .wv .muted { font-size: 12px; }
-  .game .hud .timer { min-width: 52px; }
   .game .hud .hud-btns { gap: 2px; }
   .game .hud .icon-btn { flex: none; }
 }
+/* 상태 묶음(.stat): 라운드(큰 숫자) → 바람 한 줄 → 시간 한 줄. 한 줄 = 이름표 | 값 | 막대
+   좁은 화면 = 상단 바 이름 바로 뒤(라운드 왼쪽, 바람·시간 2줄 오른쪽), wide = 좌 패널 이름 줄 아래 세로 3줄 */
+.hud .stat { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "round wind" "round timer"; align-items: center; gap: 2px 12px; flex: 0 1 250px; min-width: 0; --vw: 50px; }
+.hud .round { grid-area: round; display: grid; grid-template-columns: auto auto; grid-template-areas: "rl rl" "rn rt"; justify-content: start; align-items: baseline; gap: 1px 2px; white-space: nowrap; line-height: 1; font-variant-numeric: tabular-nums; }
+.hud .round .rl { grid-area: rl; font-size: 11px; }
+.hud .round .rn { grid-area: rn; font-size: 28px; line-height: .9; }
+.hud .round .rt { grid-area: rt; font-size: 14px; }
+.hud .stat :is(.wind, .timer) { display: grid; grid-template-columns: auto var(--vw) minmax(20px, 1fr); align-items: center; gap: 6px; min-width: 0; }
+.hud .stat .wind { grid-area: wind; }
+.hud .stat .timer { grid-area: timer; }
+.hud .stat .sl { font-size: 11px; white-space: nowrap; }
+.hud .stat .wind .wv { height: auto; gap: 4px; font-size: 15px; }
+.hud .stat .wind .wv .muted { font-size: 12px; }
+.hud .stat .timer .tt { font-size: 15px; white-space: nowrap; }
+.game.wide .hud .stat { flex: 1 1 100%; grid-template-columns: minmax(0, 1fr); grid-template-areas: "round" "wind" "timer"; gap: 20px; padding: 8px 0 12px; --vw: 60px; }
+.game.wide .hud .stat :is(.wind, .timer) { min-height: 24px; }
+.game.wide .hud .round { grid-template-columns: auto auto auto; grid-template-areas: "rl rn rt"; column-gap: 6px; }
+.game.wide .hud .round .rl { font-size: 14px; }
+.game.wide .hud .round .rn { font-size: 44px; }
+.game.wide .hud .round .rt { font-size: 20px; }
+.game.wide .hud .stat .sl { font-size: 12px; }
+.game.wide .hud .stat .wind .wv, .game.wide .hud .stat .timer .tt { font-size: 18px; }
+/* wide 는 높이가 낮아도 세로 3줄(라운드·바람·시간)을 유지한다. 대신 조작 패널(여백·슬라이더·버튼 높이)을 줄여 패널이 스크롤되지 않게 하고, 줄 간격만 단계적으로 좁힌다 */
+@media (max-height: 739px) {
+  .game.wide .hud .stat { gap: 16px; padding: 6px 0 8px; }
+  .game.wide .hud .stat :is(.wind, .timer) { min-height: 22px; }
+  .game.wide .hud .round .rn { font-size: 40px; }
+  .game.wide .ctrl { gap: 5px; padding: 6px 12px; }
+  .game.wide .ctrl .aim { gap: 3px 8px; }
+  .game.wide .ctrl .aim .range-row { gap: 3px 6px; }
+  .game.wide .ctrl .aim .range-row input[type=range] { height: 30px; }
+  .game.wide .ctrl .step { width: 30px; height: 30px; }
+  .game.wide .ctrl .quick { grid-auto-rows: 28px; }
+  .game.wide .ctrl .tools .btn.small { min-height: 28px; }
+  .game.wide .ctrl .fire-btn { min-height: 42px; }
+}
+@media (max-height: 649px) {
+  .game.wide .hud .stat { gap: 12px; padding: 4px 0 2px; }
+  .game.wide .hud .stat :is(.wind, .timer) { min-height: 18px; }
+  .game.wide .hud .round .rl { font-size: 13px; }
+  .game.wide .hud .round .rn { font-size: 32px; }
+  .game.wide .hud .round .rt { font-size: 17px; }
+}
+@media (max-height: 599px) {
+  .game.wide .hud .stat { gap: 4px; padding: 0; }
+  .game.wide .hud .round .rl { font-size: 12px; }
+  .game.wide .hud .round .rn { font-size: 24px; }
+  .game.wide .hud .round .rt { font-size: 14px; }
+  .game.wide .hud .stat .wind .wv, .game.wide .hud .stat .timer .tt { font-size: 15px; }
+}
+@media (max-width: 599px) {
+  .game .hud .spacer { display: none; }
+  .game .hud .stat { flex: 1 1 0; column-gap: 8px; --vw: 40px; }
+  .game .hud .round .rn { font-size: 24px; }
+  .game .hud .round .rt { font-size: 12px; }
+  .game .hud .stat :is(.wind, .timer) { gap: 4px; }
+  .game .hud .stat .wind .wv, .game .hud .stat .timer .tt { font-size: 13px; }
+  .game .hud .stat .wind .wv svg { width: 12px; height: 9px; }
+}
+/* 조작키 안내: wide·세로 = 우 패널(플레이어 목록 아래), 그 외 = 캔버스 영역 왼쪽 아래(접기 제목만 입력을 받음). 터치·좁은 화면·낮은 화면은 숨김 */
+.keyhint { flex: none; font-size: 12px; margin-top: 8px; }
+.keyhint > summary { cursor: pointer; user-select: none; list-style-position: inside; white-space: nowrap; }
+.keyhint .kh-list { display: flex; flex-wrap: wrap; gap: 5px 10px; }
+.keyhint .kh { display: inline-flex; align-items: center; gap: 3px; white-space: nowrap; }
+.stage > .keyhint { position: absolute; left: 8px; bottom: 8px; z-index: 2; margin: 0; max-width: 150px; pointer-events: none; }
+.stage > .keyhint > summary { pointer-events: auto; }
+.stage > .keyhint .kh-list { flex-direction: column; gap: 4px; }
+@media (max-width: 599px), (pointer: coarse) { .game .keyhint { display: none; } }
+@media (max-height: 500px) { .stage > .keyhint { display: none; } }
 /* 세로 모바일: 남는 아래 공간은 플레이어 목록으로 채움 */
 .game.portrait { grid-template-rows: auto auto auto minmax(0, 1fr); grid-template-areas: "hud" "stage" "ctrl" "side"; }
 .game.portrait .side { display: block; position: static; width: auto; max-height: none; border: 0; border-top: 1px solid var(--line); border-radius: 0; box-shadow: none; overflow: auto; min-height: 0; background: rgba(18,23,37,.82); }

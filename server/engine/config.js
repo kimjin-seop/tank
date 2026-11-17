@@ -49,4 +49,7 @@ export const TANK = { halfW: 4, height: 6, pivotDy: 5, barrel: 8, shieldR: 10, s
 // Palette data (RE §8.2, §8.7)
 export const GROUND_COLORS = [[38, 25, 17], [54, 36, 28], [53, 53, 47], [20, 62, 20], [9, 35, 9], [36, 54, 28]];
 export const DIRT_BASE = 0x50;
+// Dirt-collapse playback speed multiplier (timing only: the simulation, RNG draws and final terrain are unchanged).
+// 1 = one pixel per falling tick (50 px/s at fallingDelay 10). 3 = 150 px/s. Tank falls are not affected.
+export const DIRT_FALL_RATE = 3;
 export const PLAYER_COLORS = [[63, 10, 10], [35, 55, 10], [40, 20, 63], [63, 63, 10], [10, 63, 63], [63, 10, 63], [60, 60, 60], [63, 40, 20], [20, 63, 40], [0, 0, 63]];

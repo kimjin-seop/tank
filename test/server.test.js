@@ -56,6 +56,10 @@ test('서버 기동 후 WebSocket 닉네임 -> 방 목록 왕복, 방 생성이 
     assert.equal(r.status, 200);
     const bad = await fetch(`http://127.0.0.1:${port}/assets/..%2fpackage.json`);
     assert.notEqual(bad.status, 200);
+    // 진입 문서: CSS·JS 링크에 자산 버전이 붙는다(캐시 무효화)
+    const html = await (await fetch(`http://127.0.0.1:${port}/`)).text();
+    assert.match(html, /href="\/css\/app\.css\?v=\w+"/);
+    assert.match(html, /src="\/js\/main\.js\?v=\w+"/);
     a.close();
     b.close();
   } finally {

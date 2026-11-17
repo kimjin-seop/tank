@@ -23,7 +23,29 @@ export const realClock = {
   clearTimeout: (h) => clearTimeout(h),
 };
 
+// 정적 자산 버전: public/css·public/js 아래 파일의 가장 최근 수정 시각(36진수). index.html 을 내보낼 때 계산(1초 캐시)
+function assetVersion(root) {
+  let max = 0;
+  const walk = (dir) => {
+    let list; try { list = fs.readdirSync(dir, { withFileTypes: true }); } catch { return; }
+    for (const e of list) {
+      const p = path.join(dir, e.name);
+      if (e.isDirectory()) walk(p);
+      else { try { max = Math.max(max, fs.statSync(p).mtimeMs); } catch { /* 사라진 파일 무시 */ } }
+    }
+  };
+  walk(path.join(root, 'public', 'css')); walk(path.join(root, 'public', 'js'));
+  return Math.floor(max).toString(36);
+}
+// index.html 의 /css/*.css · /js/*.js 링크에 ?v=버전 을 붙여, 파일이 바뀌면 주소가 달라지게 한다(브라우저·프록시 캐시 무효화)
+export function injectAssetVersion(html, v) {
+  return html.replace(/\b(href|src)="(\/(?:css|js)\/[^"?#]+\.(?:css|js))"/g, (_, attr, url) => `${attr}="${url}?v=${v}"`);
+}
+
 function makeStaticHandler(root) {
+  const indexFile = path.join(root, 'public', 'index.html');
+  let ver = { at: -Infinity, v: '' };
+  const version = () => { const now = Date.now(); if (now - ver.at > 1000) ver = { at: now, v: assetVersion(root) }; return ver.v; };
   // URL 접두 -> 디렉터리. '/'는 public/ 로 매핑.
   const mounts = [['/assets/', 'assets'], ['/data/', 'data'], ['/', 'public']];
   return (req, res) => {
@@ -39,6 +61,14 @@ function makeStaticHandler(root) {
     if (file !== base && !file.startsWith(base + path.sep)) { res.writeHead(403); return res.end(); }
     fs.stat(file, (err, st) => {
       if (err || !st.isFile()) { res.writeHead(404, { 'content-type': 'text/plain; charset=utf-8' }); return res.end('Not Found'); }
+      if (file === indexFile) { // 진입 문서: 자산 버전 주입, 문서 자체는 저장하지 않게
+        return fs.readFile(file, 'utf8', (e2, html) => {
+          if (e2) { res.writeHead(500); return res.end(); }
+          const body = Buffer.from(injectAssetVersion(html, version()));
+          res.writeHead(200, { 'content-type': MIME['.html'], 'content-length': body.length, 'cache-control': 'no-store' });
+          res.end(req.method === 'HEAD' ? undefined : body);
+        });
+      }
       res.writeHead(200, {
         'content-type': MIME[path.extname(file).toLowerCase()] || 'application/octet-stream',
         'content-length': st.size, 'cache-control': 'no-cache',

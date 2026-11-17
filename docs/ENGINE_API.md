@@ -112,7 +112,7 @@ input = { weapon:'missile', angle:0..180, power:0..hp*10, target?:{x,y}|tankId, 
 | `guide` | id, mode:'heat'/'horz'/'vert' | 유도 전환 시점 |
 | `explode` | x,y,r,kind(무기 id, 'death','funky','plasma'), dur, color?, fireballOnly?, harmless?, batteries? | 불덩이. `fireballOnly`=분화구는 나중에(MIRV), `harmless`=피해 없음(흙/라이엇 폭탄/흙 장약) |
 | `terrain` | spans:[[x,y0,y1,c],..] | 열 x 의 y0..y1 을 색 c(0=하늘, 0x50..0x68=흙)로 덮어쓴다. 이벤트 순서대로 적용하면 서버 지형과 같아진다(테스트로 검증) |
-| `dirtFall` | dur, spans:[{x,y0,y1,dy,t0}] | 흙덩이 낙하 연출 힌트(열 x 의 y0..y1 덩어리가 t0 tick 부터 1프레임당 1px 씩 dy 만큼 하강). 결과 지형은 이어지는 `terrain` 이벤트 |
+| `dirtFall` | dur, rate, spans:[{x,y0,y1,dy,t0}] | 흙덩이 낙하 연출 힌트(열 x 의 y0..y1 덩어리가 t0 tick(소수 가능) 부터 tick 당 `rate` px 씩 dy 만큼 하강). `rate = DIRT_FALL_RATE(config.js, 기본 3) / (fallingDelay/10)`, `dur = ceil(낙하 프레임 수 / rate)`. 배율은 재생 시간만 바꾸며 시뮬레이션·난수·최종 지형은 그대로. 결과 지형은 이어지는 `terrain` 이벤트 |
 | `hit` | tank, kind:'direct'/'shieldDirect', x,y | 직격 |
 | `hp` | tank, hp, delta, shield, shieldDelta, src(발사자 id 또는 null), kind | 체력/방패 변화 |
 | `shield` | tank, item, hp, kind:'on'/'off'/'break'/'reflect' | 방패 상태 |

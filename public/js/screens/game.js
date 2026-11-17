@@ -24,16 +24,19 @@ export function mount(root, app, data) {
   // ---------- DOM ----------
   const whoMarker = h('img.marker', { alt: '' });
   const whoName = h('span.name');
-  const roundEl = h('span.round');
+  // 좌상단 상태 묶음(.stat): 라운드(큰 숫자) → 바람 한 줄 → 시간 한 줄
+  const roundNum = h('b.rn'), roundTot = h('span.rt');
+  const roundEl = h('div.round', h('span.rl', '라운드'), ' ', roundNum, roundTot);
   const windEl = h('div.wind', { role: 'img', 'aria-label': '바람' });
   const energyBar = h('i'), energyTxt = h('span.et');
   const energy = h('div.energy', { title: '남은 에너지 / 최대 파워' }, h('div.eb', energyBar), energyTxt);
   const timerTxt = h('span.tt'), timerBar = h('i');
-  const timer = h('div.timer', { role: 'timer', 'aria-label': '남은 시간' }, timerTxt, h('div.tb', timerBar));
+  const timer = h('div.timer', { role: 'timer', 'aria-label': '남은 시간' }, h('span.sl', { 'aria-hidden': 'true' }, '시간'), timerTxt, h('div.tb', timerBar));
+  const stat = h('div.stat', roundEl, windEl, timer);
   const menuBtn = h('button.icon-btn', { type: 'button', 'aria-label': '메뉴', title: '메뉴 [F1]', onclick: () => openMenu() }, '☰');
   const plBtn = h('button.icon-btn.pl-toggle', { type: 'button', 'aria-label': '플레이어 목록', onclick: () => side.classList.toggle('open') }, '👥');
-  // 버튼 묶음: 좁은 화면 = 상단 바 오른쪽 끝, wide = 좌 패널 첫 줄 오른쪽 끝(CSS order). 바람·시간 줄과 섞이지 않게 분리
-  const hud = h('header.hud', h('div.who', whoMarker, whoName), roundEl, h('div.spacer'), windEl, energy, timer, h('div.hud-btns', plBtn, menuBtn));
+  // 버튼 묶음: 좁은 화면 = 상단 바 오른쪽 끝, wide = 좌 패널 첫 줄 오른쪽 끝(CSS order). 상태 묶음은 이름 바로 뒤(좁은 화면)·이름 줄 아래(wide)
+  const hud = h('header.hud', h('div.who', whoMarker, whoName), stat, h('div.spacer'), energy, h('div.hud-btns', plBtn, menuBtn));
 
   const canvas = h('canvas', { 'aria-label': '게임 화면', role: 'img', tabindex: '-1' });
   const banner = h('div.banner', { hidden: true });
@@ -57,6 +60,11 @@ export function mount(root, app, data) {
   } }, chatPeek, chatInput, chatSend, chatFold);
   const chatBox = h('section.gchat', { 'aria-label': '채팅' }, chatLog, chatForm);
   const side = h('aside.side', plFold);
+  // 조작키 안내(onKeyDown·applyHeldKeys 의 실제 바인딩): wide·세로 = 우 패널, 그 외 = 캔버스 영역 왼쪽 아래. 터치·좁은 화면은 CSS 로 숨김. 접힘 상태 저장
+  const kh = (keys, d) => h('span.kh', ...keys.map(x => h('kbd', x)), d);
+  const keyHint = h('details.keyhint', { open: (() => { try { return localStorage.getItem('se.keyHint') !== '0'; } catch { return true; } })() }, h('summary', '조작키'),
+    h('div.kh-list', kh(['←', '→'], '각도'), kh(['↑', '↓'], '파워'), kh(['Shift'], '느리게'), kh(['Space'], '발사'), kh(['Tab'], '무기'), kh(['/'], '채팅'), kh(['?'], '단축키')));
+  keyHint.addEventListener('toggle', () => { try { localStorage.setItem('se.keyHint', keyHint.open ? '1' : '0'); } catch {} });
 
   // 각도 규약(PROTOCOL 6.3): 엔진 0..180 ↔ UI 0..90 + 좌/우
   // 슬라이더는 단조: 왼쪽 끝 = 왼쪽 수평(엔진 180), 가운데 = 수직(90), 오른쪽 끝 = 오른쪽 수평(엔진 0). ←/→ 키와 같은 축
@@ -120,6 +128,8 @@ export function mount(root, app, data) {
       if (hadFocus) chatInput.focus({ preventScroll: true });
       chatLog.scrollTop = chatLog.scrollHeight;
     }
+    const keyHost = wide || portrait ? side : stage;
+    if (keyHint.parentNode !== keyHost) { if (keyHost === side) plFold.after(keyHint); else stage.append(keyHint); }
     // wide 는 항상 펼침. 좁은 가로(높이 부족)는 한 줄로 접어 시작, 사용자가 직접 바꾼 뒤에는 그 선택 유지
     applyChatFold(wide ? false : chatUserSet ? chatUserFolded : !portrait);
     if (wide) { // wide: HUD는 좌 패널 상단, 채팅은 우 패널 안 → 캔버스 높이 = 전체 높이
@@ -193,19 +203,19 @@ export function mount(root, app, data) {
     const seat = G.seats.get(tid);
     whoName.textContent = seat ? seat.name : '';
     whoMarker.src = `/assets/tanks/marker_${String(seatN(tid)).padStart(2, '0')}.svg`;
-    roundEl.textContent = G.rounds ? `라운드 ${G.round}/${G.rounds}` : '';
+    roundEl.hidden = !G.rounds; roundNum.textContent = String(G.round); roundTot.textContent = '/' + G.rounds;
     // 바람
     const w = G.wind || 0, mag = Math.min(1, Math.abs(w) / Math.max(1, G.options.maxWind || 200));
-    // 윗줄 = 방향 화살표 + 세기 숫자, 아랫줄 = 가운데 기준으로 부는 쪽으로 차는 막대(시간 표시와 같은 2줄 구조)
+    // 한 줄: 이름표 + 방향 화살표·세기 숫자 + 가운데 기준으로 부는 쪽으로 차는 막대(시간 줄과 같은 구조)
     clear(windEl);
     windEl.dataset.dir = w ? (w > 0 ? 'r' : 'l') : '0';
     const wv = h('span.wv');
-    if (!w) wv.append(h('span.muted', '바람 없음'));
+    if (!w) wv.append(h('span.muted', '없음'));
     else {
       wv.innerHTML = '<svg viewBox="0 0 16 12" aria-hidden="true" shape-rendering="crispEdges"><path d="M0 4h9V0l7 6-7 6V8H0z" fill="currentColor"/></svg>';
       wv.append(h('span', String(Math.abs(w))));
     }
-    windEl.append(wv, h('div.wb', h('i', { style: { width: (w ? Math.max(3, mag * 50) : 0) + '%' } })));
+    windEl.append(h('span.sl', { 'aria-hidden': 'true' }, '바람'), wv, h('div.wb', h('i', { style: { width: (w ? Math.max(3, mag * 50) : 0) + '%' } })));
     windEl.setAttribute('aria-label', w ? `바람 ${w > 0 ? '오른쪽' : '왼쪽'} ${Math.abs(w)}` : '바람 없음');
     const t = myTank(), hp = t ? t.hp : 0;
     // 체력은 '상태바' 옵션이 켜졌을 때만 상시 표시(원본 기본 끔). 최대 파워는 파워 옆에 항상

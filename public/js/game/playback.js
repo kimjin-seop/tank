@@ -103,17 +103,17 @@ export class Playback {
   }
 
   /**
-   * dirtFall(ENGINE_API §3): 열 x 의 y0..y1 덩어리가 t0 tick 부터 ft tick 마다 1px 씩 dy 만큼 하강.
+   * dirtFall(ENGINE_API §3): 열 x 의 y0..y1 덩어리가 t0 tick 부터 tick 당 rate px 씩 dy 만큼 하강.
    * 엔진과 같은 방식(맨 위 셀 지우고 맨 아래 아래 셀 채움)으로 마스크를 직접 갱신. 최종 지형은 뒤따르는 terrain 이벤트가 확정
    */
   startFall(e) {
     const sp = (e.spans || []).map(c => ({ x: c.x, y0: c.y0, y1: c.y1, dy: c.dy || 0, t0: c.t0 ?? e.tick, cur: 0 })).filter(c => c.dy > 0);
     if (!sp.length) return;
-    // ft(1px당 tick): 마지막 덩어리 착지 = tick + dur 이 되는 값
     const end = (e.tick || 0) + (e.dur || 0);
-    let ft = 1;
-    for (let f = 1; f <= 100; f++) { if (Math.max(...sp.map(c => c.t0 + c.dy * f)) >= end) { ft = f; break; } }
-    this.falls.push({ sp, ft, end });
+    // rate(tick당 px): 엔진이 준 값(server/engine/config.js DIRT_FALL_RATE 반영). 없으면(구 엔진·목업) 마지막 덩어리 착지 = tick + dur 이 되는 ft 로 역산
+    let rate = e.rate > 0 ? e.rate : 0;
+    if (!rate) { let ft = 1; for (let f = 1; f <= 100; f++) { if (Math.max(...sp.map(c => c.t0 + c.dy * f)) >= end) { ft = f; break; } } rate = 1 / ft; }
+    this.falls.push({ sp, rate, end });
   }
   stepFalls(tick) {
     if (!this.falls.length) return;
@@ -121,7 +121,7 @@ export class Playback {
     for (let k = this.falls.length - 1; k >= 0; k--) {
       const F = this.falls[k]; let live = false;
       for (const c of F.sp) {
-        const want = Math.max(0, Math.min(c.dy, Math.floor((tick - c.t0) / F.ft)));
+        const want = Math.max(0, Math.min(c.dy, Math.floor((tick - c.t0) * F.rate + 1e-6)));
         while (c.cur < want) { T.setCell(c.x, c.y0 + c.cur, 0); T.setCell(c.x, c.y1 + 1 + c.cur, 1); c.cur++; }
         if (c.cur < c.dy) live = true;
       }

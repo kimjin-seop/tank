@@ -2,7 +2,7 @@
 // Mixed into Game.prototype by index.js. All timing is in ticks (1 tick = 20 ms = one integration step).
 import { Game } from './game.js';
 import { physConsts, flightConsts, launchVelocity, stepProjectile } from './physics.js';
-import { TANK, DIRT_BASE, WALLS } from './config.js';
+import { TANK, DIRT_BASE, WALLS, DIRT_FALL_RATE } from './config.js';
 import { BY_ID, WEAPONS, SHIELDS, GUIDANCE_KIND, UNGUIDABLE, MAX_HP } from './weapons.js';
 import { dirtFall } from './dirtfall.js';
 
@@ -1124,8 +1124,9 @@ P._settle = function (shot) {
       if (res.chunks.length) {
         const ft = this._fallTicks();
         const start = shot.cursor;
-        const dur = res.frames * ft;
-        this._ev(shot, { t: 'dirtFall', tick: start, dur, spans: res.chunks.map((c) => ({ x: c.x, y0: c.y0, y1: c.y1, dy: c.dy, t0: start + c.t0 * ft })) });
+        const rate = DIRT_FALL_RATE / ft;                                    // px per tick (playback speed only)
+        const dur = Math.ceil(res.frames / rate);
+        this._ev(shot, { t: 'dirtFall', tick: start, dur, rate, spans: res.chunks.map((c) => ({ x: c.x, y0: c.y0, y1: c.y1, dy: c.dy, t0: r2(start + c.t0 / rate) })) });
         if (res.spans.length) this._ev(shot, { t: 'terrain', tick: start + dur, spans: res.spans });
         shot.cursor = start + dur;
       }

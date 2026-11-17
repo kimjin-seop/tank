@@ -381,7 +381,15 @@
 
 /* ---- B3. HUD: 플레이어 · 라운드 · 바람 · 시간 · 메뉴 ---- */
 [data-view=game] .game .hud .who { font-weight: 800; }
-[data-view=game] .game .hud .round { color: var(--se-ink2); font-family: var(--se-mono); font-weight: 700; }
+/* 상태 묶음: 라운드 숫자 크게, 바람·시간은 한 줄(이름표 | 값 | 오목 막대) */
+[data-view=game] .game .hud .round { color: var(--se-ink); font-family: var(--se-mono); font-weight: 700; }
+[data-view=game] .game .hud .round .rl, [data-view=game] .game .hud .stat .sl { color: var(--se-ink2); font-family: var(--se-font); font-weight: 800; }
+[data-view=game] .game .hud .round .rn { font-weight: 800; }
+[data-view=game] .game .hud .round .rt { color: var(--se-ink2); }
+[data-view=game] .game.wide .hud .stat { border-top: 2px solid var(--se-shadow); box-shadow: inset 0 2px 0 var(--se-light); padding-top: 14px; }
+@media (max-height: 739px) { [data-view=game] .game.wide .hud .stat { padding-top: 10px; } }
+@media (max-height: 649px) { [data-view=game] .game.wide .hud .stat { padding-top: 8px; } }
+@media (max-height: 599px) { [data-view=game] .game.wide .hud .stat { padding-top: 5px; } }
 [data-view=game] .game .wind, [data-view=game] .game .wind .wv { font-family: var(--se-mono); font-weight: 700; color: var(--se-ink); }
 [data-view=game] .game .wind .muted { color: var(--se-ink2); font-family: var(--se-font); }
 /* 바람 막대: 시간 막대와 같은 오목 홈(8px), 가운데 눈금에서 부는 쪽으로 참 */
@@ -393,6 +401,10 @@
 [data-view=game] :is(.game, .shop) .timer .tt { font-family: var(--se-mono); font-size: 18px; color: var(--se-ink); }
 [data-view=game] :is(.game, .shop) :is(.timer .tb, .energy .eb, .prow .bar) { border-radius: 0; background: var(--se-field); box-shadow: inset 1px 1px 0 var(--se-shadow), inset -1px -1px 0 var(--se-white); }
 [data-view=game] :is(.game, .shop) .timer .tb { height: 8px; }
+[data-view=game] .game .hud .stat .timer .tt { font-size: 15px; }
+[data-view=game] .game.wide .hud .stat .timer .tt { font-size: 18px; }
+@media (max-height: 599px) { [data-view=game] .game.wide .hud .stat .timer .tt { font-size: 15px; } }
+@media (max-width: 599px) { [data-view=game] .game .hud .stat .timer .tt { font-size: 13px; } }
 [data-view=game] :is(.game, .shop) .timer .tb i { background: var(--se-ink); }
 [data-view=game] :is(.game, .shop) .timer.urgent .tt { color: var(--se-danger-text); }
 [data-view=game] :is(.game, .shop) .timer.urgent .tb i { background: var(--se-bad); }
@@ -443,6 +455,13 @@
 /* ---- B7. 우 패널 플레이어 목록: 오목 행, 현재 턴 = 밝은 면 + 검정 링 + 왼쪽 ▶ ---- */
 [data-view=game] .game .pl-fold > summary { color: var(--se-ink); font-weight: 800; font-size: 13px; padding: 6px 6px 8px; border-bottom: 2px solid var(--se-shadow); box-shadow: 0 2px 0 var(--se-light); margin-bottom: 8px; }
 [data-view=game] .game .plist { gap: 6px; }
+/* 조작키 안내: 키캡 = 볼록 베벨. 캔버스 영역에 뜰 때는 볼록 패널 + 검정 링 */
+[data-view=game] .game .keyhint { color: var(--se-ink); font-weight: 700; }
+[data-view=game] .game .keyhint > summary { font-weight: 800; font-size: 13px; padding: 6px; }
+[data-view=game] .game .keyhint[open] > summary { border-bottom: 2px solid var(--se-shadow); box-shadow: 0 2px 0 var(--se-light); margin-bottom: 8px; }
+[data-view=game] .game .keyhint kbd { min-width: 20px; padding: 3px 5px 2px; text-align: center; font: 700 11px/1 var(--se-mono); border: 0; border-radius: 0; background: var(--se-face); color: var(--se-ink); box-shadow: var(--se-raised), 0 0 0 1px var(--se-ink); }
+[data-view=game] .game .stage > .keyhint { background: var(--se-face); padding: 2px 6px 6px; box-shadow: var(--se-raised), 0 0 0 2px var(--se-ink); }
+[data-view=game] .game .stage > .keyhint:not([open]) { padding-bottom: 2px; }
 [data-view=game] .game .prow { position: relative; border: 0; border-radius: 0; background: var(--se-face); box-shadow: var(--se-sunken); padding-left: 18px; cursor: pointer; }
 [data-view=game] .game .prow:hover { background: var(--se-face-hi); }
 [data-view=game] .game .prow.turn { background: var(--se-light); border: 0; box-shadow: var(--se-sunken), inset 0 0 0 3px var(--se-light), inset 0 0 0 5px var(--se-ink); }
