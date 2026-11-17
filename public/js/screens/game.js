@@ -32,7 +32,8 @@ export function mount(root, app, data) {
   const timer = h('div.timer', { role: 'timer', 'aria-label': '남은 시간' }, timerTxt, h('div.tb', timerBar));
   const menuBtn = h('button.icon-btn', { type: 'button', 'aria-label': '메뉴', title: '메뉴 [F1]', onclick: () => openMenu() }, '☰');
   const plBtn = h('button.icon-btn.pl-toggle', { type: 'button', 'aria-label': '플레이어 목록', onclick: () => side.classList.toggle('open') }, '👥');
-  const hud = h('header.hud', h('div.who', whoMarker, whoName), roundEl, h('div.spacer'), windEl, energy, timer, plBtn, menuBtn);
+  // 버튼 묶음: 좁은 화면 = 상단 바 오른쪽 끝, wide = 좌 패널 첫 줄 오른쪽 끝(CSS order). 바람·시간 줄과 섞이지 않게 분리
+  const hud = h('header.hud', h('div.who', whoMarker, whoName), roundEl, h('div.spacer'), windEl, energy, timer, h('div.hud-btns', plBtn, menuBtn));
 
   const canvas = h('canvas', { 'aria-label': '게임 화면', role: 'img', tabindex: '-1' });
   const banner = h('div.banner', { hidden: true });
@@ -195,13 +196,16 @@ export function mount(root, app, data) {
     roundEl.textContent = G.rounds ? `라운드 ${G.round}/${G.rounds}` : '';
     // 바람
     const w = G.wind || 0, mag = Math.min(1, Math.abs(w) / Math.max(1, G.options.maxWind || 200));
+    // 윗줄 = 방향 화살표 + 세기 숫자, 아랫줄 = 가운데 기준으로 부는 쪽으로 차는 막대(시간 표시와 같은 2줄 구조)
     clear(windEl);
-    if (!w) windEl.append(h('span.muted', '바람 없음'));
+    windEl.dataset.dir = w ? (w > 0 ? 'r' : 'l') : '0';
+    const wv = h('span.wv');
+    if (!w) wv.append(h('span.muted', '바람 없음'));
     else {
-      const len = 14 + 26 * mag, dir = w > 0 ? 1 : -1, x0 = 22 - dir * len / 2, x1 = 22 + dir * len / 2;
-      windEl.innerHTML = `<svg viewBox="0 0 44 20" aria-hidden="true"><path d="M${x0} 10 L${x1} 10 M${x1} 10 l${-dir * 6} -5 M${x1} 10 l${-dir * 6} 5" stroke="#CFE6FF" stroke-width="${2 + mag * 2}" fill="none" stroke-linecap="round"/></svg>`;
-      windEl.append(h('span', String(Math.abs(w))));
+      wv.innerHTML = '<svg viewBox="0 0 16 12" aria-hidden="true" shape-rendering="crispEdges"><path d="M0 4h9V0l7 6-7 6V8H0z" fill="currentColor"/></svg>';
+      wv.append(h('span', String(Math.abs(w))));
     }
+    windEl.append(wv, h('div.wb', h('i', { style: { width: (w ? Math.max(3, mag * 50) : 0) + '%' } })));
     windEl.setAttribute('aria-label', w ? `바람 ${w > 0 ? '오른쪽' : '왼쪽'} ${Math.abs(w)}` : '바람 없음');
     const t = myTank(), hp = t ? t.hp : 0;
     // 체력은 '상태바' 옵션이 켜졌을 때만 상시 표시(원본 기본 끔). 최대 파워는 파워 옆에 항상
@@ -325,7 +329,7 @@ export function mount(root, app, data) {
       applyMe({ inventory: m.snapshot.inventory, tank: m.snapshot.you });
     }
     G.turn = m.turn || null; G.readyIds = new Set(m.readyIds || []);
-    if (m.phase === 'shop' && m.shop) shop.turn(m.shop);
+    if (m.phase === 'shop' && m.shop) { shop.setItems(m.me?.shop || m.snapshot?.shop); shop.start(m.shop); } // 동시 상점 복구: {deadline, limitMs, ids, doneIds}
     renderHud();
   }
   on('round_start', m => { shop.close(); closeRoundModal(); G.phase = 'starting'; G.turn = null; G.readyIds.clear(); if (m.info) applyRound(m.info, m.round, m.rounds); play(m.events); });
@@ -334,6 +338,7 @@ export function mount(root, app, data) {
   function applyMe(m) {
     if (m.inventory) { G.inv = m.inventory; G.invFresh = true; }
     if (m.interest != null) G.interest = m.interest;
+    if (m.shop) shop.setItems(m.shop); // 본인 가격 목록(상점 단계에만 옴)
     const t = myTank(), v = m.tank || m.you;
     if (t && v) {
       for (const k of ['fuel', 'parachute', 'hp']) if (v[k] !== undefined) t[k] = v[k];
@@ -394,7 +399,9 @@ export function mount(root, app, data) {
     };
     tick();
   }
-  on('shop_turn', m => { closeRoundModal(); G.phase = 'shop'; G.turn = null; shop.turn(m); renderHud(); });
+  // 상점: 전원 동시 구매. shop_open 으로 열고 shop_progress(doneIds)로 완료 현황·내 화면(구매/완료 대기) 전환
+  on('shop_open', m => { closeRoundModal(); G.phase = 'shop'; G.turn = null; shop.start(m); renderHud(); });
+  on('shop_progress', m => shop.progress(m));
   on('shop_result', m => { if (m.snapshot) applyMe({ inventory: m.snapshot.inventory, tank: m.snapshot.you }); shop.result(m); renderHud(); });
   on('sell_quote', m => shop.quote(m));
   on('shop_end', () => shop.close());

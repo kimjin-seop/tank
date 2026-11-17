@@ -123,14 +123,40 @@ test('말하는 탱크: 발사·사망 시 shot 이벤트에 talk 삽입(OFF면 
   assert.equal(g2.a.last('shot').events.filter((e) => e.t === 'talk').length, 0);
 });
 
-test('상점 차례 본인에게만 me.shop(엔진 shopList) 전달', () => {
+test('동시 상점: 대상 전원이 각자 me.shop 을 받고, 두 명 모두 완료하면 즉시 round_start', () => {
   const ctx = makeLobby();
-  const { a, b, aId } = startGame(ctx, { cashAtStart: 1000 });
-  assert.equal(a.last('shop_turn').playerId, aId);
-  assert.equal(a.last('me').shop[0].id, 'missile');
+  const { a, b, aId, bId } = startGame(ctx, { cashAtStart: 1000 });
+  const open = b.last('shop_open');
+  assert.deepEqual(open.ids, [aId, bId]);
+  assert.deepEqual(open.doneIds, []);
+  assert.equal(open.deadline - open.serverTime, 90_000);
+  assert.equal(open.shop, undefined); // 방 전원 브로드캐스트에는 가격 목록을 싣지 않음
   assert.equal(a.last('me').shop[0].affordable, true);
-  assert.equal(b.last('me')?.shop, undefined);
-  assert.equal(a.last('shop_turn').shop, undefined); // 방 전원 브로드캐스트에는 싣지 않음
+  assert.equal(b.last('me').shop[0].id, 'missile');
+  b.say({ t: 'buy', item: 'missile', qty: 1 }); // 차례 없이 동시에 구매
   a.say({ t: 'buy', item: 'missile', qty: 1 });
   assert.equal(a.last('shop_result').shop[0].owned, 1);
+  assert.equal(b.last('shop_result').shop[0].owned, 1);
+  assert.equal(a.all('error').length + b.all('error').length, 0);
+  a.say({ t: 'shop_done' });
+  assert.deepEqual(b.last('shop_progress').doneIds, [aId]);
+  assert.equal(a.all('round_start').length, 0);
+  b.say({ t: 'shop_done' });
+  assert.ok(a.last('shop_end'));
+  assert.equal(a.all('round_start').length, 1);
+});
+
+test('동시 상점: 마감 시 미완료자 자동 완료 후 진행, 토스트 1회, 이후 buy 는 거부', () => {
+  const ctx = makeLobby();
+  const { a, b } = startGame(ctx, { cashAtStart: 1000 });
+  a.say({ t: 'shop_done' });
+  ctx.clock.advance(89_999);
+  assert.equal(a.all('round_start').length, 0);
+  ctx.clock.advance(1);
+  const toasts = b.all('toast').filter((t) => t.code === 'SHOP_TIMEOUT');
+  assert.equal(toasts.length, 1);
+  assert.equal(toasts[0].msg, '상점 시간 종료');
+  assert.equal(b.all('round_start').length, 1);
+  b.say({ t: 'buy', item: 'missile', qty: 1 });
+  assert.equal(b.last('error').code, 'WRONG_PHASE');
 });

@@ -5,7 +5,7 @@ export function createStubEngine() {
     createGame({ options = {}, players }) {
       const rounds = options.rounds ?? 10;
       const ps = players.map((p) => ({
-        id: p.id, name: p.name, cpu: p.cpu || false, hp: 100, alive: true, cash: options.initialCash || 0, score: 0, items: {},
+        id: p.id, name: p.name, cpu: p.cpu || false, hp: 100, alive: true, cash: options.initialCash || 0, score: 0, items: Object.create(null),
       }));
       const by = (id) => ps.find((p) => p.id === id);
       const aliveIds = () => ps.filter((p) => p.alive).map((p) => p.id);

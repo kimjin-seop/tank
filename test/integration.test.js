@@ -34,7 +34,7 @@ async function playGame(mode) {
     if (m.t === 'round_start') { bot.tanks = m.info.tanks; bot.inRound = true; bot.turns = 0; }
     else if (m.t === 'round_end') bot.inRound = false;
     else if (m.t === 'me' && m.tank) { bot.hp = m.tank.hp; bot.alive = m.tank.alive; bot.nukes = m.inventory.items.baby_nuke || 0; }
-    else if (m.t === 'shop_turn' && m.playerId === bot.id) {
+    else if (m.t === 'shop_open' && m.ids.includes(bot.id)) {
       bot.c.say({ t: 'buy', item: 'baby_nuke', qty: 5 }); // 상점: 구매 -> 완료
       bot.c.say({ t: 'shop_done' });
     } else if (m.t === 'turn' && !m.auto && (mode === 'SEQUENTIAL' ? m.playerId === bot.id : mode === 'SYNCHRONOUS')) bot.wantFire = true;
@@ -70,7 +70,7 @@ for (const mode of ['SEQUENTIAL', 'SYNCHRONOUS', 'SIMULTANEOUS']) {
       assert.equal(c.all('round_start').length, ROUNDS);
       assert.equal(c.all('round_end').length, ROUNDS);
       assert.ok(c.all('shot').length >= 2, '샷이 있어야 한다');
-      assert.ok(c.all('shop_turn').length + c.all('shop_end').length >= 2, '상점 단계가 있어야 한다');
+      assert.ok(c.all('shop_open').length + c.all('shop_end').length >= 2, '상점 단계가 있어야 한다');
       assert.equal(c.last('game_over').ranking.length, 3);
       assert.equal(c.last('room_state').room.status, 'waiting');
       assert.equal(c.all('toast').filter((t) => t.code === 'INTERNAL').length, 0, '엔진 오류 없음');
@@ -109,6 +109,27 @@ test('어댑터: 사람 탱크 대행(aiAct)·상점 aiShop·죽은 플레이어
   port.retreat(first);
   for (let i = 0; i < 6; i++) { const t = port.currentTurn(); if (t == null) break; assert.notEqual(t, first); port.pass(t); }
   assert.throws(() => port.fire(first, { weapon: 'baby_missile', angle: 45, power: 100 }), (e) => e.params?.reason === 'ROUND_OVER' || e.params?.reason === 'NOT_ALIVE');
+});
+
+test('상점: 프로토타입 키(constructor·__proto__ 등)를 item 으로 보내면 거부되고 현금이 변하지 않는다', async () => {
+  const engine = await loadEngine({ log: { warn() {} } });
+  const { client } = makeLobby({ engine });
+  const a = client('가나다'); const b = client('라마바');
+  a.say({ t: 'create_room', title: 'p', maxPlayers: 2, options: { mode: 'SEQUENTIAL', rounds: 2, cashAtStart: 100000, shopLimitSec: 60 } });
+  b.say({ t: 'join_room', roomId: a.last('room_joined').room.id });
+  b.say({ t: 'ready', ready: true });
+  a.say({ t: 'start' });
+  assert.ok(a.last('shop_open'), '상점이 열려야 한다');
+  for (const item of ['constructor', '__proto__', 'toString', 'hasOwnProperty']) {
+    a.say({ t: 'sell_quote', item, qty: 1 });
+    assert.equal(a.last('error').code, 'INVALID_INPUT', item);
+    a.say({ t: 'sell_accept' });
+    assert.equal(a.last('error').code, 'WRONG_PHASE', item); // 제시가 만들어지지 않았다
+    a.say({ t: 'buy', item, qty: 1 });
+    assert.equal(a.last('error').code, 'INVALID_INPUT', item);
+  }
+  a.say({ t: 'buy', item: 'missile', qty: 1 }); // 정상 구매는 그대로 동작하고 현금은 유한한 수
+  assert.equal(a.last('shop_result').snapshot.inventory.cash, 100000 - 1875);
 });
 
 test('어댑터: 엔진 export 로 직접 구성한 팩토리도 동작(엔진 모듈 연결 확인)', () => {

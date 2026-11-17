@@ -55,22 +55,24 @@ const T = [
 ];
 
 export const WEAPONS = T.map(([id, price, bundle, arms, param, kind], idx) => ({ idx, id, price, bundle, arms, param, kind }));
-export const BY_ID = Object.fromEntries(WEAPONS.map((w) => [w.id, w]));
+// Lookup tables keyed by client-supplied strings are prototype-less: 'constructor', '__proto__', 'toString' ... must miss.
+const dict = (o) => Object.assign(Object.create(null), o);
+export const BY_ID = dict(Object.fromEntries(WEAPONS.map((w) => [w.id, w])));
 export const ITEM_IDS = WEAPONS.map((w) => w.id);
 export const isFireable = (w) => w.idx <= 32;                 // 0..32 are weapons
 export const GUIDANCE_IDS = ['heat_guidance', 'ballistic_guidance', 'horz_guidance', 'vert_guidance', 'lazy_boy'];
-export const GUIDANCE_KIND = { heat: 'heat_guidance', ballistic: 'ballistic_guidance', horz: 'horz_guidance', vert: 'vert_guidance', lazy: 'lazy_boy' };
+export const GUIDANCE_KIND = dict({ heat: 'heat_guidance', ballistic: 'ballistic_guidance', horz: 'horz_guidance', vert: 'vert_guidance', lazy: 'lazy_boy' });
 // weapons that cannot be guided (SPEC 2 notes)
 export const UNGUIDABLE = new Set(['mirv', 'deaths_head', 'riot_charge', 'riot_blast', 'plasma_blast', 'laser']);
 
 // Shields (RE §6, DS:0x616C). flags: 1 reflect(force), 2 mag, 4 super-mag (mag + reflect + laser immune)
-export const SHIELDS = {
+export const SHIELDS = dict({
   mag_deflector: { hp: 55, flags: 2 },
   shield: { hp: 100, flags: 0 },
   force_shield: { hp: 100, flags: 1 },
   heavy_shield: { hp: 150, flags: 0 },
   super_mag: { hp: 200, flags: 4 },
-};
+});
 
 export const MAX_STOCK = 99;
 export const MAX_HP = 100;

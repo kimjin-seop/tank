@@ -62,7 +62,7 @@ export const ERRORS = {
   WRONG_PHASE: '지금은 할 수 없는 행동입니다',
   INVALID_INPUT: '입력 값이 올바르지 않습니다',
   ALREADY_READY: '이미 발사를 준비했습니다',
-  NOT_YOUR_SHOP: '지금은 당신의 상점 차례가 아닙니다',
+  SHOP_DONE: '구매를 완료한 상태입니다',
   SHOP_EXPIRED: '상점 제한시간이 지났습니다',
   ENGINE_REJECT: '요청을 처리할 수 없습니다',
   ENGINE_UNSUPPORTED: '지원하지 않는 기능입니다',

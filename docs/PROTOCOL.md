@@ -34,7 +34,7 @@
 | CHAT_EMPTY / CHAT_TOO_LONG / CHAT_RATE | 메시지를 입력하세요 / 120자까지 / 너무 빨리 보내고 있습니다 |
 | NOT_YOUR_TURN / TURN_EXPIRED / WRONG_PHASE | 당신의 턴이 아닙니다 / 제한시간이 지났습니다 / 지금은 할 수 없는 행동입니다 |
 | INVALID_INPUT / ALREADY_READY | 입력 값이 올바르지 않습니다 / 이미 발사를 준비했습니다 |
-| NOT_YOUR_SHOP / SHOP_EXPIRED | 지금은 당신의 상점 차례가 아닙니다 / 상점 제한시간이 지났습니다 |
+| SHOP_EXPIRED / SHOP_DONE | 상점 제한시간이 지났습니다 / 구매를 완료한 상태입니다(`shop_reopen` 후 구매·판매 가능) |
 | ENGINE_REJECT / ENGINE_UNSUPPORTED | 엔진이 거절(`msg`=엔진 한글 사유, `params.reason`=엔진 코드 `NO_WEAPON`·`BAD_POWER` 등) / 지원하지 않는 기능 |
 | INTERNAL | 서버 오류가 발생했습니다 |
 
@@ -137,8 +137,8 @@ room = { id, title, maxPlayers, status:'waiting'|'playing', hostId, options:{...
 
 ### 6.1 진행 순서 (서버 -> 방 전원 브로드캐스트)
 ```
-game_start -> [shop_turn... shop_end]  (cashAtStart>0 이면 1라운드 전 상점) -> round_start -> (turn/shot 반복) -> round_end
- -> (마지막 라운드가 아니면) shop_turn... shop_end -> round_start ... -> game_over -> back_to_room
+game_start -> [shop_open (shop_progress...) shop_end]  (cashAtStart>0 이면 1라운드 전 상점) -> round_start -> (turn/shot 반복) -> round_end
+ -> (마지막 라운드가 아니면) shop_open (shop_progress...) shop_end -> round_start ... -> game_over -> back_to_room
 ```
 - `game_start {seats, options, serverTime}` : `seats:[{id,name,kind,color,tank,team,personality,proxy,connected}]`.
 - `round_start {round, rounds, info, events, serverTime}` : `info`는 엔진 `startRound()`의 RoundInfo(지형 RLE·탱크·바람·벽·하늘·순서 등, ENGINE_API §2)에서 **비공개 필드를 뺀 공개판**이다(`interest` 제거, `tanks[]`는 6.7 공개 탱크 필드만). 이 메시지로 라운드 화면을 구성한다. 본인 이자·현금은 직후 `me`로 온다.
@@ -210,23 +210,29 @@ const angle = dir === 'right' ? uiAngle : 180 - uiAngle;
 - 다른 이벤트의 `dur`도 모두 틱 단위(`explode`·`digger`·`dirtFall`·`laser`·`riot`·`disrupt`).
 
 ### 6.5 상점 (라운드 사이)
-- 현금이 있는 플레이어만, 한 명씩. 컴퓨터·대행·이탈 좌석은 타이머 없이 서버가 즉시 구매(`computersBuy` 반영).
-- `shop_turn {playerId, deadline, limitMs, serverTime}` : 방 전원에게. 본인은 상점 화면, 다른 사람은 "구매 중: ○○ n초". 구매·판매 조작 중에도 타이머는 계속 감.
-- **가격 목록**: `shop_turn` 직후 상점 차례 본인에게만 `me`가 오며 `shop:[{id, price, bundle, unitPrice, owned, arms, allowed, affordable}]`가 붙는다(엔진 `game.shopList(pid)` 결과 그대로). `price`는 묶음(bundle) 가격이고 자유 시장이면 현재가, `unitPrice=price/bundle`, `owned`는 보유 수(Auto Defense는 0/1), `arms`는 무기 등급, `allowed=arms<=armsLevel`, `affordable`은 현금으로 살 수 있는지. 같은 목록이 본인의 `shop_result.shop`에도 갱신되어 온다(구매·판매 직후). 타인·방 전원 메시지에는 싣지 않는다. 쓸모없는 아이템 숨김(`uselessItems`)은 엔진 목록에 반영되지 않으므로 클라이언트가 `allowed`/보유 기준으로 필터링한다.
-- 요청(본인 차례에만, 마감 후 `SHOP_EXPIRED`): `buy {item, qty?}` -> `shop_result{ok,action:'buy',item,qty,state,snapshot}`. 판매는 2단계: `sell_quote {item, qty}` -> `sell_quote{item,qty,quote}` -> `sell_accept` / `sell_reject` -> `shop_result`. `shop_done`으로 완료.
-- 만료: 확정된 구매·판매는 유지, 수락 전 판매 제시는 거절 처리, `toast{code:'SHOP_TIMEOUT', msg:'상점 시간 초과! ○○님의 구매가 종료됩니다'}`. 끊긴 플레이어도 같은 타이머.
-- `shop_end` 후 곧바로 `round_start`.
+- **전원 동시 구매.** 대상은 현금이 0보다 큰 사람 플레이어(대행·이탈 아님) 전원이며, 마감 시각 하나(`shopLimitSec`)를 공유한다. 차례가 없으므로 서로의 구매·판매는 독립이다(판매 제시도 플레이어별).
+- 컴퓨터·대행·이탈 좌석은 상점 시작 시 서버가 좌석 순서대로 즉시 구매·완료한다(`computersBuy` 반영, 대상 명단에 들지 않음). 대상인 사람이 없으면 `shop_open` 없이 곧바로 `shop_end` -> `round_start`.
+- `shop_open {deadline, limitMs, ids, doneIds, serverTime}` : 방 전원에게. `ids`=상점 대상 id(좌석 순서), `doneIds`=완료한 대상 id. `ids`에 본인이 있으면 상점 화면, 없으면 대기. 구매·판매 조작 중에도 타이머는 계속 감.
+- **가격 목록**: `shop_open` 직후 대상 각자에게 `me`가 오며 `shop:[{id, price, bundle, unitPrice, owned, arms, allowed, affordable}]`가 붙는다(엔진 `game.shopList(pid)` 결과 그대로, 본인 기준). `price`는 묶음(bundle) 가격이고 자유 시장이면 현재가, `unitPrice=price/bundle`, `owned`는 보유 수(Auto Defense는 0/1), `arms`는 무기 등급, `allowed=arms<=armsLevel`, `affordable`은 현금으로 살 수 있는지. 같은 목록이 본인의 `shop_result.shop`에도 갱신되어 온다(구매·판매 직후). 대상이 아닌 사람의 `me`에는 `shop`이 없다. 쓸모없는 아이템 숨김(`uselessItems`)은 엔진 목록에 반영되지 않으므로 클라이언트가 `allowed`/보유 기준으로 필터링한다.
+- 요청(대상이면 언제든, 마감 후 `SHOP_EXPIRED`, 대상이 아니거나 상점이 끝났으면 `WRONG_PHASE`): `buy {item, qty?}` -> `shop_result{ok,action:'buy',item,qty,state,snapshot,shop}`. 판매는 2단계: `sell_quote {item, qty}` -> `sell_quote{item,qty,quote}` -> `sell_accept` / `sell_reject` -> `shop_result`. 수락 전 제시는 플레이어당 하나이며 새 `sell_quote`는 본인의 이전 제시만 대체한다. `item` 은 엔진 아이템 id 문자열(상점 목록의 `id`)이어야 하며, 목록에 없는 값(숫자·`constructor` 등)은 `INVALID_INPUT`.
+- 완료: `shop_done` -> 방 전원에게 `shop_progress {doneIds}`. 완료 상태에서 `buy`/`sell_*`는 `SHOP_DONE`으로 거부되고, 수락 전 판매 제시는 완료 시 거절 처리된다. 이미 완료한 상태의 `shop_done`은 무시된다(오류 없음).
+- 완료 취소: `shop_reopen` -> 미완료로 복귀, 방 전원에게 `shop_progress {doneIds}`. 상점이 열려 있는 동안만 가능하며, 전원 완료로 `shop_end`가 나간 뒤 도착한 요청(경합)은 `error{code:'WRONG_PHASE'}`, 마감 후에는 `SHOP_EXPIRED`로 거부된다(클라이언트는 토스트로 안내). 미완료 상태의 `shop_reopen`은 무시된다.
+- 종료: 대상 전원이 완료하면 타이머를 취소하고 즉시 `shop_end` -> `round_start`. 마감 시각이 되면 미완료자를 자동 완료 처리한다(확정된 구매·판매는 유지, 수락 전 판매 제시는 거절). 이때 방 전원에게 `toast{code:'SHOP_TIMEOUT', msg:'상점 시간 종료'}`가 한 번 가고 이어서 `shop_end` -> `round_start`.
+- 끊김: 유예 중에는 미완료로 남아 공통 타이머가 그대로 기다린다. 유예 만료(대행 전환)나 방 나가기 시 그 좌석만 서버가 대신 구매하고 완료 처리한 뒤(`shop_progress`) 전원 완료를 다시 판정한다. 이미 완료한 좌석은 추가 구매가 없다.
+- 재접속: `game_resume.shop = {deadline, limitMs, ids, doneIds}`(+ 최상위 `serverTime`), 본인이 대상이면 `game_resume.me = {inventory, tank, shop}`(본인 가격 목록 포함).
+- 공유 은행(`teams:'CORPORATE'`): 팀원이 구매·판매하면 같은 은행을 쓰는 팀원에게 `me`(갱신된 현금·`shop.affordable`)를 다시 보낸다.
+- 비공개: `shop_open`/`shop_progress`/`shop_end`에는 완료 여부만 싣는다. 타인의 현금·구매 내역·가격 목록은 어떤 방 전체 메시지에도 없다.
 
 ### 6.6 이탈·재접속·방장
 - 게임 중 끊김: 좌석 유지, **같은 타이머 그대로**(현재 턴이면 만료 시 자동 패스). 유예 30초 후 컴퓨터 대행(성향 모론), 재접속하면 즉시 회수.
 - 방장이 끊겨 유예가 지나거나 나가면 방장 자동 위임(게임은 계속). 게임 중 입장 불가·관전 없음(재접속만).
 - 사람이 전원 유예 초과로 끊기면 게임을 종료하고 방을 삭제한다.
-- `game_resume {seats, options, phase:'shop'|'aim'|'resolving'|'roundEnd'|'over', round, rounds, mode, turn?, shop?, readyIds?, timeouts:{id:n}, snapshot, serverTime}`: `snapshot`은 엔진 `snapshot()` + 본인 `inventory`.
+- `game_resume {seats, options, phase:'shop'|'aim'|'resolving'|'roundEnd'|'over', round, rounds, mode, turn?, shop?, me?, readyIds?, timeouts:{id:n}, snapshot, serverTime}`: `snapshot`은 엔진 `snapshot()` + 본인 `inventory`. 상점 단계면 `shop:{deadline, limitMs, ids, doneIds}`와 (대상인 경우) `me:{inventory, tank, shop}`가 붙는다(6.5).
 
 ### 6.7 공개 상태 / 개인 상태 (`me`)
 방 전원에게 가는 메시지(`round_start`, `shot`, `act_result`(타인), `round_end`, `game_resume.snapshot`의 타인 탱크)에는 **공개 필드만** 들어간다. 비공개 정보(현금·인벤토리·연료·선택 무기·유도/방아쇠/낙하산 설정·이자)는 본인에게만 간다.
 - 공개 탱크 필드: `id, name, colorIndex, tankType, team, cpu, x, y, alive, hp, angle, power, shield, score`. `shot.state`는 `{tanks:{id:{변경된 공개 필드}}, players:{id:{score}}, wind?}`.
-- `me {inventory:{cash,score,items:{id:n},autoDefense}, tank:{본인 탱크 전체 뷰}, interest?, serverTime}` : 본인에게만. 전송 시점: `round_start` 직후(`interest`=이번 라운드 이자), 상점 단계 시작, 모든 `shot`/`round_end` 직후, 본인 `act` 직후, 상점 차례 시작 시(`shop` 포함). 클라이언트는 최신 `me`로 본인 현금·보유 무기·연료를 표시한다.
+- `me {inventory:{cash,score,items:{id:n},autoDefense}, tank:{본인 탱크 전체 뷰}, interest?, serverTime}` : 본인에게만. 전송 시점: `round_start` 직후(`interest`=이번 라운드 이자), 상점 단계 시작, 모든 `shot`/`round_end` 직후, 본인 `act` 직후, 상점 시작 시(대상은 `shop` 포함), 공유 은행 팀원의 구매·판매 직후. 클라이언트는 최신 `me`로 본인 현금·보유 무기·연료를 표시한다.
 - **`round_end` 직후 `me` 보장**: 서버는 `round_end`를 브로드캐스트한 같은 동기 처리 안에서 곧바로 모든 사람 플레이어(이탈 좌석 제외)에게 `me`를 보낸다(`_endRound`: `round_end` -> `me`). 그 사이 다른 메시지가 끼지 않으므로 `round_end` 수신 직후 `me`(정산·이자 반영 현금)가 온다. 그 다음 약 4초 뒤 상점(`me`+`shop`)이나 `game_over`가 이어진다. 연결이 끊긴 사람은 못 받으므로 재접속 시 `game_resume.snapshot.inventory`로 복구한다.
 - `shop_result.snapshot`/`game_resume.snapshot`은 공개 스냅샷 + 본인 `you`(전체 탱크 뷰) + 본인 `inventory`.
 - 컴퓨터(및 대행 중인 사람) 탱크의 자동 조작·구매는 서버가 엔진 `aiAct`/`aiShop`(성향 `moron`)으로 수행한다.

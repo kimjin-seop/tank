@@ -1,5 +1,5 @@
 /* 레트로 스킨(시안 A 하이브리드, analysis/ui/tank_ui_spec.md): app.css 뒤에 덧씌움.
-   범위: body[data-view=nick|lobby|room] + 그 화면에서 뜨는 #layers/#toasts. 게임 화면(data-view=game)·부팅 로딩(속성 없음)은 영향 없음.
+   범위: body[data-view=nick|lobby|room] + 그 화면에서 뜨는 #layers/#toasts. 게임 화면(data-view=game)은 파일 뒤쪽 A~C 절, 부팅 로딩(속성 없음)은 D 절.
    색은 원작 상점 창 캡처 측정값(사양 2.1), 에셋은 자체 제작 SVG 2개(/assets/ui/). 본문 글꼴은 시스템 고딕(폰트 파일 없음). */
 :root {
   --se-face: #B6B6B6; --se-face-hi: #CACACA; --se-light: #DEDEDE; --se-white: #FFFFFF;
@@ -293,8 +293,7 @@
    게임 화면 레트로 스킨(analysis/ui/tank_game_ui_spec.md, 시안 analysis/ui/_mock/retro_game.css 이식).
    범위: body[data-view=game] 의 .game(HUD·조작·우 패널·채팅) + 게임 중 #layers·#toasts·최종 순위(.result).
    캔버스 크기·touch-action·user-select·pointer-events 는 건드리지 않는다(색·베벨·글꼴만).
-   상점(.shop)은 어두운 톤 유지: 상점이 열려 있는 동안 뜨는 레이어(판매·현황)도 다크 그대로 두려고
-   레이어 규칙은 [data-view=game]:not(:has(.shop)) 아래에만 둔다.
+   상점(.shop)과 상점에서 뜨는 레이어(판매·현황)도 같은 회색 베벨 체계(C 절).
    =================================================================================== */
 :root {
   --se-fire: #A80000; --se-fire-hi: #FF5454; --se-fire-lo: #540000; --se-fire-deep: #3A0000; --se-fire-hover: #C40000;
@@ -302,57 +301,57 @@
 }
 
 /* ---- A. 레이어·토스트·폼 컨트롤 ---- */
-[data-view=game]:not(:has(.shop)) .layer-panel, [data-view=game] :is(.toast, .card) { border-radius: 0; }
-[data-view=game]:not(:has(.shop)) :is(.layer, .layer-panel), [data-view=game] .toast { transition: none; }
-[data-view=game]:not(:has(.shop)) .layer { background: rgba(0,0,0,.45); }
-[data-view=game]:not(:has(.shop)) .layer-panel {
+[data-view=game] .layer-panel, [data-view=game] :is(.toast, .card) { border-radius: 0; }
+[data-view=game] :is(.layer, .layer-panel), [data-view=game] .toast { transition: none; }
+[data-view=game] .layer { background: rgba(0,0,0,.45); }
+[data-view=game] .layer-panel {
   color-scheme: light; background: var(--se-face); color: var(--se-ink); border: 0; box-shadow: var(--se-frame); font-family: var(--se-font);
   --line: #7A7A7A; --line2: var(--se-shadow); --text: var(--se-ink); --text2: var(--se-ink2); --muted: var(--se-ink2);
   --accent: var(--se-ink); --accent2: var(--se-ink); --bg2: var(--se-field); --panel: var(--se-face); --panel2: var(--se-face); --ok: var(--se-ok);
 }
-[data-view=game]:not(:has(.shop)) .layer-panel.sheet { box-shadow: 0 0 0 2px var(--se-ink), 0 0 0 4px var(--se-face-hi), 0 -6px 0 4px rgba(0,0,0,.35); }
-[data-view=game]:not(:has(.shop)) .layer-panel.drawer { box-shadow: 0 0 0 2px var(--se-ink), -8px 0 0 2px rgba(0,0,0,.45); }
-[data-view=game]:not(:has(.shop)) .layer-panel .layer-head { padding: 10px 0 10px 6px; margin: 0 14px; border-bottom: 2px solid var(--se-shadow); box-shadow: 0 2px 0 var(--se-light); }
-[data-view=game]:not(:has(.shop)) .layer-panel .layer-head h2 { font-size: 19px; }
-[data-view=game]:not(:has(.shop)) .layer-body { padding: 16px 20px; }
-[data-view=game]:not(:has(.shop)) .layer-foot { margin: 0 14px; padding: 12px 6px 14px; border-top: 2px solid var(--se-shadow); box-shadow: inset 0 2px 0 var(--se-light); gap: 12px; }
-[data-view=game] :is(.game, .result) :is(.btn, .icon-btn, .step), [data-view=game]:not(:has(.shop)) .layer-panel :is(.btn, .icon-btn, .step) {
+[data-view=game] .layer-panel.sheet { box-shadow: 0 0 0 2px var(--se-ink), 0 0 0 4px var(--se-face-hi), 0 -6px 0 4px rgba(0,0,0,.35); }
+[data-view=game] .layer-panel.drawer { box-shadow: 0 0 0 2px var(--se-ink), -8px 0 0 2px rgba(0,0,0,.45); }
+[data-view=game] .layer-panel .layer-head { padding: 10px 0 10px 6px; margin: 0 14px; border-bottom: 2px solid var(--se-shadow); box-shadow: 0 2px 0 var(--se-light); }
+[data-view=game] .layer-panel .layer-head h2 { font-size: 19px; }
+[data-view=game] .layer-body { padding: 16px 20px; }
+[data-view=game] .layer-foot { margin: 0 14px; padding: 12px 6px 14px; border-top: 2px solid var(--se-shadow); box-shadow: inset 0 2px 0 var(--se-light); gap: 12px; }
+[data-view=game] :is(.game, .shop, .result) :is(.btn, .icon-btn, .step), [data-view=game] .layer-panel :is(.btn, .icon-btn, .step) {
   background: var(--se-face); color: var(--se-ink); border: 0; border-radius: 0; box-shadow: var(--se-raised); font-weight: 700; transition: none;
 }
-[data-view=game] :is(.game, .result) :is(.btn, .icon-btn, .step):hover:not(:disabled), [data-view=game]:not(:has(.shop)) .layer-panel :is(.btn, .icon-btn, .step):hover:not(:disabled) { background: var(--se-face-hi); }
-[data-view=game] :is(.game, .result) :is(.btn, .icon-btn, .step):active:not(:disabled), [data-view=game]:not(:has(.shop)) .layer-panel :is(.btn, .icon-btn, .step):active:not(:disabled) { box-shadow: var(--se-sunken); transform: translate(1px, 1px); }
-[data-view=game] :is(.game, .result) :is(.btn, .step):disabled, [data-view=game]:not(:has(.shop)) .layer-panel :is(.btn, .step):disabled { opacity: 1; color: var(--se-dim); text-shadow: 1px 1px 0 var(--se-white); }
-[data-view=game] .result .btn.primary, [data-view=game]:not(:has(.shop)) .layer-panel .btn.primary { box-shadow: 0 0 0 2px var(--se-ink), var(--se-raised); }
-[data-view=game] .result .btn.primary::before, [data-view=game]:not(:has(.shop)) .layer-panel .btn.primary::before { content: ""; border: 6px solid transparent; border-left: 8px solid currentColor; border-right: 0; margin-right: 4px; }
-[data-view=game] .game .btn.danger, [data-view=game]:not(:has(.shop)) .layer-panel .btn.danger { background: var(--se-face); color: var(--se-danger-text); }
-[data-view=game] .game .btn.ok::before, [data-view=game]:not(:has(.shop)) .layer-panel .btn.ok::before { content: ""; width: 10px; height: 10px; background: var(--se-ok); box-shadow: 0 0 0 1px var(--se-ink); margin-right: 4px; }
-[data-view=game]:not(:has(.shop)) .layer-panel .btn.ok { background: var(--se-face); color: var(--se-ink); }
-[data-view=game] :is(.game, .result) :focus-visible, [data-view=game]:not(:has(.shop)) .layer-panel :focus-visible { outline: 2px dotted var(--se-ink); outline-offset: -6px; }
-[data-view=game] .game :is(input[type=text], input:not([type])), [data-view=game]:not(:has(.shop)) .layer-panel :is(input[type=text], input:not([type])) {
+[data-view=game] :is(.game, .shop, .result) :is(.btn, .icon-btn, .step):hover:not(:disabled), [data-view=game] .layer-panel :is(.btn, .icon-btn, .step):hover:not(:disabled) { background: var(--se-face-hi); }
+[data-view=game] :is(.game, .shop, .result) :is(.btn, .icon-btn, .step):active:not(:disabled), [data-view=game] .layer-panel :is(.btn, .icon-btn, .step):active:not(:disabled) { box-shadow: var(--se-sunken); transform: translate(1px, 1px); }
+[data-view=game] :is(.game, .shop, .result) :is(.btn, .step):disabled, [data-view=game] .layer-panel :is(.btn, .step):disabled { opacity: 1; color: var(--se-dim); text-shadow: 1px 1px 0 var(--se-white); }
+[data-view=game] :is(.shop, .result) .btn.primary, [data-view=game] .layer-panel .btn.primary { box-shadow: 0 0 0 2px var(--se-ink), var(--se-raised); }
+[data-view=game] :is(.shop, .result) .btn.primary::before, [data-view=game] .layer-panel .btn.primary::before { content: ""; border: 6px solid transparent; border-left: 8px solid currentColor; border-right: 0; margin-right: 4px; }
+[data-view=game] .game .btn.danger, [data-view=game] .layer-panel .btn.danger { background: var(--se-face); color: var(--se-danger-text); }
+[data-view=game] .game .btn.ok::before, [data-view=game] .layer-panel .btn.ok::before { content: ""; width: 10px; height: 10px; background: var(--se-ok); box-shadow: 0 0 0 1px var(--se-ink); margin-right: 4px; }
+[data-view=game] .layer-panel .btn.ok { background: var(--se-face); color: var(--se-ink); }
+[data-view=game] :is(.game, .shop, .result) :focus-visible, [data-view=game] .layer-panel :focus-visible { outline: 2px dotted var(--se-ink); outline-offset: -6px; }
+[data-view=game] .game :is(input[type=text], input:not([type])), [data-view=game] .layer-panel :is(input[type=text], input:not([type])) {
   background: var(--se-field); color: var(--se-ink); border: 0; border-radius: 0; box-shadow: var(--se-sunken);
 }
-[data-view=game] .game :is(input[type=text], input:not([type])):focus, [data-view=game]:not(:has(.shop)) .layer-panel :is(input[type=text], input:not([type])):focus { box-shadow: var(--se-sunken), 0 0 0 2px var(--se-ink); outline: none; }
-[data-view=game] .game input::placeholder, [data-view=game]:not(:has(.shop)) .layer-panel input::placeholder { color: var(--se-dim); }
+[data-view=game] .game :is(input[type=text], input:not([type])):focus, [data-view=game] .layer-panel :is(input[type=text], input:not([type])):focus { box-shadow: var(--se-sunken), 0 0 0 2px var(--se-ink); outline: none; }
+[data-view=game] .game input::placeholder, [data-view=game] .layer-panel input::placeholder { color: var(--se-dim); }
 /* 슬라이더: 오목 홈 + 볼록 사각 손잡이(높이 44px 터치 영역 유지) */
-[data-view=game] .game input[type=range]::-webkit-slider-runnable-track, [data-view=game]:not(:has(.shop)) .layer-panel input[type=range]::-webkit-slider-runnable-track { height: 10px; border-radius: 0; background: var(--se-field); box-shadow: var(--se-sunken); }
-[data-view=game] .game input[type=range]::-moz-range-track, [data-view=game]:not(:has(.shop)) .layer-panel input[type=range]::-moz-range-track { height: 10px; border-radius: 0; background: var(--se-field); box-shadow: var(--se-sunken); }
-[data-view=game] .game input[type=range]::-webkit-slider-thumb, [data-view=game]:not(:has(.shop)) .layer-panel input[type=range]::-webkit-slider-thumb { width: 16px; height: 30px; margin-top: -10px; border-radius: 0; border: 0; background: var(--se-face); box-shadow: var(--se-raised), 0 0 0 1px var(--se-ink); }
-[data-view=game] .game input[type=range]::-moz-range-thumb, [data-view=game]:not(:has(.shop)) .layer-panel input[type=range]::-moz-range-thumb { width: 16px; height: 30px; border-radius: 0; border: 0; background: var(--se-face); box-shadow: var(--se-raised), 0 0 0 1px var(--se-ink); }
-[data-view=game] .game input[type=range]:focus, [data-view=game]:not(:has(.shop)) .layer-panel input[type=range]:focus { box-shadow: none; }
-[data-view=game] .game input[type=range]:focus-visible, [data-view=game]:not(:has(.shop)) .layer-panel input[type=range]:focus-visible { outline: 2px dotted var(--se-ink); outline-offset: 0; }
-[data-view=game]:not(:has(.shop)) .layer-panel .range-row .val { color: var(--se-ink); font-family: var(--se-mono); }
+[data-view=game] .game input[type=range]::-webkit-slider-runnable-track, [data-view=game] .layer-panel input[type=range]::-webkit-slider-runnable-track { height: 10px; border-radius: 0; background: var(--se-field); box-shadow: var(--se-sunken); }
+[data-view=game] .game input[type=range]::-moz-range-track, [data-view=game] .layer-panel input[type=range]::-moz-range-track { height: 10px; border-radius: 0; background: var(--se-field); box-shadow: var(--se-sunken); }
+[data-view=game] .game input[type=range]::-webkit-slider-thumb, [data-view=game] .layer-panel input[type=range]::-webkit-slider-thumb { width: 16px; height: 30px; margin-top: -10px; border-radius: 0; border: 0; background: var(--se-face); box-shadow: var(--se-raised), 0 0 0 1px var(--se-ink); }
+[data-view=game] .game input[type=range]::-moz-range-thumb, [data-view=game] .layer-panel input[type=range]::-moz-range-thumb { width: 16px; height: 30px; border-radius: 0; border: 0; background: var(--se-face); box-shadow: var(--se-raised), 0 0 0 1px var(--se-ink); }
+[data-view=game] .game input[type=range]:focus, [data-view=game] .layer-panel input[type=range]:focus { box-shadow: none; }
+[data-view=game] .game input[type=range]:focus-visible, [data-view=game] .layer-panel input[type=range]:focus-visible { outline: 2px dotted var(--se-ink); outline-offset: 0; }
+[data-view=game] .layer-panel .range-row .val { color: var(--se-ink); font-family: var(--se-mono); }
 /* 세그먼트·스위치(탱크 제어판 드로어) */
-[data-view=game]:not(:has(.shop)) .layer-panel .segment { border: 0; border-radius: 0; background: var(--se-face); box-shadow: var(--se-sunken); padding: 4px; gap: 4px; }
-[data-view=game]:not(:has(.shop)) .layer-panel .seg-item label { border-radius: 0; color: var(--se-ink); background: var(--se-face); box-shadow: var(--se-raised); font-weight: 700; gap: 6px; }
-[data-view=game]:not(:has(.shop)) .layer-panel .seg-item input:checked + label { background: var(--se-light); color: var(--se-ink); box-shadow: var(--se-sunken); }
-[data-view=game]:not(:has(.shop)) .layer-panel .seg-item input:checked + label::before { content: ""; width: 8px; height: 8px; background: var(--se-ink); flex: none; }
-[data-view=game]:not(:has(.shop)) .layer-panel .seg-item input:focus-visible + label { outline: 2px dotted var(--se-ink); outline-offset: -5px; }
-[data-view=game]:not(:has(.shop)) .layer-panel .switch-track { border-radius: 0; background: #8A8A8A; box-shadow: var(--se-sunken); transition: none; }
-[data-view=game]:not(:has(.shop)) .layer-panel .switch-thumb { border-radius: 0; background: var(--se-face); box-shadow: var(--se-raised), 0 0 0 1px var(--se-ink); transition: none; }
-[data-view=game]:not(:has(.shop)) .layer-panel .switch input:checked + .switch-track { background: var(--se-ok); }
-[data-view=game]:not(:has(.shop)) .layer-panel .switch input:focus-visible + .switch-track { outline: 2px dotted var(--se-ink); outline-offset: 2px; }
-[data-view=game]:not(:has(.shop)) .layer-panel .field-label { color: var(--se-ink); font-weight: 700; }
-[data-view=game]:not(:has(.shop)) .layer-panel kbd { border-radius: 0; border: 0; background: var(--se-field); color: var(--se-ink); box-shadow: var(--se-sunken); }
+[data-view=game] .layer-panel .segment { border: 0; border-radius: 0; background: var(--se-face); box-shadow: var(--se-sunken); padding: 4px; gap: 4px; }
+[data-view=game] .layer-panel .seg-item label { border-radius: 0; color: var(--se-ink); background: var(--se-face); box-shadow: var(--se-raised); font-weight: 700; gap: 6px; }
+[data-view=game] .layer-panel .seg-item input:checked + label { background: var(--se-light); color: var(--se-ink); box-shadow: var(--se-sunken); }
+[data-view=game] .layer-panel .seg-item input:checked + label::before { content: ""; width: 8px; height: 8px; background: var(--se-ink); flex: none; }
+[data-view=game] .layer-panel .seg-item input:focus-visible + label { outline: 2px dotted var(--se-ink); outline-offset: -5px; }
+[data-view=game] .layer-panel .switch-track { border-radius: 0; background: #8A8A8A; box-shadow: var(--se-sunken); transition: none; }
+[data-view=game] .layer-panel .switch-thumb { border-radius: 0; background: var(--se-face); box-shadow: var(--se-raised), 0 0 0 1px var(--se-ink); transition: none; }
+[data-view=game] .layer-panel .switch input:checked + .switch-track { background: var(--se-ok); }
+[data-view=game] .layer-panel .switch input:focus-visible + .switch-track { outline: 2px dotted var(--se-ink); outline-offset: 2px; }
+[data-view=game] .layer-panel .field-label { color: var(--se-ink); font-weight: 700; }
+[data-view=game] .layer-panel kbd { border-radius: 0; border: 0; background: var(--se-field); color: var(--se-ink); box-shadow: var(--se-sunken); }
 /* 토스트: 볼록 + 검정 링, 종류는 왼쪽 색 막대(상점 위에서도 같은 모양) */
 [data-view=game] .toast { background: var(--se-face); color: var(--se-ink); border: 0; box-shadow: var(--se-raised), 0 0 0 2px var(--se-ink); font-weight: 700; }
 [data-view=game] .toast.error { border-left: 10px solid var(--se-bad); background: var(--se-face); color: var(--se-ink); }
@@ -360,13 +359,13 @@
 [data-view=game] .toast.ok { border-left: 10px solid var(--se-ok); background: var(--se-face); color: var(--se-ink); }
 [data-view=game] .toast.info { border-left: 10px solid var(--se-cpu); }
 
-/* ---- B1. 토큰: .game 안에서만 회색 톤(상점 .shop 은 .game 밖 형제라 다크 유지) ---- */
-[data-view=game] .game {
+/* ---- B1. 토큰: .game 과 상점 .shop(.game 밖 형제) 안을 회색 톤으로 ---- */
+[data-view=game] :is(.game, .shop) {
   color-scheme: light; font-family: var(--se-font); color: var(--se-ink);
   --line: #7A7A7A; --line2: var(--se-shadow); --text: var(--se-ink); --text2: var(--se-ink2); --muted: var(--se-ink2);
   --accent: var(--se-ink); --accent2: var(--se-ink); --bg2: var(--se-field); --panel: var(--se-face); --panel2: var(--se-face); --ok: var(--se-ok); --danger: var(--se-danger-text);
 }
-[data-view=game] .game .muted { color: var(--se-ink2); }
+[data-view=game] :is(.game, .shop) .muted { color: var(--se-ink2); }
 
 /* ---- B2. 패널: 불투명 회색 + 베벨. HUD = 원작 상태바 볼록 3px ---- */
 [data-view=game] .game :is(.hud, .ctrl, .side, .gchat) { background: var(--se-face); backdrop-filter: none; -webkit-backdrop-filter: none; border: 0; }
@@ -383,15 +382,20 @@
 /* ---- B3. HUD: 플레이어 · 라운드 · 바람 · 시간 · 메뉴 ---- */
 [data-view=game] .game .hud .who { font-weight: 800; }
 [data-view=game] .game .hud .round { color: var(--se-ink2); font-family: var(--se-mono); font-weight: 700; }
-[data-view=game] .game .wind { font-family: var(--se-mono); font-weight: 700; color: var(--se-ink); }
-[data-view=game] .game .wind svg path { stroke: var(--se-ink); }   /* JS 인라인 stroke(#CFE6FF)는 회색 면에서 대비 1.59 → CSS 로 덮음 */
+[data-view=game] .game .wind, [data-view=game] .game .wind .wv { font-family: var(--se-mono); font-weight: 700; color: var(--se-ink); }
 [data-view=game] .game .wind .muted { color: var(--se-ink2); font-family: var(--se-font); }
-[data-view=game] .game .timer .tt { font-family: var(--se-mono); font-size: 18px; color: var(--se-ink); }
-[data-view=game] .game :is(.timer .tb, .energy .eb, .prow .bar) { border-radius: 0; background: var(--se-field); box-shadow: inset 1px 1px 0 var(--se-shadow), inset -1px -1px 0 var(--se-white); }
-[data-view=game] .game .timer .tb { height: 8px; }
-[data-view=game] .game .timer .tb i { background: var(--se-ink); }
-[data-view=game] .game .timer.urgent .tt { color: var(--se-danger-text); }
-[data-view=game] .game .timer.urgent .tb i { background: var(--se-bad); }
+/* 바람 막대: 시간 막대와 같은 오목 홈(8px), 가운데 눈금에서 부는 쪽으로 참 */
+[data-view=game] .game .wind .wb { height: 8px; border-radius: 0; background: var(--se-field); box-shadow: inset 1px 1px 0 var(--se-shadow), inset -1px -1px 0 var(--se-white); }
+[data-view=game] .game .wind .wb i { top: 1px; bottom: 1px; background: var(--se-cpu); }
+[data-view=game] .game .wind .wb::after { background: var(--se-ink); }
+/* 버튼 묶음: 좁은 화면에서는 홈 구분선으로 바람·시간과 분리 */
+[data-view=game] .game:not(.wide) .hud .hud-btns { padding-left: 8px; box-shadow: inset 1px 0 0 var(--se-shadow), inset 2px 0 0 var(--se-light); }
+[data-view=game] :is(.game, .shop) .timer .tt { font-family: var(--se-mono); font-size: 18px; color: var(--se-ink); }
+[data-view=game] :is(.game, .shop) :is(.timer .tb, .energy .eb, .prow .bar) { border-radius: 0; background: var(--se-field); box-shadow: inset 1px 1px 0 var(--se-shadow), inset -1px -1px 0 var(--se-white); }
+[data-view=game] :is(.game, .shop) .timer .tb { height: 8px; }
+[data-view=game] :is(.game, .shop) .timer .tb i { background: var(--se-ink); }
+[data-view=game] :is(.game, .shop) .timer.urgent .tt { color: var(--se-danger-text); }
+[data-view=game] :is(.game, .shop) .timer.urgent .tb i { background: var(--se-bad); }
 [data-view=game] .game .energy .eb i { background: var(--se-ok); }
 [data-view=game] .game .energy .et { color: var(--se-ink2); font-family: var(--se-mono); }
 [data-view=game] .game .hud .icon-btn { font-size: 16px; }
@@ -415,7 +419,7 @@
 [data-view=game] .game .weapon-chip:active { box-shadow: 0 0 0 1px var(--se-ink), var(--se-sunken); }
 [data-view=game] .game .weapon-chip .wn { font-weight: 800; }
 [data-view=game] .game .weapon-chip .wc { color: var(--se-ink); font-family: var(--se-mono); font-weight: 700; }
-[data-view=game] .game :is(.iic, .iic-g), [data-view=game]:not(:has(.shop)) .layer-panel :is(.iic, .iic-g) { border-radius: 0; box-shadow: 0 0 0 1px var(--se-ink); }
+[data-view=game] :is(.game, .shop) :is(.iic, .iic-g),[data-view=game] .layer-panel :is(.iic, .iic-g) { border-radius: 0; box-shadow: 0 0 0 1px var(--se-ink); }
 [data-view=game] .game .qi { position: relative; border: 0; border-radius: 0; background: var(--se-face); color: var(--se-ink); box-shadow: var(--se-raised); font-weight: 700; }
 [data-view=game] .game .qi:hover:not(:disabled) { background: var(--se-face-hi); }
 [data-view=game] .game .qi:active:not(:disabled) { box-shadow: var(--se-sunken); }
@@ -463,22 +467,22 @@
 [data-view=game] .stage .banner { border: 0; border-radius: 0; background: var(--se-face); color: var(--se-ink); font-weight: 800; box-shadow: var(--se-raised), 0 0 0 2px var(--se-ink); }
 
 /* ---- B10. 무기 시트·인벤토리: 원작 무기 목록처럼 오목 행. 선택 = 밝은 면 + 검정 링 + 왼쪽 바깥 ▶ ---- */
-[data-view=game]:not(:has(.shop)) .layer-panel .weapon-grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px 22px; padding-left: 14px; }
-[data-view=game]:not(:has(.shop)) .layer-panel .wcard {
+[data-view=game] .layer-panel .weapon-grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px 22px; padding-left: 14px; }
+[data-view=game] .layer-panel .wcard {
   position: relative; border: 0; border-radius: 0; background: var(--se-face); color: var(--se-ink); box-shadow: var(--se-sunken);
   grid-template-columns: minmax(0, 1fr) auto; column-gap: 8px; align-items: center; min-height: 64px; padding: 8px 10px;
 }
-[data-view=game]:not(:has(.shop)) .layer-panel .wcard > .wc-head { grid-column: 1; grid-row: 1; }
-[data-view=game]:not(:has(.shop)) .layer-panel .wcard > .c { grid-column: 2; grid-row: 1; font: 700 15px var(--se-mono); color: var(--se-ink); }
-[data-view=game]:not(:has(.shop)) .layer-panel .wcard > .s { grid-column: 1 / -1; color: var(--se-ink2); }
-[data-view=game]:not(:has(.shop)) .layer-panel .wcard > .btn { grid-column: 1 / -1; justify-self: start; }
-[data-view=game]:not(:has(.shop)) .layer-panel button.wcard:hover { background: var(--se-face-hi); }
-[data-view=game]:not(:has(.shop)) .layer-panel .wcard[aria-pressed=true] { background: var(--se-light); box-shadow: var(--se-sunken), inset 0 0 0 3px var(--se-light), inset 0 0 0 5px var(--se-ink); }
-[data-view=game]:not(:has(.shop)) .layer-panel .wcard:is([aria-pressed=true], :hover, :focus-visible)::before { content: ""; position: absolute; left: -16px; top: 50%; margin-top: -8px; border: 8px solid transparent; border-left: 10px solid var(--se-ink); border-right: 0; }
-[data-view=game]:not(:has(.shop)) .layer-panel .wcard .n { font-weight: 800; }
-[data-view=game]:not(:has(.shop)) .layer-panel .cp-item { border: 0; border-radius: 0; background: var(--se-face); box-shadow: var(--se-sunken); }
-[data-view=game]:not(:has(.shop)) .layer-panel .cp-item .energy .eb { border-radius: 0; background: var(--se-field); box-shadow: inset 1px 1px 0 var(--se-shadow), inset -1px -1px 0 var(--se-white); }
-[data-view=game]:not(:has(.shop)) .layer-panel .cp-item .energy .eb i { background: var(--se-ok); }
+[data-view=game] .layer-panel .wcard > .wc-head { grid-column: 1; grid-row: 1; }
+[data-view=game] .layer-panel .wcard > .c { grid-column: 2; grid-row: 1; font: 700 15px var(--se-mono); color: var(--se-ink); }
+[data-view=game] .layer-panel .wcard > .s { grid-column: 1 / -1; color: var(--se-ink2); }
+[data-view=game] .layer-panel .wcard > .btn { grid-column: 1 / -1; justify-self: start; }
+[data-view=game] .layer-panel button.wcard:hover { background: var(--se-face-hi); }
+[data-view=game] .layer-panel .wcard[aria-pressed=true] { background: var(--se-light); box-shadow: var(--se-sunken), inset 0 0 0 3px var(--se-light), inset 0 0 0 5px var(--se-ink); }
+[data-view=game] .layer-panel .wcard:is([aria-pressed=true], :hover, :focus-visible)::before { content: ""; position: absolute; left: -16px; top: 50%; margin-top: -8px; border: 8px solid transparent; border-left: 10px solid var(--se-ink); border-right: 0; }
+[data-view=game] .layer-panel .wcard .n { font-weight: 800; }
+[data-view=game] .layer-panel .cp-item { border: 0; border-radius: 0; background: var(--se-face); box-shadow: var(--se-sunken); }
+[data-view=game] .layer-panel .cp-item .energy .eb { border-radius: 0; background: var(--se-field); box-shadow: inset 1px 1px 0 var(--se-shadow), inset -1px -1px 0 var(--se-white); }
+[data-view=game] .layer-panel .cp-item .energy .eb i { background: var(--se-ok); }
 
 /* ---- B11. 라운드 결과(table.rank 모달)·최종 순위(.result): 원작 Rankings 창. 제목 양옆 노랑 막대, 숫자 고정폭 ---- */
 [data-view=game] .layer-panel:has(table.rank) .layer-head h2,
@@ -499,8 +503,65 @@
 [data-view=game] .result .card > h1 { font-size: 22px; padding-bottom: 12px; border-bottom: 2px solid var(--se-shadow); box-shadow: 0 2px 0 var(--se-light); }
 
 /* ---- B12. 메뉴 드로어: 볼록 버튼 세로 목록 ---- */
-[data-view=game]:not(:has(.shop)) .layer-panel.drawer .layer-body > div > .btn { min-height: 44px; }
+[data-view=game] .layer-panel.drawer .layer-body > div > .btn { min-height: 44px; }
+
+/* ---- B13. 좁은 가로 화면의 플레이어 목록 팝업: 볼록 창 + 검정 링 + 각진 그림자 ---- */
+[data-view=game] .game:not(.wide) .side.open { border: 0; border-radius: 0; box-shadow: var(--se-raised), 0 0 0 2px var(--se-ink), 6px 6px 0 2px rgba(0,0,0,.45); }
+
+/* ---- C. 상점(.shop): 원작 상점 창처럼 회색 면. 머리 = 상태바 볼록 3px, 품목 = 오목 행, 내 장비 = 홈 라인 패널.
+        토큰·버튼·타이머·아이콘·포커스는 A·B 절 규칙을 .shop 에도 적용(선택자에 .shop 포함) ---- */
+[data-view=game] .shop { background: var(--se-face); }
+[data-view=game] .shop-head { background: var(--se-face); border: 0; box-shadow: inset 3px 0 0 var(--se-white), inset 0 3px 0 var(--se-light), inset -3px 0 0 var(--se-deep), inset 0 -3px 0 var(--se-shadow); position: relative; z-index: 1; }
+[data-view=game] .shop-head h1 { font-size: 20px; font-weight: 800; }
+[data-view=game] .shop .money div { gap: 2px; }
+[data-view=game] .shop .money small { color: var(--se-ink2); font-size: 12px; font-weight: 700; }
+[data-view=game] .shop .money b { font: 700 17px/1 var(--se-mono); background: var(--se-field); box-shadow: var(--se-sunken); padding: 5px 8px 4px; min-width: 72px; text-align: right; }
+/* 탭·칩·검색: 로비·대기실 폼과 같은 모양 */
+[data-view=game] .shop .tabs { gap: 4px; border-bottom: 2px solid var(--se-shadow); box-shadow: 0 2px 0 var(--se-light); }
+[data-view=game] .shop .tab { color: var(--se-ink2); font-weight: 700; background: var(--se-face); box-shadow: inset 2px 0 0 var(--se-white), inset 0 2px 0 var(--se-light), inset -2px 0 0 var(--se-deep); border-bottom: 3px solid transparent; }
+[data-view=game] .shop .tab:hover { background: var(--se-face-hi); }
+[data-view=game] .shop .tab[aria-selected=true] { color: var(--se-ink); background: var(--se-light); border-bottom-color: var(--se-ink); }
+[data-view=game] .shop .chip { min-height: 34px; padding: 0 12px; border-radius: 0; border: 0; background: var(--se-face); color: var(--se-ink); box-shadow: var(--se-raised); font-weight: 700; font-size: 14px; }
+[data-view=game] .shop .chip:hover { background: var(--se-face-hi); }
+[data-view=game] .shop :is(.chip[aria-pressed=true], .chip:active) { background: var(--se-light); box-shadow: var(--se-sunken); }
+[data-view=game] .shop input[type=search] { -webkit-appearance: none; appearance: none; background: var(--se-field); color: var(--se-ink); border: 0; border-radius: 0; box-shadow: var(--se-sunken); }
+[data-view=game] .shop input[type=search]:focus { box-shadow: var(--se-sunken), 0 0 0 2px var(--se-ink); outline: none; }
+[data-view=game] .shop input::placeholder { color: var(--se-dim); }
+/* 품목 카드: 오목 행. 포커스 = 검정 링. 구매 버튼은 카드마다 있으므로 기본 버튼 링·▶ 없이 볼록만 */
+[data-view=game] .shop .item { border: 0; background: var(--se-face); color: var(--se-ink); box-shadow: var(--se-sunken); }
+[data-view=game] .shop .item:focus-within { box-shadow: var(--se-sunken), inset 0 0 0 3px var(--se-face), inset 0 0 0 5px var(--se-ink); }
+[data-view=game] .shop .item .n { font-weight: 800; }
+[data-view=game] .shop .item .s { color: var(--se-ink2); }
+[data-view=game] .shop .item .p b { font-family: var(--se-mono); }
+[data-view=game] .shop .item .own { color: var(--se-ink); font-weight: 700; }
+[data-view=game] .shop .item .btn.primary { box-shadow: var(--se-raised); }
+[data-view=game] .shop .item .btn.primary::before { content: none; }
+[data-view=game] .shop .empty { grid-column: 1 / -1; background: var(--se-face); color: var(--se-ink2); box-shadow: var(--se-sunken); font-weight: 700; }
+/* 내 장비: 왼쪽 홈 라인(CA|000|CA), 제목 아래 홈 구분선 */
+[data-view=game] .shop .mine { background: var(--se-face); border: 0; padding-left: 16px; box-shadow: inset 1px 0 0 var(--se-face-hi), inset 3px 0 0 var(--se-ink), inset 4px 0 0 var(--se-face-hi); }
+[data-view=game] .shop .mine h2 { padding-bottom: 8px; border-bottom: 2px solid var(--se-shadow); box-shadow: 0 2px 0 var(--se-light); }
+[data-view=game] .shop .mine-row { border-bottom: 1px solid #8C8C8C; font-weight: 700; }
+[data-view=game] .shop .mine-row .tabular { font-family: var(--se-mono); }
+/* 동시 상점: 완료 후 대기·구매 대기 화면, 진행 현황 한 줄(머리·대기 화면 공통) */
+[data-view=game] .shop .shop-prog { color: var(--se-ink2); font-weight: 700; }
+[data-view=game] .shop .wait-shop h2 { font-size: 20px; font-weight: 800; }
+[data-view=game] .shop .wait-shop .btn { min-width: 140px; min-height: 44px; }
+[data-view=game] .shop .wait-shop b { font: 700 20px/1 var(--se-mono); background: var(--se-field); box-shadow: var(--se-sunken); padding: 6px 12px 5px; }
+@media (max-width: 1023px) {
+  [data-view=game] .shop .mine { padding-left: 12px; box-shadow: none; border-top: 2px solid var(--se-ink); }
+}
+
+/* ---- D. 부팅 화면(data-view 없음)·본문 건너뛰기 링크: 같은 배경·토스트 ---- */
+body:not([data-view]) #app { background: var(--se-bg) center bottom / cover no-repeat, #1F1850; }
+body:not([data-view]) .nick-screen { background: transparent; }
+body:not([data-view]) .nick-screen .muted { color: var(--se-white); font: 700 18px var(--se-font); text-shadow: 2px 2px 0 #000; }
+body:not([data-view]) .toast { border-radius: 0; transition: none; background: var(--se-face); color: var(--se-ink); border: 0; box-shadow: var(--se-raised), 0 0 0 2px var(--se-ink); font-weight: 700; }
+body:not([data-view]) .toast.error { border-left: 10px solid var(--se-bad); }
+body:not([data-view]) .toast.warn { border-left: 10px solid var(--se-yellow); }
+body:not([data-view]) .toast.ok { border-left: 10px solid var(--se-ok); }
+.skip { background: var(--se-face); color: var(--se-ink); font-weight: 700; box-shadow: var(--se-raised), 0 0 0 2px var(--se-ink); }
 
 @media (pointer: coarse) {
   [data-view=game] .layer-panel :is(input[type=text], input:not([type])) { font-size: 16px; }
+  [data-view=game] .shop input[type=search] { font-size: 16px; }
 }

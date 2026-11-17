@@ -107,9 +107,9 @@ export class RoomGame {
     }
   }
 
-  // 상점 차례인 본인에게만: 엔진 shopList(가격·묶음·보유·무장 등급·허용·구매 가능). 자유 시장 현재가가 반영된다.
+  // 상점 대상 본인에게만: 엔진 shopList(가격·묶음·보유·무장 등급·허용·구매 가능). 자유 시장 현재가가 반영된다.
   _shopListFor(id) {
-    if (this.phase !== 'shop' || this.shop?.playerId !== id || !this.port?.shopList) return undefined;
+    if (this.phase !== 'shop' || !this.shop?.ids.includes(id) || !this.port?.shopList) return undefined;
     try { return this.port.shopList(id); } catch (e) { this.io.log?.('warn', e); return undefined; }
   }
   _shopExtra(id) { const l = this._shopListFor(id); return l ? { shop: l } : {}; }
@@ -124,7 +124,7 @@ export class RoomGame {
   phaseInfo() {
     const info = { phase: this.phase, round: this.round, rounds: this.options.rounds, mode: this.options.mode, ...this._timeInfo() };
     if (this.turn) info.turn = { ...this.turn };
-    if (this.shop) info.shop = { ...this.shop };
+    if (this.shop) info.shop = this._shopPublic(); // 완료 여부만(타인 현금·구매내역 없음)
     if (this.options.mode === 'SYNCHRONOUS') info.readyIds = [...this.ready.keys()];
     info.timeouts = Object.fromEntries(this.seats.filter((s) => s.timeouts).map((s) => [s.id, s.timeouts]));
     return info;
@@ -362,54 +362,87 @@ export class RoomGame {
   }
 
   // ---------- 상점 ----------
+  // 전원 동시 구매: 대상(사람·현금>0) 전원이 같은 마감 시각을 공유하고 각자 완료한다. 전원 완료 또는 마감 시 다음 라운드.
+  // this.shop = { deadline, limitMs, ids:[대상 id], done:Set<id> }. 방 전체에는 완료 여부(doneIds)만 알린다.
+  _shopPublic() {
+    const { deadline, limitMs, ids, done } = this.shop;
+    return { deadline, limitMs, ids: ids.slice(), doneIds: ids.filter((id) => done.has(id)) };
+  }
+
   _beginShop() {
     this.phase = 'shop';
     this.turn = null;
-    this._sendMe();
-    const order = this.port.shopOrder();
-    this.shopQueue = (order ?? this.seats.map((s) => s.id)).slice();
-    this._nextShop();
-  }
-
-  _nextShop() {
     this.shop = null;
-    this.pendingSell = null;
-    while (this.shopQueue.length) {
-      const pid = this.shopQueue.shift();
+    this.pendingSell = new Map(); // id -> {item, qty} (수락 전 판매 제시, 플레이어별)
+    const order = (this.port.shopOrder() ?? this.seats.map((s) => s.id)).slice(); // 현금>0, 좌석 순서
+    const targets = [];
+    for (const pid of order) {
       const seat = this.seat(pid);
       if (!seat) continue;
       if (this._isAuto(seat)) {
-        // 컴퓨터/대행: 즉시 구매, 타이머 없음(AC-S7)
+        // 컴퓨터/대행/이탈: 즉시 구매·완료(좌석 순서대로 호출해 엔진 난수 순서를 보존)
         if (seat.kind === 'human' || this.options.computersBuy) {
           try { this.port.aiShop(pid); } catch (e) { this.io.log?.('warn', e); }
         }
         continue;
       }
-      const limitMs = this.options.shopLimitSec * 1000;
-      this.shop = { playerId: pid, deadline: this.now() + limitMs, limitMs };
-      this.io.broadcast({ t: 'shop_turn', ...this.shop, ...this._timeInfo() });
-      this._sendMe(pid); // 본인에게 me + shop(가격 목록)
-      const ref = this.shop;
-      this.shopTimer = this._after(limitMs, () => { if (this.shop === ref) this._shopExpire(seat); });
-      return;
+      targets.push(pid);
     }
+    if (targets.length === 0) { // 살 사람이 없으면 지연 없이 다음 라운드
+      this._sendMe();
+      this.io.broadcast({ t: 'shop_end', ...this._timeInfo() });
+      return this._beginRound();
+    }
+    const limitMs = this.options.shopLimitSec * 1000;
+    this.shop = { deadline: this.now() + limitMs, limitMs, ids: targets, done: new Set() };
+    this.io.broadcast({ t: 'shop_open', ...this._shopPublic(), ...this._timeInfo() });
+    this._sendMe(); // 전원에게 me, 대상에게는 shop(본인 가격 목록) 포함
+    const ref = this.shop;
+    this.shopTimer = this._after(limitMs, () => { if (this.shop === ref) this._shopExpire(); });
+  }
+
+  _shopRejectPending(id) {
+    if (!this.pendingSell?.has(id)) return;
+    this.pendingSell.delete(id);
+    try { this.port.sellReject(id); } catch { /* noop */ }
+  }
+
+  // 한 좌석을 완료 처리하고 방 전체에 완료 명단을 알린 뒤 전원 완료를 판정한다.
+  _shopMarkDone(id) {
+    if (!this.shop || this.shop.done.has(id)) return;
+    this._shopRejectPending(id); // 수락 전 판매 제시는 거절 처리
+    this.shop.done.add(id);
+    this.io.broadcast({ t: 'shop_progress', doneIds: this._shopPublic().doneIds });
+    this._shopCheckAllDone();
+  }
+
+  _shopCheckAllDone() {
+    if (this.phase !== 'shop' || !this.shop) return;
+    if (this.shop.ids.every((id) => this.shop.done.has(id))) this._shopClose();
+  }
+
+  // 상점 종료(전원 완료·마감 공통). this.shop 을 먼저 비워 만료 타이머·요청 경로의 중복 실행을 막는다.
+  _shopClose() {
+    if (this.phase !== 'shop' || !this.shop) return;
+    this.shop = null;
+    if (this.shopTimer) { this._cancel(this.shopTimer); this.shopTimer = null; }
+    for (const id of [...this.pendingSell.keys()]) this._shopRejectPending(id);
     this.io.broadcast({ t: 'shop_end', ...this._timeInfo() });
     this._beginRound();
   }
 
-  _shopFinish() {
-    if (this.shopTimer) { this._cancel(this.shopTimer); this.shopTimer = null; }
-    if (this.pendingSell) { // 수락 전 판매 제시는 거절 처리(AC-S3)
-      try { this.port.sellReject(this.pendingSell.playerId); } catch { /* noop */ }
-      this.pendingSell = null;
-    }
-    this._nextShop();
+  // 마감: 미완료자는 자동 완료(확정된 구매·판매 유지, 수락 전 판매 제시는 거절).
+  _shopExpire() {
+    if (this.phase !== 'shop' || !this.shop) return;
+    this.io.broadcast({ t: 'toast', code: 'SHOP_TIMEOUT', msg: '상점 시간 종료' });
+    this._shopClose();
   }
 
-  _shopExpire(seat) {
-    this.shopTimer = null;
-    this.io.broadcast({ t: 'toast', code: 'SHOP_TIMEOUT', msg: `상점 시간 초과! ${seat.name}님의 구매가 종료됩니다`, params: { playerId: seat.id, name: seat.name } });
-    this._shopFinish();
+  // 같은 은행(공유 은행, teams=CORPORATE)을 쓰는 팀원에게 바뀐 현금·구매 가능 여부를 다시 보낸다.
+  _sendMeBankPeers(id) {
+    let peers = [];
+    try { peers = this.port.bankPeers?.(id) || []; } catch { /* noop */ }
+    for (const pid of peers) this._sendMe(pid);
   }
 
   // ---------- 클라이언트 입력 ----------
@@ -426,6 +459,7 @@ export class RoomGame {
       case 'sell_accept': return this._onSellDecision(seat, true);
       case 'sell_reject': return this._onSellDecision(seat, false);
       case 'shop_done': return this._onShopDone(seat);
+      case 'shop_reopen': return this._onShopReopen(seat);
       default: throw new ProtocolError('UNKNOWN_TYPE');
     }
   }
@@ -524,46 +558,61 @@ export class RoomGame {
     this._afterShot(seat.id, res || { events: [] });
   }
 
-  _requireShop(seat) {
+  // 상점 요청 공통 검사. needOpen=true(구매·판매)는 완료 상태에서 거부한다(shop_reopen 후 가능).
+  _requireShop(seat, needOpen = true) {
     if (this.phase !== 'shop' || !this.shop) throw new ProtocolError('WRONG_PHASE');
-    if (this.shop.playerId !== seat.id) throw new ProtocolError('NOT_YOUR_SHOP');
-    if (this.now() > this.shop.deadline) { // 마감 후 요청 거부 + 즉시 만료 처리(AC-S5)
-      this._cancel(this.shopTimer); this.shopTimer = null;
-      this._shopExpire(seat);
+    if (!this.shop.ids.includes(seat.id)) throw new ProtocolError('WRONG_PHASE'); // 대상 아님(현금 없음 등)
+    if (this.now() > this.shop.deadline) { // 마감 후 요청 거부 + 즉시 만료 처리
+      this._shopExpire();
       throw new ProtocolError('SHOP_EXPIRED');
     }
+    if (needOpen && this.shop.done.has(seat.id)) throw new ProtocolError('SHOP_DONE');
   }
 
   _posInt(v) { if (!Number.isInteger(v) || v < 1 || v > 99) throw new ProtocolError('INVALID_INPUT'); return v; }
-  _itemId(v) { if (!((typeof v === 'string' && v.length > 0 && v.length <= 64) || Number.isInteger(v))) throw new ProtocolError('INVALID_INPUT'); return v; }
+  // 아이템 id: 문자열만 허용하고 엔진 아이템 목록에 있어야 한다('constructor'·'__proto__' 같은 프로토타입 키 차단).
+  _itemId(v) {
+    if (typeof v !== 'string' || v.length === 0 || v.length > 64) throw new ProtocolError('INVALID_INPUT');
+    if (this.port.isItem && !this.port.isItem(v)) throw new ProtocolError('INVALID_INPUT');
+    return v;
+  }
 
   _onBuy(seat, msg) {
     this._requireShop(seat);
     const item = this._itemId(msg.item); const qty = msg.qty === undefined ? 1 : this._posInt(msg.qty);
     const res = this._wrapEngine(() => this.port.buy(seat.id, item, qty));
     this.io.sendTo(seat.id, { t: 'shop_result', ok: true, action: 'buy', item, qty, state: res?.state, snapshot: this.port.snapshot(seat.id), shop: this._shopListFor(seat.id) });
+    this._sendMeBankPeers(seat.id);
   }
 
   _onSellQuote(seat, msg) {
     this._requireShop(seat);
     const item = this._itemId(msg.item); const qty = msg.qty === undefined ? 1 : this._posInt(msg.qty);
-    if (this.pendingSell) { try { this.port.sellReject(seat.id); } catch { /* noop */ } this.pendingSell = null; }
+    this._shopRejectPending(seat.id); // 본인의 이전 제시만 취소(타인 제시와 독립)
     const quote = this._wrapEngine(() => this.port.sellQuote(seat.id, item, qty));
-    this.pendingSell = { playerId: seat.id, item, qty };
+    this.pendingSell.set(seat.id, { item, qty });
     this.io.sendTo(seat.id, { t: 'sell_quote', item, qty, quote });
   }
 
   _onSellDecision(seat, accept) {
     this._requireShop(seat);
-    if (!this.pendingSell) throw new ProtocolError('WRONG_PHASE');
-    this.pendingSell = null;
+    if (!this.pendingSell.has(seat.id)) throw new ProtocolError('WRONG_PHASE');
+    this.pendingSell.delete(seat.id);
     const res = this._wrapEngine(() => (accept ? this.port.sellAccept(seat.id) : this.port.sellReject(seat.id)));
     this.io.sendTo(seat.id, { t: 'shop_result', ok: true, action: accept ? 'sell' : 'sell_reject', state: res?.state, snapshot: this.port.snapshot(seat.id), shop: this._shopListFor(seat.id) });
+    if (accept) this._sendMeBankPeers(seat.id);
   }
 
   _onShopDone(seat) {
-    this._requireShop(seat);
-    this._shopFinish();
+    this._requireShop(seat, false);
+    this._shopMarkDone(seat.id); // 이미 완료면 아무 일도 없음
+  }
+
+  // 완료 취소: 상점이 열려 있는 동안만. 전원 완료로 shop_end 가 나간 뒤에는 WRONG_PHASE(_requireShop).
+  _onShopReopen(seat) {
+    this._requireShop(seat, false);
+    if (!this.shop.done.delete(seat.id)) return;
+    this.io.broadcast({ t: 'shop_progress', doneIds: this._shopPublic().doneIds });
   }
 
   // ---------- 이탈·재접속·대행 ----------
@@ -597,15 +646,13 @@ export class RoomGame {
       } else if (this.turn.mode === 'sync') {
         this._syncCheckAllReady();
       }
-    } else if (this.phase === 'shop' && this.shop?.playerId === seat.id) {
-      if (this.shopTimer) { this._cancel(this.shopTimer); this.shopTimer = null; }
-      this._shopFinish_auto(seat);
+    } else if (this.phase === 'shop' && this.shop?.ids.includes(seat.id) && !this.shop.done.has(seat.id)) {
+      // 미완료 좌석만 대신 구매 후 완료(이미 완료한 좌석은 추가 구매 없음) -> 전원 완료 재판정
+      this._shopRejectPending(seat.id);
+      try { this.port.aiShop(seat.id); } catch (e) { this.io.log?.('warn', e); }
+      this._sendMeBankPeers(seat.id);
+      this._shopMarkDone(seat.id);
     }
-  }
-
-  _shopFinish_auto(seat) {
-    try { this.port.aiShop(seat.id); } catch { /* noop */ }
-    this._shopFinish();
   }
 
   // 같은 세션 토큰으로 돌아옴: 대행 중이었다면 즉시 제어 회수(AC-T10).
@@ -621,12 +668,14 @@ export class RoomGame {
   }
 
   resume(id) {
+    const shop = this._shopListFor(id); // 상점 대상이면 본인 가격 목록
     return {
       t: 'game_resume',
       seats: this.publicSeats(),
       options: this.options,
       ...this.phaseInfo(),
       snapshot: this.port ? this.port.snapshot(id) : null,
+      ...(shop ? { me: { ...(this.port.privateFor?.(id) || {}), shop } } : {}),
     };
   }
 }

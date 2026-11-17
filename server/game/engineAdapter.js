@@ -12,7 +12,7 @@
 //   fireBatch([{playerId,input}|{playerId,ai:true}]) -> {events, state, ticks}   동기 모드(fireVolley)
 //   act(pid, {action,...}) -> {events, state}       battery|parachute|shield|trigger|guidance|move|aim
 //   pass(pid) / retreat(pid) / aiAct(pid) / setProxy(pid,on)
-//   shopOrder() / aiShop(pid) / buy / sellQuote / sellAccept / sellReject
+//   shopOrder() / aiShop(pid) / buy / sellQuote / sellAccept / sellReject(pid) / bankPeers(pid)   판매 제시는 플레이어별
 //   endRound() -> {state: Settlement}       state.gameOver 로 게임 종료 판단
 //   ranking(final)                          final=false(진행 중)면 cash·netWorth 제거
 //   privateFor(pid) -> {inventory, tank, interest?}  본인에게만 보내는 비공개 상태(재고·현금·연료 등)
@@ -80,11 +80,12 @@ export function publicSnapshot(s) {
 const tagPid = (events, pid) => (events || []).map((e) => (e && e.t === 'explode' && e.kind !== 'death' && e.pid === undefined ? { ...e, pid } : e));
 const stripMoney = (r) => { const { cash, netWorth, ...rest } = r; void cash; void netWorth; return rest; };
 
-export function wrapGame(raw, ids = []) {
+export function wrapGame(raw, ids = [], itemIds = null) {
+  const itemSet = Array.isArray(itemIds) ? new Set(itemIds) : null; // 엔진 아이템 id 화이트리스트(없으면 null: 스텁 엔진)
   let order = [];
   let cursor = 0;
   let gameOver = false;
-  let pending = null; // 판매 제시(수락 전)
+  const pending = new Map(); // pid -> 판매 제시(수락 전). 동시 상점이므로 플레이어별로 분리한다.
   const proxy = new Set();
   const ok = (r) => { if (r && r.ok === false) throw reject(r); return r; };
   const aliveIds = () => raw.roundOver().aliveIds;
@@ -196,18 +197,26 @@ export function wrapGame(raw, ids = []) {
     shopList(pid) { if (!raw.shopList) return null; const r = raw.shopList(pid); return Array.isArray(r) ? r : null; },
     shopOrder: () => ids.filter((id) => (raw.inventory(id)?.cash ?? 0) > 0),
     aiShop: (pid) => asCpu(pid, () => raw.aiShop(pid)),
+    // 클라이언트가 보낸 아이템 id 가 엔진 아이템인지. 화이트리스트가 없으면(스텁) 판단하지 않는다(true).
+    isItem: (item) => (itemSet ? itemSet.has(item) : true),
     buy(pid, item, qty) { const r = ok(raw.buy(pid, item, qty)); return { state: r }; },
     sellQuote(pid, item, qty) {
       const r = ok(raw.sellOffer(pid, item, qty));
-      pending = { pid, item, qty };
+      pending.set(pid, { item, qty });
       return r.offer;
     },
     sellAccept(pid) {
-      if (!pending || pending.pid !== pid) return undefined;
-      const { item, qty } = pending; pending = null;
-      return { state: ok(raw.sell(pid, item, qty)) };
+      const p = pending.get(pid);
+      if (!p) return undefined;
+      pending.delete(pid);
+      return { state: ok(raw.sell(pid, p.item, p.qty)) };
     },
-    sellReject() { pending = null; },
+    sellReject(pid) { pending.delete(pid); },
+    // 같은 은행을 쓰는 다른 플레이어(공유 은행 팀). 엔진이 P()를 노출하지 않으면 없음.
+    bankPeers(pid) {
+      const bank = raw.P ? raw.P(pid)?.bank : null;
+      return bank ? ids.filter((id) => id !== pid && raw.P(id)?.bank === bank) : [];
+    },
     endRound() {
       const s = ok(raw.endRound());
       gameOver = !!s?.gameOver;
@@ -222,7 +231,7 @@ export function wrapGame(raw, ids = []) {
 export function makeEngineFactory(mod) {
   return {
     createGame: ({ options, players, seed }) =>
-      wrapGame(mod.createGame({ options: toEngineOptions(options), players: toEnginePlayers(players), seed }), players.map((p) => p.id)),
+      wrapGame(mod.createGame({ options: toEngineOptions(options), players: toEnginePlayers(players), seed }), players.map((p) => p.id), mod.ITEM_IDS),
   };
 }
 

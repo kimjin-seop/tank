@@ -69,7 +69,7 @@ P.shopList = function (playerId) {
 P.buy = function (playerId, itemId, qty = 1) {
   const p = this.P(playerId);
   if (!p) return this._err('NO_PLAYER', 'unknown player');
-  const w = BY_ID[itemId];
+  const w = typeof itemId === 'string' ? BY_ID[itemId] : undefined;
   if (!w || w.idx === 0) return this._err('BAD_ARGS', 'unknown item');
   if (w.arms > this.options.armsLevel) return this._err('ARMS', 'arms level too low');
   if (w.id === 'fuel_tank' && p.tankType === 'fixed') return this._err('IMMOBILE', 'fixed turret cannot use fuel');
@@ -101,12 +101,13 @@ P.buy = function (playerId, itemId, qty = 1) {
 P.sellOffer = function (playerId, itemId, qty = 1) {
   const p = this.P(playerId);
   if (!p) return this._err('NO_PLAYER', 'unknown player');
-  const w = BY_ID[itemId];
+  const w = typeof itemId === 'string' ? BY_ID[itemId] : undefined;
   if (!w || w.idx === 0 || w.id === 'auto_defense') return this._err('BAD_ARGS', 'cannot sell');
   qty = Math.trunc(qty);
   if (!(qty >= 1) || qty > p.inv[w.idx]) return this._err('BAD_ARGS', 'qty');
   const ratio = this.options.freeMarket ? 0.65 : 0.8;
   const offer = Math.trunc(this._curPrice(w) / w.bundle * qty * ratio);
+  if (!Number.isFinite(offer) || offer < 0) return this._err('BAD_ARGS', 'cannot sell');   // never credit a non-numeric offer
   return { ok: true, offer, qty, item: w.id };
 };
 P.sell = function (playerId, itemId, qty = 1, expectedOffer) {

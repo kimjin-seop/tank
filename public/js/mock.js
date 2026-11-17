@@ -34,7 +34,7 @@ export class MockServer {
     });
   }
   now() { return Date.now(); }
-  send(m) { const msg = { ...m }; if (!('serverTime' in msg) && /^(turn|shop_turn|round_start|game_start|welcome)$/.test(m.t)) msg.serverTime = this.now(); setTimeout(() => this.deliver(JSON.parse(JSON.stringify(msg))), 15); }
+  send(m) { const msg = { ...m }; if (!('serverTime' in msg) && /^(turn|shop_open|round_start|game_start|welcome)$/.test(m.t)) msg.serverTime = this.now(); setTimeout(() => this.deliver(JSON.parse(JSON.stringify(msg))), 15); }
   after(ms, fn) { const h = setTimeout(() => { this.timers.delete(h); fn(); }, ms); this.timers.add(h); return h; }
   every(ms, fn) { setInterval(fn, ms); }
   cancel(h) { clearTimeout(h); this.timers.delete(h); }
@@ -189,7 +189,7 @@ export class MockServer {
   }
 
   inv(id) { const p = this.game.players.get(id); return { cash: p.cash, score: p.score, items: { ...p.items } }; }
-  sendInv(interest) { const me = this.game.seats.find(s => s.name === this.me); if (!me) return; const t = this.game.tanks && this.T(me.id); this.send({ t: 'me', inventory: this.inv(me.id), tank: t ? { ...this.tankView(t), cash: this.game.players.get(me.id).cash } : null, ...(interest != null ? { interest } : {}), serverTime: this.now() }); }
+  sendInv(interest) { const me = this.game.seats.find(s => s.name === this.me); if (!me) return; const t = this.game.tanks && this.T(me.id); this.send({ t: 'me', inventory: this.inv(me.id), tank: t ? { ...this.tankView(t), cash: this.game.players.get(me.id).cash } : null, ...(interest != null ? { interest } : {}), ...(this.shopOpenFor(me.id) ? { shop: this.shopList(me.id) } : {}), serverTime: this.now() }); }
 
   genTerrain() {
     const g = this.game, mask = new Uint8Array(W * H), ph = Math.random() * 10, amp = 50 + Math.random() * 60;
@@ -330,17 +330,17 @@ export class MockServer {
         return this.sendInv();
       }
       case 'buy': {
-        if (!g.shop || g.shop.playerId !== pid) return this.err('NOT_YOUR_SHOP', '지금은 당신의 상점 차례가 아닙니다', ref);
+        if (!this.shopOpenFor(pid)) return this.err('SHOP_DONE', '구매를 완료한 상태입니다', ref);
         const it = PRICE.get(m.item), p = g.players.get(pid);
         if (!it) return this.err('INVALID_INPUT', '입력 값이 올바르지 않습니다', ref);
         if (p.cash < it.price) return this.err('ENGINE_REJECT', '현금이 부족합니다', ref);
         const owned = p.items[m.item] || 0; if (owned >= 99) return this.err('ENGINE_REJECT', '보유 한도(99개)입니다', ref);
         const add = Math.min(it.bundle, 99 - owned), cost = add < it.bundle ? Math.round(it.price / it.bundle * add * 1.2) : it.price;
         p.cash -= cost; p.items[m.item] = owned + add;
-        return this.send({ t: 'shop_result', ok: true, action: 'buy', item: m.item, qty: 1, state: { cost, added: add, cash: p.cash }, snapshot: { inventory: this.inv(pid) } });
+        return this.send({ t: 'shop_result', ok: true, action: 'buy', item: m.item, qty: 1, state: { cost, added: add, cash: p.cash }, snapshot: { inventory: this.inv(pid) }, shop: this.shopList(pid) });
       }
       case 'sell_quote': {
-        if (!g.shop || g.shop.playerId !== pid) return this.err('NOT_YOUR_SHOP', '지금은 당신의 상점 차례가 아닙니다', ref);
+        if (!this.shopOpenFor(pid)) return this.err('SHOP_DONE', '구매를 완료한 상태입니다', ref);
         if (m.item === 'baby_missile') return this.err('ENGINE_REJECT', '베이비 미사일은 팔 수 없습니다', ref);
         const p = g.players.get(pid); if ((p.items[m.item] || 0) < m.qty) return this.err('ENGINE_REJECT', '보유 수량이 부족합니다', ref);
         const it = PRICE.get(m.item); g.pending = { item: m.item, qty: m.qty, quote: Math.round(it.price / it.bundle * m.qty * 0.8) };
@@ -351,9 +351,14 @@ export class MockServer {
         const p = g.players.get(pid);
         if (m.t === 'sell_accept') { p.items[g.pending.item] -= g.pending.qty; p.cash += g.pending.quote; }
         g.pending = null;
-        return this.send({ t: 'shop_result', ok: true, action: m.t === 'sell_accept' ? 'sell' : 'sell_reject', snapshot: { inventory: this.inv(pid) } });
+        return this.send({ t: 'shop_result', ok: true, action: m.t === 'sell_accept' ? 'sell' : 'sell_reject', snapshot: { inventory: this.inv(pid) }, shop: this.shopList(pid) });
       }
-      case 'shop_done': if (!g.shop || g.shop.playerId !== pid) return this.err('NOT_YOUR_SHOP', '지금은 당신의 상점 차례가 아닙니다', ref); this.cancel(g.shopTimer); return this.nextShop();
+      case 'shop_done': if (!this.shopOpenFor(pid)) return this.err('SHOP_DONE', '구매를 완료한 상태입니다', ref); g.pending = null; return this.shopDone(pid);
+      case 'shop_reopen': { // 완료 취소: 마감 전이면 다시 구매 화면으로
+        if (!g.shop || !g.shop.ids.includes(pid) || !g.shop.doneIds.includes(pid)) return this.err('WRONG_PHASE', '지금은 할 수 없는 행동입니다', ref);
+        g.shop.doneIds = g.shop.doneIds.filter(id => id !== pid);
+        this.send({ t: 'shop_progress', doneIds: [...g.shop.doneIds] }); return this.sendInv();
+      }
       default: return this.err('UNKNOWN_TYPE', '알 수 없는 요청입니다', ref);
     }
   }
@@ -512,26 +517,46 @@ export class MockServer {
     const p = this.game.players.get(pid), arms = this.game.opts.armsLevel;
     return [...PRICE.values()].filter(it => it.arms <= arms).map(it => ({ id: it.id, price: it.price, bundle: it.bundle, unitPrice: it.price / it.bundle, owned: p.items[it.id] || 0, arms: it.arms, allowed: true, affordable: p.cash >= it.price }));
   }
+  // 상점: 전원 동시 구매(PROTOCOL shop_open/shop_progress). 각자 완료, 전원 완료 또는 공통 마감이면 다음 라운드
+  shopOpenFor(pid) { const sh = this.game?.shop; return !!sh && sh.ids.includes(pid) && !sh.doneIds.includes(pid); }
   beginShop() {
-    const g = this.game; g.shopQueue = g.seats.map(s => s.id).filter(id => g.players.get(id).cash > 0); this.nextShop();
-  }
-  nextShop() {
-    const g = this.game; g.shop = null; g.pending = null;
-    while (g.shopQueue.length) {
-      const pid = g.shopQueue.shift(), seat = g.seats.find(s => s.id === pid);
-      if (seat.kind === 'computer') continue; // 컴퓨터는 즉시 구매(시연: 생략)
-      if (seat.name !== this.me) { // 다른 사람 차례: '구매 중' 대기 화면 시연(4초 뒤 끝냄)
-        g.shop = { playerId: pid, deadline: this.now() + 4000, limitMs: 4000 };
-        this.send({ t: 'shop_turn', ...g.shop });
-        g.shopTimer = this.after(4000, () => this.nextShop());
-        return;
-      }
-      const limitMs = g.opts.shopLimitSec * 1000;
-      g.shop = { playerId: pid, deadline: this.now() + limitMs, limitMs };
-      this.send({ t: 'shop_turn', ...g.shop }); this.sendInv();
-      g.shopTimer = this.after(limitMs, () => { this.send({ t: 'toast', code: 'SHOP_TIMEOUT', msg: `상점 시간 초과! ${seat.name}님의 구매가 종료됩니다`, params: { playerId: pid, name: seat.name } }); this.nextShop(); });
-      return;
+    const g = this.game; g.pending = null;
+    const ids = g.seats.map(s => s.id).filter(id => g.players.get(id).cash > 0);
+    if (!ids.length) { this.send({ t: 'shop_end' }); return this.after(200, () => this.beginRound()); }
+    const limitMs = g.opts.shopLimitSec * 1000, doneIds = [];
+    g.shop = { deadline: this.now() + limitMs, limitMs, ids, doneIds };
+    for (const id of ids) { // 컴퓨터는 시작 즉시 구매·완료
+      const seat = g.seats.find(s => s.id === id);
+      if (seat.kind === 'computer') { if (g.opts.computersBuy) this.aiShop(id); doneIds.push(id); }
     }
+    this.send({ t: 'shop_open', ...g.shop }); this.sendInv();
+    if (doneIds.length >= ids.length) return this.endShop();
+    // 다른 사람(시연용 가짜 참가자)은 몇 초 뒤 구매를 마친다
+    for (const id of ids) {
+      const seat = g.seats.find(s => s.id === id);
+      if (seat.kind === 'human' && seat.name !== this.me) this.after(RI(3000, 9000), () => { if (this.shopOpenFor(id)) { this.aiShop(id); this.shopDone(id); } });
+    }
+    const ref = g.shop;
+    g.shopTimer = this.after(limitMs, () => { if (g.shop !== ref) return; this.send({ t: 'toast', code: 'SHOP_TIMEOUT', msg: '상점 시간 초과! 구매가 종료됩니다' }); this.endShop(); });
+  }
+  aiShop(pid) {
+    const p = this.game.players.get(pid);
+    for (let k = 0; k < 3; k++) {
+      const can = this.shopList(pid).filter(it => it.affordable && it.owned < 99 && it.id !== 'baby_missile'); if (!can.length) return;
+      const it = can[RI(0, can.length - 1)];
+      p.cash -= it.price; p.items[it.id] = Math.min(99, (p.items[it.id] || 0) + it.bundle);
+    }
+  }
+  shopDone(pid) {
+    const sh = this.game.shop; if (!sh || sh.doneIds.includes(pid)) return;
+    sh.doneIds.push(pid);
+    this.send({ t: 'shop_progress', doneIds: [...sh.doneIds] });
+    if (sh.ids.every(id => sh.doneIds.includes(id))) this.endShop();
+  }
+  endShop() {
+    const g = this.game; if (!g.shop) return;
+    if (g.shopTimer) this.cancel(g.shopTimer);
+    g.shop = null; g.pending = null;
     this.send({ t: 'shop_end' });
     this.after(200, () => this.beginRound());
   }

@@ -18,19 +18,26 @@ export class ShopView {
   isOpen() { return !!this.el; }
   destroy() { this.close(); }
 
-  turn(m) {
-    this.cur = m;
-    if (m.items) this.items = m.items;
-    if (m.snapshot?.inventory) { this.G.inv = m.snapshot.inventory; this.G.invFresh = true; }
+  // shop_open / game_resume.shop: 전원 동시 구매 {deadline, limitMs, ids, doneIds}
+  start(m) {
+    this.cur = { deadline: m.deadline, limitMs: m.limitMs, ids: m.ids || [], doneIds: m.doneIds || [] };
     this.open();
-    const name = this.G.seats.get(m.playerId)?.name || '';
-    announce(m.playerId === this.G.me ? '내 상점 차례입니다' : `구매 중: ${name}`);
+    announce(this.mode() === 'buy' ? '상점이 열렸습니다' : this.progText());
   }
+  // shop_progress {doneIds}: 내 상태(구매/완료)가 바뀌면 화면 전환, 아니면 현황 줄만 갱신
+  progress(m) {
+    if (!this.cur) return;
+    const before = this.mode();
+    this.cur.doneIds = m.doneIds || [];
+    if (this.mode() !== before) { this.closeSell(); this.render(); } else this.renderProg();
+  }
+  setItems(list) { if (Array.isArray(list)) this.items = list; }
   result(m) {
-    if (m.items) this.items = m.items;
-    if (m.action === 'sell' || m.action === 'sell_reject') { this.sell?.L.close(); this.sell = null; }
+    this.setItems(m.shop || m.items);
+    if (m.action === 'sell' || m.action === 'sell_reject') this.closeSell();
     this.refresh();
   }
+  closeSell() { if (this.sell) { this.sell.decided = true; this.sell.L.close(); this.sell = null; } }
   quote(m) { if (this.sell && this.sell.item === m.item) this.sell.show(m.quote, m.qty); }
 
   open() {
@@ -45,7 +52,7 @@ export class ShopView {
   }
   close() {
     if (!this.el) return;
-    this.sell?.L.close(); this.sell = null;
+    this.closeSell();
     this.el.remove(); this.el = null; this.cur = null;
     if (!this.host.children.length) this.host.style.pointerEvents = 'none';
     window.removeEventListener('keydown', this.onKey);
@@ -53,7 +60,20 @@ export class ShopView {
   }
   refresh() { if (this.el) this.renderBody(); }
 
-  mine() { return this.cur && this.cur.playerId === this.G.me; }
+  // 'buy' = 구매 중, 'done' = 완료 후 대기(다시 열기 가능), 'wait' = 상점 대상 아님(현금 0 등)
+  mode() {
+    const c = this.cur, me = this.G.me;
+    if (!c || !c.ids.includes(me)) return 'wait';
+    return c.doneIds.includes(me) ? 'done' : 'buy';
+  }
+  mine() { return !!this.cur && this.mode() === 'buy'; }
+  progText() {
+    const c = this.cur; if (!c || !c.ids.length) return '';
+    const left = c.ids.filter(id => !c.doneIds.includes(id));
+    const names = left.map(id => this.G.seats.get(id)?.name || id).join(', ');
+    return `완료 ${c.ids.length - left.length}/${c.ids.length}` + (left.length ? ` · 대기: ${names}` : '');
+  }
+  renderProg() { if (this.progEl) { const t = this.progText(); this.progEl.textContent = t; this.progEl.title = t; } }
   cash() { return this.G.inv?.cash ?? 0; }
   owned(id) { return id === 'baby_missile' ? MAX : (this.G.inv?.items?.[id] || 0); }
 
@@ -67,18 +87,21 @@ export class ShopView {
     const el = this.el; clear(el);
     this.timerTxt = h('span.tt'); this.timerBar = h('i');
     const timer = h('div.timer', { role: 'timer', 'aria-label': '상점 남은 시간' }, this.timerTxt, h('div.tb', this.timerBar));
-    if (!this.mine()) {
-      const name = this.G.seats.get(this.cur?.playerId)?.name || '';
+    this.progEl = h('div.shop-prog', { role: 'status' });
+    this.waitTxt = null;
+    const mode = this.mode();
+    if (mode !== 'buy') {
       this.waitTxt = h('b');
+      const reopen = mode === 'done' ? h('button.btn', { type: 'button', onclick: () => this.reopen() }, '다시 열기') : null;
       el.append(h('header.shop-head', h('h1', '상점'), h('div.spacer'), timer),
-        h('div.wait-shop', h('div.muted', '구매 중'), h('h2', name), this.waitTxt));
-      this.tick(); return;
+        h('div.wait-shop', h('h2', mode === 'done' ? '구매 완료' : '구매 대기'), this.waitTxt, this.progEl, reopen));
+      this.renderProg(); this.tick(); reopen?.focus(); return;
     }
     this.cashEl = h('b');
     const head = h('header.shop-head',
       h('h1', '상점'),
       h('div.money', h('div', h('small', '현금'), this.cashEl), h('div', h('small', '이자'), h('b', '+' + fmtMoney(this.G.interest || 0)))),
-      h('div.spacer'), timer,
+      this.progEl, timer,
       h('button.btn.small', { type: 'button', title: '현황 [u]', onclick: () => this.status() }, '현황'),
       h('button.btn.primary', { type: 'button', title: '완료 [Esc]', onclick: () => this.done() }, '완료'));
     const search = h('input', { type: 'search', placeholder: '검색', 'aria-label': '검색', value: this.q, oninput: () => { this.q = search.value.trim(); this.renderBody(); } });
@@ -87,7 +110,7 @@ export class ShopView {
     this.grid = h('div.item-grid', { role: 'list' });
     this.mineEl = h('aside.mine', { 'aria-label': '내 장비', tabindex: '-1' });
     el.append(head, h('div.shop-body', h('div.shop-main', tabBar, h('div.shop-filter', this.chips, h('div.spacer'), search), this.grid), this.mineEl));
-    this.renderBody(); this.tick();
+    this.renderProg(); this.renderBody(); this.tick();
   }
 
   renderBody() {
@@ -171,7 +194,9 @@ export class ShopView {
     const G = this.G, row = (k, v) => h('div.row', { style: { minHeight: '36px', borderBottom: '1px solid var(--line)' } }, h('span.grow.muted', k), h('b', v));
     openLayer({ title: '현황', kind: 'modal', body: [row('남은 라운드', String(Math.max(0, (G.rounds || 0) - (G.round || 0)))), row('현금', fmtMoney(this.cash())), row('이자', fmtMoney(G.interest || 0))] });
   }
+  // 화면 전환은 서버의 shop_progress 로만 한다(거절되면 토스트)
   done() { if (this.mine()) net.send('shop_done'); }
+  reopen() { if (this.cur && this.mode() === 'done') net.send('shop_reopen'); }
 
   tick() {
     if (!this.el || !this.cur) return;

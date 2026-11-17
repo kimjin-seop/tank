@@ -18,7 +18,7 @@ export const DEFAULT_LOBBY_CONFIG = {
   chatHistory: 50,
 };
 
-const GAME_TYPES = new Set(['fire', 'aim', 'act', 'retreat', 'buy', 'sell_quote', 'sell_accept', 'sell_reject', 'shop_done']);
+const GAME_TYPES = new Set(['fire', 'aim', 'act', 'retreat', 'buy', 'sell_quote', 'sell_accept', 'sell_reject', 'shop_done', 'shop_reopen']);
 
 export class Lobby {
   constructor({ clock, engine, config = {}, gameConfig = {}, rng = Math.random, log = () => {} }) {
