@@ -17,7 +17,7 @@ npm test
 
 ## 서버 배포 (pm2 + nginx)
 
-- 도메인: tank.oddplay.kr, 앱 포트 **3100** (같은 서버의 liero가 3000을 사용하므로 충돌 주의)
+- 도메인: tank.oddplay.kr, 앱 포트 **3200** (같은 서버의 liero가 3000을 사용하므로 충돌 주의)
 - 방/세션이 메모리에 있어 프로세스는 반드시 1개(instances: 1)이며, 재시작하면 진행 중인 게임이 사라진다.
 
 ```bash
@@ -25,7 +25,7 @@ npm test
 git clone <저장소 URL> /data/www/tank && cd /data/www/tank
 npm ci --omit=dev
 
-# 2) pm2 시작 (PORT 3100, HOST 127.0.0.1)
+# 2) pm2 시작 (PORT 3200, HOST 127.0.0.1)
 pm2 start deploy/ecosystem.config.cjs
 pm2 save
 
