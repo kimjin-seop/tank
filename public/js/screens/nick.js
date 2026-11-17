@@ -10,7 +10,7 @@ export function mount(root) {
   const f = textField({ label: '닉네임', placeholder: '2~12자', maxLength: 12, autofocus: true, onEnter: () => go() });
   const btn = h('button.btn.primary', { type: 'submit', style: { width: '100%' } }, '입장');
   const form = h('form.card.nick-card', { onsubmit: e => { e.preventDefault(); go(); } },
-    h('h1.title.brand', '스코치드 어스'),
+    h('h1.title.brand', '스코치드 어스 포에버'),
     h('div.sub', '모든 게임의 어머니'),
     f, btn);
   root.append(h('div.nick-screen', form));

@@ -1,5 +1,5 @@
 // 서버 진입점: HTTP 정적 서빙(public/, assets/, data/) + 같은 포트의 WebSocket(/ws).
-// 실행: node server/index.js   (PORT 환경변수, 기본 3000)
+// 실행: node server/index.js   (PORT 환경변수 기본 3000, HOST 환경변수 기본 0.0.0.0)
 
 import http from 'node:http';
 import fs from 'node:fs';
@@ -85,7 +85,7 @@ export async function createServer({ engine, clock = realClock, config, gameConf
   return {
     lobby, httpServer, wss,
     listen: (port = Number(process.env.PORT) || 3000) => new Promise((resolve) => {
-      httpServer.listen(port, () => resolve(httpServer.address().port));
+      httpServer.listen(port, process.env.HOST || "0.0.0.0", () => resolve(httpServer.address().port));
     }),
     close: () => new Promise((resolve) => {
       clearInterval(hb);

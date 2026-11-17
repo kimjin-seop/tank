@@ -9,7 +9,7 @@ import { optionsForm } from './optionsForm.js';
 export function mount(root, app) {
   const list = h('div.room-list', { role: 'list', 'aria-label': '방 목록' });
   const screen = h('div.screen',
-    h('header.topbar', h('span.brand', '스코치드 어스'), h('div.spacer'), h('span.muted', '닉네임: '), h('b', app.nick || ''),
+    h('header.topbar', h('span.brand', '스코치드 어스 포에버'), h('div.spacer'), h('span.muted', '닉네임: '), h('b', app.nick || ''),
       h('button.icon-btn', { type: 'button', 'aria-label': '새로고침', title: '새로고침', onclick: () => net.send('list_rooms') }, '↻')),
     h('div.content',
       h('div.room-head', h('h1', '방 목록'), h('div.spacer'), h('button.btn.primary', { type: 'button', onclick: () => openCreate(app) }, '방 만들기')),
