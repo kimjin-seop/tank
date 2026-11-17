@@ -2677,6 +2677,34 @@
       "type": "html",
       "usage": "아이템 아이콘 자체 QA 미리보기(빌드 산출물)",
       "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)"
+    },
+    {
+      "key": "ui.title.pixel",
+      "path": "ui/ui_title_scorched_earth.svg",
+      "type": "svg",
+      "size": [
+        95,
+        8
+      ],
+      "usage": "닉네임·로비 픽셀 타이틀(정수배 표시, image-rendering: pixelated). public/css/retro.css --se-title",
+      "generator": "analysis/ui/_mock/build_mock.py (자체 5x7 글리프)",
+      "license": "자체 제작",
+      "qa": "pass",
+      "verify": true,
+      "verifyNote": "원작 로고 재현이 아니라 자체 디자인"
+    },
+    {
+      "key": "ui.bg.shaded",
+      "path": "ui/ui_bg_shaded_terrain.svg",
+      "type": "svg",
+      "size": [
+        1920,
+        1080
+      ],
+      "usage": "닉네임·로비·대기실 배경(cover, 아래 정렬). public/css/retro.css --se-bg",
+      "generator": "analysis/ui/_mock/build_mock.py (palette.json SHADED 하늘 + 지형 + 프로젝트 탱크 SVG)",
+      "license": "자체 제작",
+      "qa": "pass"
     }
   ],
   "rebuildItems": "node assets/items/_src/build.mjs"

@@ -1,0 +1,290 @@
+/* 레트로 스킨(시안 A 하이브리드, analysis/ui/tank_ui_spec.md): app.css 뒤에 덧씌움.
+   범위: body[data-view=nick|lobby|room] + 그 화면에서 뜨는 #layers/#toasts. 게임 화면(data-view=game)·부팅 로딩(속성 없음)은 영향 없음.
+   색은 원작 상점 창 캡처 측정값(사양 2.1), 에셋은 자체 제작 SVG 2개(/assets/ui/). 본문 글꼴은 시스템 고딕(폰트 파일 없음). */
+:root {
+  --se-face: #B6B6B6; --se-face-hi: #CACACA; --se-light: #DEDEDE; --se-white: #FFFFFF;
+  --se-shadow: #3C3C3C; --se-deep: #141414; --se-ink: #000000; --se-ink2: #3C3C3C; --se-dim: #5A5A5A;
+  --se-field: #DEDEDE; --se-log: #000000; --se-log-text: #DEDEDE; --se-wind: #A1A1FF;
+  --se-yellow: #FFFF00; --se-ok: #00A800; --se-cpu: #5454FF; --se-bad: #FF2828; --se-danger-text: #8A0000;
+  --se-font: "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", system-ui, sans-serif;
+  --se-mono: "Lucida Console", Consolas, ui-monospace, monospace;
+  --se-b: 2px;                         /* 베벨 두께(원작 1~3px @360x480 → 웹 2px 고정) */
+  --se-title: url(/assets/ui/ui_title_scorched_earth.svg);
+  --se-bg: url(/assets/ui/ui_bg_shaded_terrain.svg);
+  /* 볼록(원작 측정: 왼 흰, 위 DE, 아래 3C, 오른 14) */
+  --se-raised: inset var(--se-b) 0 0 var(--se-white), inset 0 var(--se-b) 0 var(--se-light), inset calc(-1 * var(--se-b)) 0 0 var(--se-deep), inset 0 calc(-1 * var(--se-b)) 0 var(--se-shadow);
+  /* 오목(원작 목록 행: 위·왼 3C, 아래·오른 DE) */
+  --se-sunken: inset var(--se-b) 0 0 var(--se-shadow), inset 0 var(--se-b) 0 var(--se-shadow), inset calc(-1 * var(--se-b)) 0 0 var(--se-light), inset 0 calc(-1 * var(--se-b)) 0 var(--se-light);
+  /* 창 홈 라인(원작: CA | 000 | CA) + 각진 그림자 */
+  --se-frame: 0 0 0 2px var(--se-ink), 0 0 0 4px var(--se-face-hi), 8px 8px 0 4px rgba(0,0,0,.45);
+}
+:is(body[data-view=nick], body[data-view=lobby], body[data-view=room]) {
+  color-scheme: light; color: var(--se-ink); font: 17px/1.45 var(--se-font); background: #1F1850;
+  /* app.css 다크 토큰을 이 3화면에서만 회색 톤으로 덮음(인라인 style 의 var(--line) 등 놓친 곳 대비) */
+  --line: #7A7A7A; --line2: var(--se-shadow); --text: var(--se-ink); --text2: var(--se-ink2); --muted: var(--se-ink2);
+  --accent: var(--se-ink); --accent2: var(--se-ink); --bg2: var(--se-field); --panel: var(--se-face); --panel2: var(--se-face);
+}
+:is([data-view=nick], [data-view=lobby], [data-view=room]) #app { background: var(--se-bg) center bottom / cover no-repeat, #1F1850; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) :is(.card, .btn, .badge, input, select, .icon-btn, .layer-panel, .toast) { border-radius: 0; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) :focus-visible { outline: 2px dotted var(--se-ink); outline-offset: -6px; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .muted { color: var(--se-ink2); }
+
+/* ---- 버튼: 볼록, 누르면 오목 + 글자 1px 이동. primary = 원작 기본 버튼 링(검정 2px) ---- */
+:is([data-view=nick], [data-view=lobby], [data-view=room]) :is(.btn, .icon-btn, .step) {
+  background: var(--se-face); color: var(--se-ink); border: 0; box-shadow: var(--se-raised); font-weight: 700; transition: none;
+}
+:is([data-view=nick], [data-view=lobby], [data-view=room]) :is(.btn, .icon-btn, .step):hover:not(:disabled) { background: var(--se-face-hi); border-color: transparent; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) :is(.btn, .icon-btn, .step):active:not(:disabled) { box-shadow: var(--se-sunken); transform: translate(1px, 1px); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) :is(.btn, .step):disabled { opacity: 1; color: var(--se-dim); text-shadow: 1px 1px 0 var(--se-white); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .btn.primary { background: var(--se-face); color: var(--se-ink); box-shadow: 0 0 0 2px var(--se-ink), var(--se-raised); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .btn.primary:hover:not(:disabled) { background: var(--se-face-hi); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .btn.primary:active:not(:disabled) { box-shadow: 0 0 0 2px var(--se-ink), var(--se-sunken); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .btn.primary::before { content: ""; width: 0; height: 0; border: 6px solid transparent; border-left: 8px solid currentColor; border-right: 0; margin-right: 4px; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .btn.danger { background: var(--se-face); color: var(--se-danger-text); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .btn.ok { background: var(--se-face); color: var(--se-ink); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .btn.ok::before { content: ""; width: 10px; height: 10px; background: var(--se-ok); box-shadow: 0 0 0 1px var(--se-ink); margin-right: 4px; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .btn { min-height: 48px; padding: 0 22px; font-size: 17px; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .btn.small { min-height: 40px; padding: 0 14px; font-size: 15px; }
+
+/* ---- 입력·선택: 오목 + 밝은 바탕 ---- */
+:is([data-view=nick], [data-view=lobby], [data-view=room]) :is(input[type=text], input[type=number], input:not([type]), select) {
+  background: var(--se-field); color: var(--se-ink); border: 0; box-shadow: var(--se-sunken); min-height: 48px; padding: 0 14px;
+}
+:is([data-view=nick], [data-view=lobby], [data-view=room]) input::placeholder { color: var(--se-dim); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) :is(input, select):focus { box-shadow: var(--se-sunken), 0 0 0 2px var(--se-ink); outline: none; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) :is(input, select):disabled { color: var(--se-dim); background-color: var(--se-face); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) select:not([multiple]) { /* 위 입력 규칙(0,2,1)보다 뒤·같은 특이도 */
+  appearance: none; -webkit-appearance: none; padding-right: 44px; min-height: 40px; font-size: 15px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 36' preserveAspectRatio='none'%3E%3Crect width='34' height='36' fill='%23B6B6B6'/%3E%3Crect width='34' height='2' fill='%23DEDEDE'/%3E%3Crect width='2' height='36' fill='%23FFFFFF'/%3E%3Crect y='34' width='34' height='2' fill='%233C3C3C'/%3E%3Crect x='32' width='2' height='36' fill='%23141414'/%3E%3Cpath d='M11 15h12l-6 7z' fill='%23000'/%3E%3C/svg%3E") right 2px top 2px / 34px calc(100% - 4px) no-repeat, var(--se-field);
+}
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .field-label { color: var(--se-ink); font-weight: 700; font-size: 15px; }
+
+/* ---- 배지: 오목 칩 + 색 사각(색만으로 구분하지 않음: 글자 항상 표시) ---- */
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .badge {
+  height: 28px; padding: 0 10px; gap: 6px; font-size: 14px; color: var(--se-ink); background: var(--se-face); border: 0; box-shadow: var(--se-sunken);
+}
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .badge:is(.host, .ready, .cpu, .off)::before { content: ""; width: 10px; height: 10px; box-shadow: 0 0 0 1px var(--se-ink); flex: none; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .badge.host::before { background: var(--se-yellow); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .badge.ready::before { background: var(--se-ok); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .badge.cpu::before { background: var(--se-cpu); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .badge.off::before { background: var(--se-bad); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .badge:is(.host, .ready, .cpu, .off) { background: var(--se-face); color: var(--se-ink); }
+
+/* ---- 상·하단 바: 원작 상태바(볼록 3px) ---- */
+:is([data-view=lobby], [data-view=room]) :is(.topbar, .bottombar) { background: var(--se-face); border: 0; box-shadow: inset 3px 0 0 var(--se-white), inset 0 3px 0 var(--se-light), inset -3px 0 0 var(--se-deep), inset 0 -3px 0 var(--se-shadow); min-height: 64px; padding-left: 18px; padding-right: 18px; position: relative; z-index: 2; }
+:is([data-view=lobby], [data-view=room]) .topbar h1 { font-size: 24px; }
+:is([data-view=lobby], [data-view=room]) .topbar .brand {
+  flex: none; width: calc(95px * 3); height: calc(8px * 3); background: var(--se-title) left center / 100% 100% no-repeat; color: transparent; font-size: 0; image-rendering: pixelated;
+}
+[data-view=lobby] .topbar b { font-size: 18px; margin-right: 6px; white-space: nowrap; }
+[data-view=lobby] .topbar .icon-btn { width: 48px; height: 48px; font-size: 22px; flex: none; }
+
+/* ---- 창(창 홈 라인 + 각진 그림자). 제목은 원작처럼 창 안 왼쪽 위 글자 + 홈 구분선 ---- */
+:is([data-view=lobby], [data-view=room]) .content { padding: 40px 32px; }
+
+/* 로비 */
+[data-view=lobby] .room-head, [data-view=lobby] .room-list { max-width: 1240px; }
+[data-view=lobby] .content { display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; justify-items: center; }
+[data-view=lobby] .content::before { content: ""; grid-row: 1 / 3; grid-column: 1; width: min(1240px, 100%); height: 100%; background: var(--se-face); box-shadow: var(--se-frame); }
+[data-view=lobby] .room-head { grid-row: 1; grid-column: 1; } [data-view=lobby] .room-list { grid-row: 2; grid-column: 1; }
+[data-view=lobby] .room-head {
+  width: 100%; margin: 0; padding: 22px 28px 16px; background: none; position: relative; z-index: 1;
+}
+[data-view=lobby] .room-head::after { content: ""; position: absolute; left: 28px; right: 28px; bottom: 0; height: 2px; background: var(--se-shadow); box-shadow: 0 2px 0 var(--se-light); }
+[data-view=lobby] .room-head h1 { font-size: 26px; }
+[data-view=lobby] .room-list { width: 100%; gap: 10px; padding: 18px 28px 28px 52px; position: relative; z-index: 1; }
+[data-view=lobby] .room-row > .badge { justify-self: start; }
+[data-view=lobby] .room-row {
+  position: relative; grid-template-columns: minmax(0, 1fr) 90px 110px 120px 90px; min-height: 76px; padding: 10px 22px;
+  background: var(--se-face); border: 0; box-shadow: var(--se-sunken); color: var(--se-ink);
+}
+[data-view=lobby] .room-row:hover:not(:disabled) { background: var(--se-face-hi); }
+[data-view=lobby] .room-row:is(:hover, :focus-visible):not(:disabled)::before {
+  content: ""; position: absolute; left: -22px; top: 50%; margin-top: -9px; border: 9px solid transparent; border-left: 12px solid var(--se-ink); border-right: 0;
+}
+[data-view=lobby] .room-row:disabled { opacity: 1; color: var(--se-dim); }
+[data-view=lobby] .room-row:disabled .badge { color: var(--se-dim); }
+/* 제목은 블록 유지(긴 제목 말줄임이 동작하도록 flex 로 바꾸지 않음), 자물쇠는 inline-block */
+[data-view=lobby] .room-row .t { font-size: 20px; font-weight: 700; }
+[data-view=lobby] .room-row .h { font-size: 14px; color: inherit; opacity: .85; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+[data-view=lobby] .room-row .tabular { font: 700 20px var(--se-mono); text-align: right; }
+[data-view=lobby] .room-row .muted { color: var(--se-danger-text); font-weight: 700; font-size: 14px; }
+[data-view=lobby] .lock { display: inline-block; width: 14px; height: 12px; background: currentColor; position: relative; margin: 8px 10px 0 0; vertical-align: baseline; }
+[data-view=lobby] .lock::before { content: ""; position: absolute; left: 2px; top: -8px; width: 6px; height: 7px; border: 2px solid currentColor; border-bottom: 0; }
+[data-view=lobby] .empty { background: var(--se-face); color: var(--se-ink2); box-shadow: var(--se-sunken); border: 0; }
+
+/* 닉네임: 타이틀은 h1::before(픽셀 SVG), 창은 form::after(필드+버튼 두 줄에 걸친 격자 항목) */
+[data-view=nick] .nick-screen { background: transparent; overflow: auto; }
+[data-view=nick] .nick-card {
+  width: min(1120px, 100%); padding: 0; background: none; border: 0; display: grid; grid-template-columns: 1fr; justify-items: center; position: relative;
+}
+[data-view=nick] .nick-card .title {
+  font-size: 56px; font-weight: 900; color: var(--se-white); background: none; -webkit-background-clip: border-box; background-clip: border-box;
+  text-shadow: 4px 4px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000; letter-spacing: .02em; margin: 0; text-align: center; display: grid; justify-items: center; gap: 26px;
+}
+[data-view=nick] .nick-card .title::before {
+  content: ""; display: block; width: calc(95px * 11); max-width: 100%; aspect-ratio: 95 / 8; background: var(--se-title) center / contain no-repeat; image-rendering: pixelated;
+}
+[data-view=nick] .nick-card .sub { color: var(--se-light); font-size: 22px; font-weight: 700; margin: 8px 0 64px; text-shadow: 2px 2px 0 #000; }
+[data-view=nick] .nick-card > * { grid-column: 1; } /* ::after 와 같은 칸에 겹치도록 열 고정 */
+[data-view=nick] .nick-card .title { grid-row: 1; } [data-view=nick] .nick-card .sub { grid-row: 2; }
+[data-view=nick] .nick-card .field { grid-row: 3; } [data-view=nick] .nick-card > .btn { grid-row: 4; }
+[data-view=nick] .nick-card .field, [data-view=nick] .nick-card > .btn { width: 520px !important; max-width: calc(100% - 56px); position: relative; z-index: 1; } /* nick.js 인라인 width:100% 를 덮음 */
+[data-view=nick] .nick-card::after {
+  content: ""; grid-row: 3 / 5; grid-column: 1; width: 584px; max-width: 100%; align-self: stretch; margin: -28px 0 -32px;
+  background: var(--se-face); box-shadow: var(--se-frame);
+}
+[data-view=nick] .nick-card .field { margin-bottom: 18px; gap: 10px; }
+[data-view=nick] .nick-card .field-label { font-size: 18px; padding-bottom: 8px; border-bottom: 2px solid var(--se-shadow); box-shadow: 0 2px 0 var(--se-light); }
+[data-view=nick] .nick-card input { min-height: 56px; font-size: 22px; font-family: var(--se-mono); }
+[data-view=nick] .nick-card > .btn { min-height: 56px; font-size: 20px; }
+
+/* 대기실 */
+[data-view=room] .room-grid { max-width: 1520px; gap: 40px; grid-template-columns: minmax(0, 1.5fr) minmax(360px, 1fr); }
+[data-view=room] .room-grid > section:first-child { background: var(--se-face); box-shadow: var(--se-frame); padding: 20px 24px 24px; align-self: start; }
+[data-view=room] .room-grid > section:first-child > div:first-child { margin-bottom: 16px !important; padding-bottom: 14px; border-bottom: 2px solid var(--se-shadow); box-shadow: 0 2px 0 var(--se-light); }
+[data-view=room] .slots { gap: 10px; }
+[data-view=room] .slot { grid-template-columns: 34px 96px minmax(0, 1fr) auto; min-height: 84px; padding: 8px 14px; background: var(--se-face); border: 0; box-shadow: var(--se-sunken); gap: 14px; }
+[data-view=room] .slot.me { box-shadow: var(--se-sunken), inset 0 0 0 4px var(--se-face), inset 0 0 0 6px var(--se-ink); }
+[data-view=room] .slot.empty { opacity: 1; border: 0; grid-template-columns: 34px 1fr auto; background: #A9A9A9; }
+[data-view=room] .slot.empty .muted { color: var(--se-ink2); text-align: left; padding-left: 4px; }
+[data-view=room] .slot canvas { width: 96px; height: 64px; display: block; object-fit: contain; }
+[data-view=room] .slot .marker { width: 30px; height: 30px; }
+[data-view=room] .slot .name { font-size: 20px; }
+[data-view=room] .slot .meta { gap: 6px; margin-top: 4px; }
+[data-view=room] .chat { background: var(--se-face); border: 0; box-shadow: var(--se-frame); padding: 20px 24px 24px; }
+[data-view=room] .chat .layer-head { padding: 0 0 14px; border-bottom: 2px solid var(--se-shadow); box-shadow: 0 2px 0 var(--se-light); margin-bottom: 16px; }
+[data-view=room] .chat .layer-head h2 { font-size: 20px; }
+[data-view=room] .chat-log { background: var(--se-log); color: var(--se-log-text); box-shadow: var(--se-sunken); padding: 14px 16px; gap: 6px; }
+[data-view=room] .chat-line { font-size: 16px; }
+[data-view=room] .chat-line b { color: #9EBDFF; }
+[data-view=room] .chat-line.sys { color: var(--se-wind); font-size: 15px; }
+[data-view=room] .chat-form { padding: 14px 0 0; border: 0; gap: 10px; }
+[data-view=room] .chat-form input { min-width: 0; }
+[data-view=room] .bottombar { padding-top: 10px; padding-bottom: max(10px, env(safe-area-inset-bottom)); }
+[data-view=room] .bottombar .btn { min-width: 132px; }
+[data-view=room] .bottombar .muted { color: var(--se-ink); font-weight: 700; }
+
+/* ---- 모달·드로어·토스트(이 3화면에서 뜨는 것): 창 규칙 공통. 전환 애니메이션 없음(원작처럼 즉시) ---- */
+:is([data-view=nick], [data-view=lobby], [data-view=room]) :is(.layer, .layer-panel, .toast) { transition: none; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .layer { background: rgba(0,0,0,.55); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .layer.modal { padding: 20px; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .layer-panel { background: var(--se-face); color: var(--se-ink); border: 0; box-shadow: var(--se-frame); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .layer-panel.drawer { box-shadow: 0 0 0 2px var(--se-ink), -8px 0 0 2px rgba(0,0,0,.45); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .layer-panel .layer-head { padding: 12px 0 12px 8px; margin: 0 14px; border-bottom: 2px solid var(--se-shadow); box-shadow: 0 2px 0 var(--se-light); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .layer-panel .layer-head h2 { font-size: 20px; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .layer-panel .layer-head .icon-btn { flex: none; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .layer-body { padding: 18px 22px; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .layer-foot { margin: 0 14px; padding: 14px 8px 16px; border-top: 2px solid var(--se-shadow); box-shadow: inset 0 2px 0 var(--se-light); gap: 12px; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .toast { background: var(--se-face); color: var(--se-ink); border: 0; box-shadow: var(--se-raised), 0 0 0 2px var(--se-ink); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .toast.error { border-left: 10px solid var(--se-bad); background: var(--se-face); color: var(--se-ink); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .toast.warn { border-left: 10px solid var(--se-yellow); background: var(--se-face); color: var(--se-ink); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .toast.ok { border-left: 10px solid var(--se-ok); background: var(--se-face); color: var(--se-ink); }
+
+/* ---- 2단계: 방 옵션 폼(optionsForm)·탱크 모양·설정 보기 컨트롤. 게임 화면 컨트롤은 data-view=game 이라 영향 없음 ---- */
+/* 슬라이더: 오목 홈 트랙 + 볼록 사각 손잡이 */
+:is([data-view=nick], [data-view=lobby], [data-view=room]) input[type=range]::-webkit-slider-runnable-track { height: 10px; border-radius: 0; background: var(--se-field); box-shadow: var(--se-sunken); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) input[type=range]::-moz-range-track { height: 10px; border-radius: 0; background: var(--se-field); box-shadow: var(--se-sunken); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) input[type=range]::-webkit-slider-thumb { width: 16px; height: 30px; margin-top: -10px; border-radius: 0; border: 0; background: var(--se-face); box-shadow: var(--se-raised), 0 0 0 1px var(--se-ink); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) input[type=range]::-moz-range-thumb { width: 16px; height: 30px; border-radius: 0; border: 0; background: var(--se-face); box-shadow: var(--se-raised), 0 0 0 1px var(--se-ink); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) input[type=range]:focus { box-shadow: none; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) input[type=range]:focus-visible { outline: 2px dotted var(--se-ink); outline-offset: 0; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) input[type=range]:disabled { opacity: .55; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .range-row .val { color: var(--se-ink); font-family: var(--se-mono); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .step { border-radius: 0; font-size: 20px; }
+/* 프리셋 칩: 작은 볼록 버튼, 선택은 오목 */
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .chip { min-height: 34px; padding: 0 12px; border-radius: 0; border: 0; background: var(--se-face); color: var(--se-ink); box-shadow: var(--se-raised); font-weight: 700; font-size: 14px; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .chip:hover:not(:disabled) { background: var(--se-face-hi); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) :is(.chip[aria-pressed=true], .chip.on, .chip:active:not(:disabled)) { background: var(--se-light); color: var(--se-ink); box-shadow: var(--se-sunken); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .chip:disabled { color: var(--se-dim); cursor: not-allowed; }
+/* 세그먼트: 오목 틀 안에 볼록 버튼, 선택 항목은 눌린(오목) 밝은 면 + 왼쪽 검은 사각 */
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .segment { border: 0; border-radius: 0; background: var(--se-face); box-shadow: var(--se-sunken); padding: 4px; gap: 4px; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .seg-item label { border-radius: 0; color: var(--se-ink); background: var(--se-face); box-shadow: var(--se-raised); font-weight: 700; font-size: 15px; gap: 6px; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .seg-item label:hover { background: var(--se-face-hi); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .seg-item input:checked + label { background: var(--se-light); color: var(--se-ink); box-shadow: var(--se-sunken); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .seg-item input:checked + label::before { content: ""; width: 8px; height: 8px; background: var(--se-ink); flex: none; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .seg-item input:focus-visible + label { outline: 2px dotted var(--se-ink); outline-offset: -5px; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .seg-item input:disabled + label { opacity: 1; color: var(--se-dim); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .wall-dot { border-radius: 0; box-shadow: 0 0 0 1px var(--se-ink); }
+/* 스위치: 오목 홈 + 볼록 사각 손잡이, 켜짐은 녹색 홈 */
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .switch-track { border-radius: 0; background: #8A8A8A; box-shadow: var(--se-sunken); transition: none; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .switch-thumb { border-radius: 0; background: var(--se-face); box-shadow: var(--se-raised), 0 0 0 1px var(--se-ink); transition: none; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .switch input:checked + .switch-track { background: var(--se-ok); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .switch input:focus-visible + .switch-track { outline: 2px dotted var(--se-ink); outline-offset: 2px; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .switch input:disabled + .switch-track { opacity: .55; }
+/* 탭: 홈 구분선 위 볼록 탭, 선택 탭은 밝은 면 + 아래 검정 3px */
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .tabs { gap: 4px; border-bottom: 2px solid var(--se-shadow); box-shadow: 0 2px 0 var(--se-light); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .tab { color: var(--se-ink2); font-weight: 700; background: var(--se-face); box-shadow: inset 2px 0 0 var(--se-white), inset 0 2px 0 var(--se-light), inset -2px 0 0 var(--se-deep); border-bottom: 3px solid transparent; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .tab:hover { background: var(--se-face-hi); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .tab[aria-selected=true] { color: var(--se-ink); background: var(--se-light); border-bottom-color: var(--se-ink); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) details.adv summary { color: var(--se-ink); font-weight: 700; }
+/* 하늘 선택 */
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .sky-opt label { border: 0; border-radius: 0; background: var(--se-face); box-shadow: var(--se-raised); color: var(--se-ink); font-weight: 700; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .sky-opt label:hover { background: var(--se-face-hi); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .sky-opt .sw { border-radius: 0; border: 0; box-shadow: 0 0 0 1px var(--se-ink); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .sky-opt input:checked + label { background: var(--se-light); box-shadow: var(--se-sunken), 0 0 0 2px var(--se-ink); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .sky-opt input:focus-visible + label { outline: 2px dotted var(--se-ink); outline-offset: -5px; }
+/* 탱크 모양 카드 */
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .tank-card { background: var(--se-face); color: var(--se-ink); border: 0; box-shadow: var(--se-raised); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .tank-card:hover:not(:disabled) { background: var(--se-face-hi); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .tank-card[aria-pressed=true] { background: var(--se-light); box-shadow: var(--se-sunken), 0 0 0 2px var(--se-ink); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .tank-card:disabled { opacity: 1; color: var(--se-dim); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .tank-card:disabled canvas { opacity: .5; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .tank-card .d { color: var(--se-ink2); }
+
+/* ---- 터치: iOS 입력 포커스 확대 방지(16px 이상) ---- */
+@media (pointer: coarse) {
+  :is([data-view=nick], [data-view=lobby], [data-view=room]) :is(input[type=text], input[type=number], input:not([type]), select) { font-size: 16px; }
+}
+
+/* ---- 2열(≥1024): 슬롯이 많아(최대 10) 창 높이를 넘으면 왼쪽 창 안에서 스크롤. 창 테두리·채팅 창이 하단 바에 잘리지 않게 ---- */
+@media (min-width: 1024px) {
+  [data-view=room] .room-grid > section:first-child { max-height: 100%; overflow: auto; overscroll-behavior: contain; }
+}
+
+/* ---- 모바일 ---- */
+@media (max-width: 1023px) {
+  [data-view=room] .room-grid { grid-template-columns: 1fr; gap: 24px; }
+  [data-view=room] .chat { height: 380px; }
+  :is([data-view=lobby], [data-view=room]) .content { padding: 20px 16px; }
+}
+@media (max-width: 599px) {
+  :is(body[data-view=nick], body[data-view=lobby], body[data-view=room]) { font-size: 15px; }
+  :is([data-view=nick], [data-view=lobby], [data-view=room]) { --se-frame: 0 0 0 2px var(--se-ink), 0 0 0 4px var(--se-face-hi), 4px 4px 0 4px rgba(0,0,0,.45); }
+  [data-view=nick] .nick-card .title { font-size: 30px; gap: 14px; }
+  [data-view=nick] .nick-card .title::before { width: calc(95px * 3); }
+  [data-view=nick] .nick-card .sub { font-size: 16px; margin-bottom: 44px; }
+  [data-view=nick] .nick-card::after { width: calc(100% - 8px); }
+  [data-view=nick] .nick-card .field, [data-view=nick] .nick-card > .btn { width: calc(100% - 56px) !important; }
+  :is([data-view=lobby], [data-view=room]) .topbar .brand { width: calc(95px * 2); height: 16px; }
+  :is([data-view=lobby], [data-view=room]) .topbar h1 { font-size: 19px; }
+  :is([data-view=lobby], [data-view=room]) :is(.topbar, .bottombar) { padding-left: 12px; padding-right: 12px; }
+  [data-view=lobby] .topbar > .muted { display: none; } /* '닉네임:' 라벨 숨김, 닉네임 값만 */
+  [data-view=lobby] .topbar b { font-size: 16px; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  [data-view=room] .slot-actions { grid-column: 3 / -1; }
+  [data-view=lobby] .content { padding: 16px 10px; }
+  [data-view=lobby] .room-head { padding: 14px 14px 12px; }
+  [data-view=lobby] .room-head::after { left: 14px; right: 14px; }
+  [data-view=lobby] .room-head h1 { font-size: 20px; }
+  [data-view=lobby] .room-list { padding: 12px 14px 16px 30px; }
+  [data-view=lobby] .room-row { grid-template-columns: minmax(0, 1fr) auto auto; padding: 8px 12px; min-height: 64px; }
+  [data-view=lobby] .room-row:is(:hover, :focus-visible):not(:disabled)::before { left: -18px; }
+  [data-view=lobby] .room-row .t { font-size: 17px; }
+  [data-view=room] .room-grid > section:first-child, [data-view=room] .chat { padding: 14px; }
+  [data-view=room] .slot { grid-template-columns: 30px 64px minmax(0, 1fr); }
+  [data-view=room] .slot canvas { width: 64px; height: 44px; }
+  [data-view=room] .slot .name { font-size: 17px; }
+  [data-view=room] .bottombar .btn { min-width: 0; padding: 0 16px; }
+  :is([data-view=nick], [data-view=lobby], [data-view=room]) .layer.modal { padding: 10px; }
+  :is([data-view=nick], [data-view=lobby], [data-view=room]) .layer-body { padding: 14px 14px; }
+  :is([data-view=nick], [data-view=lobby], [data-view=room]) .layer-panel .layer-head, :is([data-view=nick], [data-view=lobby], [data-view=room]) .layer-foot { margin: 0 8px; }
+}
+/* 낮은 가로 화면(예: 844x390): 닉네임 세로 배치를 줄여 한 화면에 들어오게 */
+@media (max-height: 500px) and (min-width: 600px) {
+  [data-view=nick] .nick-card .title { font-size: 30px; gap: 10px; }
+  [data-view=nick] .nick-card .title::before { width: calc(95px * 4); }
+  [data-view=nick] .nick-card .sub { font-size: 16px; margin: 4px 0 40px; }
+  [data-view=nick] .nick-card input, [data-view=nick] .nick-card > .btn { min-height: 48px; }
+  :is([data-view=lobby], [data-view=room]) :is(.topbar, .bottombar) { min-height: 56px; }
+  :is([data-view=lobby], [data-view=room]) .content { padding: 16px; }
+}

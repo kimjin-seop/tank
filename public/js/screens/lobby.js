@@ -31,7 +31,7 @@ export function mount(root, app) {
         'aria-label': `${r.title}, ${r.players}/${r.maxPlayers}명, ${MODE[r.mode] || r.mode}, ${ROOM_STATE[r.status] || r.status}${full ? ', 가득 참' : ''}`,
         onclick: () => net.send('join_room', { roomId: r.id }),
       },
-        h('div', { style: { minWidth: 0 } }, h('div.t', r.locked ? '🔒 ' : '', r.title), h('div.h', r.host ? '방장 ' + r.host : '')),
+        h('div', { style: { minWidth: 0 } }, h('div.t', r.locked ? h('span.lock', { 'aria-hidden': 'true', title: '잠김' }) : '', r.title), h('div.h', r.host ? '방장 ' + r.host : '')),
         h('span.tabular', `${r.players}/${r.maxPlayers}`),
         h('span.badge.hide-m', MODE[r.mode] || r.mode),
         h('span.badge' + (playing ? '.off' : '.ready'), ROOM_STATE[r.status] || r.status),
