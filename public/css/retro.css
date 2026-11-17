@@ -288,3 +288,219 @@
   :is([data-view=lobby], [data-view=room]) :is(.topbar, .bottombar) { min-height: 56px; }
   :is([data-view=lobby], [data-view=room]) .content { padding: 16px; }
 }
+
+/* ===================================================================================
+   게임 화면 레트로 스킨(analysis/ui/tank_game_ui_spec.md, 시안 analysis/ui/_mock/retro_game.css 이식).
+   범위: body[data-view=game] 의 .game(HUD·조작·우 패널·채팅) + 게임 중 #layers·#toasts·최종 순위(.result).
+   캔버스 크기·touch-action·user-select·pointer-events 는 건드리지 않는다(색·베벨·글꼴만).
+   상점(.shop)은 어두운 톤 유지: 상점이 열려 있는 동안 뜨는 레이어(판매·현황)도 다크 그대로 두려고
+   레이어 규칙은 [data-view=game]:not(:has(.shop)) 아래에만 둔다.
+   =================================================================================== */
+:root {
+  --se-fire: #A80000; --se-fire-hi: #FF5454; --se-fire-lo: #540000; --se-fire-deep: #3A0000; --se-fire-hover: #C40000;
+  --se-chat-name: #9EBDFF;
+}
+
+/* ---- A. 레이어·토스트·폼 컨트롤 ---- */
+[data-view=game]:not(:has(.shop)) .layer-panel, [data-view=game] :is(.toast, .card) { border-radius: 0; }
+[data-view=game]:not(:has(.shop)) :is(.layer, .layer-panel), [data-view=game] .toast { transition: none; }
+[data-view=game]:not(:has(.shop)) .layer { background: rgba(0,0,0,.45); }
+[data-view=game]:not(:has(.shop)) .layer-panel {
+  color-scheme: light; background: var(--se-face); color: var(--se-ink); border: 0; box-shadow: var(--se-frame); font-family: var(--se-font);
+  --line: #7A7A7A; --line2: var(--se-shadow); --text: var(--se-ink); --text2: var(--se-ink2); --muted: var(--se-ink2);
+  --accent: var(--se-ink); --accent2: var(--se-ink); --bg2: var(--se-field); --panel: var(--se-face); --panel2: var(--se-face); --ok: var(--se-ok);
+}
+[data-view=game]:not(:has(.shop)) .layer-panel.sheet { box-shadow: 0 0 0 2px var(--se-ink), 0 0 0 4px var(--se-face-hi), 0 -6px 0 4px rgba(0,0,0,.35); }
+[data-view=game]:not(:has(.shop)) .layer-panel.drawer { box-shadow: 0 0 0 2px var(--se-ink), -8px 0 0 2px rgba(0,0,0,.45); }
+[data-view=game]:not(:has(.shop)) .layer-panel .layer-head { padding: 10px 0 10px 6px; margin: 0 14px; border-bottom: 2px solid var(--se-shadow); box-shadow: 0 2px 0 var(--se-light); }
+[data-view=game]:not(:has(.shop)) .layer-panel .layer-head h2 { font-size: 19px; }
+[data-view=game]:not(:has(.shop)) .layer-body { padding: 16px 20px; }
+[data-view=game]:not(:has(.shop)) .layer-foot { margin: 0 14px; padding: 12px 6px 14px; border-top: 2px solid var(--se-shadow); box-shadow: inset 0 2px 0 var(--se-light); gap: 12px; }
+[data-view=game] :is(.game, .result) :is(.btn, .icon-btn, .step), [data-view=game]:not(:has(.shop)) .layer-panel :is(.btn, .icon-btn, .step) {
+  background: var(--se-face); color: var(--se-ink); border: 0; border-radius: 0; box-shadow: var(--se-raised); font-weight: 700; transition: none;
+}
+[data-view=game] :is(.game, .result) :is(.btn, .icon-btn, .step):hover:not(:disabled), [data-view=game]:not(:has(.shop)) .layer-panel :is(.btn, .icon-btn, .step):hover:not(:disabled) { background: var(--se-face-hi); }
+[data-view=game] :is(.game, .result) :is(.btn, .icon-btn, .step):active:not(:disabled), [data-view=game]:not(:has(.shop)) .layer-panel :is(.btn, .icon-btn, .step):active:not(:disabled) { box-shadow: var(--se-sunken); transform: translate(1px, 1px); }
+[data-view=game] :is(.game, .result) :is(.btn, .step):disabled, [data-view=game]:not(:has(.shop)) .layer-panel :is(.btn, .step):disabled { opacity: 1; color: var(--se-dim); text-shadow: 1px 1px 0 var(--se-white); }
+[data-view=game] .result .btn.primary, [data-view=game]:not(:has(.shop)) .layer-panel .btn.primary { box-shadow: 0 0 0 2px var(--se-ink), var(--se-raised); }
+[data-view=game] .result .btn.primary::before, [data-view=game]:not(:has(.shop)) .layer-panel .btn.primary::before { content: ""; border: 6px solid transparent; border-left: 8px solid currentColor; border-right: 0; margin-right: 4px; }
+[data-view=game] .game .btn.danger, [data-view=game]:not(:has(.shop)) .layer-panel .btn.danger { background: var(--se-face); color: var(--se-danger-text); }
+[data-view=game] .game .btn.ok::before, [data-view=game]:not(:has(.shop)) .layer-panel .btn.ok::before { content: ""; width: 10px; height: 10px; background: var(--se-ok); box-shadow: 0 0 0 1px var(--se-ink); margin-right: 4px; }
+[data-view=game]:not(:has(.shop)) .layer-panel .btn.ok { background: var(--se-face); color: var(--se-ink); }
+[data-view=game] :is(.game, .result) :focus-visible, [data-view=game]:not(:has(.shop)) .layer-panel :focus-visible { outline: 2px dotted var(--se-ink); outline-offset: -6px; }
+[data-view=game] .game :is(input[type=text], input:not([type])), [data-view=game]:not(:has(.shop)) .layer-panel :is(input[type=text], input:not([type])) {
+  background: var(--se-field); color: var(--se-ink); border: 0; border-radius: 0; box-shadow: var(--se-sunken);
+}
+[data-view=game] .game :is(input[type=text], input:not([type])):focus, [data-view=game]:not(:has(.shop)) .layer-panel :is(input[type=text], input:not([type])):focus { box-shadow: var(--se-sunken), 0 0 0 2px var(--se-ink); outline: none; }
+[data-view=game] .game input::placeholder, [data-view=game]:not(:has(.shop)) .layer-panel input::placeholder { color: var(--se-dim); }
+/* 슬라이더: 오목 홈 + 볼록 사각 손잡이(높이 44px 터치 영역 유지) */
+[data-view=game] .game input[type=range]::-webkit-slider-runnable-track, [data-view=game]:not(:has(.shop)) .layer-panel input[type=range]::-webkit-slider-runnable-track { height: 10px; border-radius: 0; background: var(--se-field); box-shadow: var(--se-sunken); }
+[data-view=game] .game input[type=range]::-moz-range-track, [data-view=game]:not(:has(.shop)) .layer-panel input[type=range]::-moz-range-track { height: 10px; border-radius: 0; background: var(--se-field); box-shadow: var(--se-sunken); }
+[data-view=game] .game input[type=range]::-webkit-slider-thumb, [data-view=game]:not(:has(.shop)) .layer-panel input[type=range]::-webkit-slider-thumb { width: 16px; height: 30px; margin-top: -10px; border-radius: 0; border: 0; background: var(--se-face); box-shadow: var(--se-raised), 0 0 0 1px var(--se-ink); }
+[data-view=game] .game input[type=range]::-moz-range-thumb, [data-view=game]:not(:has(.shop)) .layer-panel input[type=range]::-moz-range-thumb { width: 16px; height: 30px; border-radius: 0; border: 0; background: var(--se-face); box-shadow: var(--se-raised), 0 0 0 1px var(--se-ink); }
+[data-view=game] .game input[type=range]:focus, [data-view=game]:not(:has(.shop)) .layer-panel input[type=range]:focus { box-shadow: none; }
+[data-view=game] .game input[type=range]:focus-visible, [data-view=game]:not(:has(.shop)) .layer-panel input[type=range]:focus-visible { outline: 2px dotted var(--se-ink); outline-offset: 0; }
+[data-view=game]:not(:has(.shop)) .layer-panel .range-row .val { color: var(--se-ink); font-family: var(--se-mono); }
+/* 세그먼트·스위치(탱크 제어판 드로어) */
+[data-view=game]:not(:has(.shop)) .layer-panel .segment { border: 0; border-radius: 0; background: var(--se-face); box-shadow: var(--se-sunken); padding: 4px; gap: 4px; }
+[data-view=game]:not(:has(.shop)) .layer-panel .seg-item label { border-radius: 0; color: var(--se-ink); background: var(--se-face); box-shadow: var(--se-raised); font-weight: 700; gap: 6px; }
+[data-view=game]:not(:has(.shop)) .layer-panel .seg-item input:checked + label { background: var(--se-light); color: var(--se-ink); box-shadow: var(--se-sunken); }
+[data-view=game]:not(:has(.shop)) .layer-panel .seg-item input:checked + label::before { content: ""; width: 8px; height: 8px; background: var(--se-ink); flex: none; }
+[data-view=game]:not(:has(.shop)) .layer-panel .seg-item input:focus-visible + label { outline: 2px dotted var(--se-ink); outline-offset: -5px; }
+[data-view=game]:not(:has(.shop)) .layer-panel .switch-track { border-radius: 0; background: #8A8A8A; box-shadow: var(--se-sunken); transition: none; }
+[data-view=game]:not(:has(.shop)) .layer-panel .switch-thumb { border-radius: 0; background: var(--se-face); box-shadow: var(--se-raised), 0 0 0 1px var(--se-ink); transition: none; }
+[data-view=game]:not(:has(.shop)) .layer-panel .switch input:checked + .switch-track { background: var(--se-ok); }
+[data-view=game]:not(:has(.shop)) .layer-panel .switch input:focus-visible + .switch-track { outline: 2px dotted var(--se-ink); outline-offset: 2px; }
+[data-view=game]:not(:has(.shop)) .layer-panel .field-label { color: var(--se-ink); font-weight: 700; }
+[data-view=game]:not(:has(.shop)) .layer-panel kbd { border-radius: 0; border: 0; background: var(--se-field); color: var(--se-ink); box-shadow: var(--se-sunken); }
+/* 토스트: 볼록 + 검정 링, 종류는 왼쪽 색 막대(상점 위에서도 같은 모양) */
+[data-view=game] .toast { background: var(--se-face); color: var(--se-ink); border: 0; box-shadow: var(--se-raised), 0 0 0 2px var(--se-ink); font-weight: 700; }
+[data-view=game] .toast.error { border-left: 10px solid var(--se-bad); background: var(--se-face); color: var(--se-ink); }
+[data-view=game] .toast.warn { border-left: 10px solid var(--se-yellow); background: var(--se-face); color: var(--se-ink); }
+[data-view=game] .toast.ok { border-left: 10px solid var(--se-ok); background: var(--se-face); color: var(--se-ink); }
+[data-view=game] .toast.info { border-left: 10px solid var(--se-cpu); }
+
+/* ---- B1. 토큰: .game 안에서만 회색 톤(상점 .shop 은 .game 밖 형제라 다크 유지) ---- */
+[data-view=game] .game {
+  color-scheme: light; font-family: var(--se-font); color: var(--se-ink);
+  --line: #7A7A7A; --line2: var(--se-shadow); --text: var(--se-ink); --text2: var(--se-ink2); --muted: var(--se-ink2);
+  --accent: var(--se-ink); --accent2: var(--se-ink); --bg2: var(--se-field); --panel: var(--se-face); --panel2: var(--se-face); --ok: var(--se-ok); --danger: var(--se-danger-text);
+}
+[data-view=game] .game .muted { color: var(--se-ink2); }
+
+/* ---- B2. 패널: 불투명 회색 + 베벨. HUD = 원작 상태바 볼록 3px ---- */
+[data-view=game] .game :is(.hud, .ctrl, .side, .gchat) { background: var(--se-face); backdrop-filter: none; -webkit-backdrop-filter: none; border: 0; }
+[data-view=game] .game .hud { box-shadow: inset 3px 0 0 var(--se-white), inset 0 3px 0 var(--se-light), inset -3px 0 0 var(--se-deep), inset 0 -3px 0 var(--se-shadow); }
+[data-view=game] .game :is(.ctrl, .side) { box-shadow: inset 2px 0 0 var(--se-white), inset 0 2px 0 var(--se-light), inset -2px 0 0 var(--se-deep), inset 0 -2px 0 var(--se-shadow); }
+/* wide: 캔버스 양옆 = 원작 경기장 홈 라인(CA|000|CA) */
+[data-view=game] .game.wide :is(.hud, .ctrl) { box-shadow: inset 2px 0 0 var(--se-white), inset -3px 0 0 var(--se-face-hi), inset -5px 0 0 var(--se-ink), inset -6px 0 0 var(--se-face-hi); }
+[data-view=game] .game.wide .hud { box-shadow: inset 2px 0 0 var(--se-white), inset 0 3px 0 var(--se-light), inset -3px 0 0 var(--se-face-hi), inset -5px 0 0 var(--se-ink), inset -6px 0 0 var(--se-face-hi); }
+[data-view=game] .game.wide .side { box-shadow: inset 1px 0 0 var(--se-face-hi), inset 3px 0 0 var(--se-ink), inset 4px 0 0 var(--se-face-hi), inset 0 3px 0 var(--se-light), inset -2px 0 0 var(--se-deep); }
+/* 좁은 화면: 캔버스 둘레 홈 라인 */
+[data-view=game] .game .stage canvas { border-radius: 0; }
+[data-view=game] .game:not(.wide) .stage canvas { box-shadow: 0 0 0 1px var(--se-face-hi), 0 0 0 3px var(--se-ink), 0 0 0 4px var(--se-face-hi); }
+
+/* ---- B3. HUD: 플레이어 · 라운드 · 바람 · 시간 · 메뉴 ---- */
+[data-view=game] .game .hud .who { font-weight: 800; }
+[data-view=game] .game .hud .round { color: var(--se-ink2); font-family: var(--se-mono); font-weight: 700; }
+[data-view=game] .game .wind { font-family: var(--se-mono); font-weight: 700; color: var(--se-ink); }
+[data-view=game] .game .wind svg path { stroke: var(--se-ink); }   /* JS 인라인 stroke(#CFE6FF)는 회색 면에서 대비 1.59 → CSS 로 덮음 */
+[data-view=game] .game .wind .muted { color: var(--se-ink2); font-family: var(--se-font); }
+[data-view=game] .game .timer .tt { font-family: var(--se-mono); font-size: 18px; color: var(--se-ink); }
+[data-view=game] .game :is(.timer .tb, .energy .eb, .prow .bar) { border-radius: 0; background: var(--se-field); box-shadow: inset 1px 1px 0 var(--se-shadow), inset -1px -1px 0 var(--se-white); }
+[data-view=game] .game .timer .tb { height: 8px; }
+[data-view=game] .game .timer .tb i { background: var(--se-ink); }
+[data-view=game] .game .timer.urgent .tt { color: var(--se-danger-text); }
+[data-view=game] .game .timer.urgent .tb i { background: var(--se-bad); }
+[data-view=game] .game .energy .eb i { background: var(--se-ok); }
+[data-view=game] .game .energy .et { color: var(--se-ink2); font-family: var(--se-mono); }
+[data-view=game] .game .hud .icon-btn { font-size: 16px; }
+/* 플레이어 목록 버튼: 이모지 대신 CSS 픽셀 아이콘(접근 이름 aria-label 유지). .hud .icon-btn 와 특이도가 같아 뒤에 둔다 */
+[data-view=game] .game .hud .pl-toggle { font-size: 0; }
+[data-view=game] .game .hud .pl-toggle::before { content: ""; width: 20px; height: 16px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 8' shape-rendering='crispEdges'%3E%3Cpath d='M1 0h2v3H1zM0 4h4v4H0zM6 0h2v3H6zM5 4h4v4H5z' fill='%23000'/%3E%3C/svg%3E") center / contain no-repeat; image-rendering: pixelated; }
+
+/* ---- B4. 조준(각도·파워): 라벨 + 오목 숫자창 ---- */
+[data-view=game] .game .aim .lab { color: var(--se-ink); font-weight: 800; font-size: 14px; }
+[data-view=game] .game .aim .big { font-family: var(--se-mono); color: var(--se-ink); background: var(--se-field); box-shadow: var(--se-sunken); padding: 5px 8px 4px; line-height: 1; }
+[data-view=game] .game .aim .big.ang { font-family: var(--se-font); font-weight: 800; }
+[data-view=game] .game .maxp { color: var(--se-ink2); font-family: var(--se-mono); font-weight: 700; }
+[data-view=game] .game input.angle-range::-webkit-slider-runnable-track { background: linear-gradient(to right, var(--se-field) var(--lo, 50%), var(--se-ink) var(--lo, 50%), var(--se-ink) var(--hi, 50%), var(--se-field) var(--hi, 50%)); }
+[data-view=game] .game input.angle-range::-moz-range-track { background: linear-gradient(to right, var(--se-field) var(--lo, 50%), var(--se-ink) var(--lo, 50%), var(--se-ink) var(--hi, 50%), var(--se-field) var(--hi, 50%)); }
+[data-view=game] .game .step { font-size: 18px; }
+[data-view=game] .game.wide .ctrl .step { font-size: 16px; }
+
+/* ---- B5. 무기 칩·장비 버튼·도구 버튼 ---- */
+[data-view=game] .game .weapon-chip { border: 0; border-radius: 0; background: var(--se-face); color: var(--se-ink); box-shadow: 0 0 0 1px var(--se-ink), var(--se-raised); }
+[data-view=game] .game .weapon-chip:hover { background: var(--se-face-hi); }
+[data-view=game] .game .weapon-chip:active { box-shadow: 0 0 0 1px var(--se-ink), var(--se-sunken); }
+[data-view=game] .game .weapon-chip .wn { font-weight: 800; }
+[data-view=game] .game .weapon-chip .wc { color: var(--se-ink); font-family: var(--se-mono); font-weight: 700; }
+[data-view=game] .game :is(.iic, .iic-g), [data-view=game]:not(:has(.shop)) .layer-panel :is(.iic, .iic-g) { border-radius: 0; box-shadow: 0 0 0 1px var(--se-ink); }
+[data-view=game] .game .qi { position: relative; border: 0; border-radius: 0; background: var(--se-face); color: var(--se-ink); box-shadow: var(--se-raised); font-weight: 700; }
+[data-view=game] .game .qi:hover:not(:disabled) { background: var(--se-face-hi); }
+[data-view=game] .game .qi:active:not(:disabled) { box-shadow: var(--se-sunken); }
+[data-view=game] .game .qi b { font-family: var(--se-mono); }
+/* 켜짐: 오목 밝은 면 + 아래 녹색 4px 띠(aria-pressed + 모양으로도 구분) */
+[data-view=game] .game .qi.on { background: var(--se-light); color: var(--se-ink); box-shadow: var(--se-sunken), inset 0 -4px 0 var(--se-ok); }
+[data-view=game] .game .qi:disabled { opacity: 1; color: var(--se-dim); }
+[data-view=game] .game .qi:disabled .iic { opacity: .45; }
+[data-view=game] .game .tools .btn.small { font-size: 13px; }
+
+/* ---- B6. 발사: 유일한 색 버튼(빨강 볼록 + 검정 링) ---- */
+[data-view=game] .game .fire-btn {
+  border: 0; border-radius: 0; background: var(--se-fire); color: var(--se-white); letter-spacing: .08em; text-shadow: 1px 1px 0 var(--se-fire-deep);
+  box-shadow: 0 0 0 2px var(--se-ink), inset 3px 0 0 var(--se-fire-hi), inset 0 3px 0 var(--se-fire-hi), inset -3px 0 0 var(--se-fire-deep), inset 0 -3px 0 var(--se-fire-lo);
+}
+[data-view=game] .game .fire-btn:not(:disabled):hover { filter: none; background: var(--se-fire-hover); }
+[data-view=game] .game .fire-btn:not(:disabled):active { transform: translate(1px, 1px); box-shadow: 0 0 0 2px var(--se-ink), inset 3px 0 0 var(--se-fire-lo), inset 0 3px 0 var(--se-fire-lo), inset -3px 0 0 var(--se-fire-hi), inset 0 -3px 0 var(--se-fire-hi); }
+[data-view=game] .game .fire-btn:disabled { filter: none; opacity: 1; background: var(--se-face); color: var(--se-dim); text-shadow: 1px 1px 0 var(--se-white); box-shadow: var(--se-raised); }
+[data-view=game] .game .fire-btn:focus-visible { outline: 2px dotted var(--se-white); outline-offset: -8px; }
+
+/* ---- B7. 우 패널 플레이어 목록: 오목 행, 현재 턴 = 밝은 면 + 검정 링 + 왼쪽 ▶ ---- */
+[data-view=game] .game .pl-fold > summary { color: var(--se-ink); font-weight: 800; font-size: 13px; padding: 6px 6px 8px; border-bottom: 2px solid var(--se-shadow); box-shadow: 0 2px 0 var(--se-light); margin-bottom: 8px; }
+[data-view=game] .game .plist { gap: 6px; }
+[data-view=game] .game .prow { position: relative; border: 0; border-radius: 0; background: var(--se-face); box-shadow: var(--se-sunken); padding-left: 18px; cursor: pointer; }
+[data-view=game] .game .prow:hover { background: var(--se-face-hi); }
+[data-view=game] .game .prow.turn { background: var(--se-light); border: 0; box-shadow: var(--se-sunken), inset 0 0 0 3px var(--se-light), inset 0 0 0 5px var(--se-ink); }
+[data-view=game] .game .prow.turn::before { content: ""; position: absolute; left: 6px; top: 50%; margin-top: -6px; border: 6px solid transparent; border-left: 7px solid var(--se-ink); border-right: 0; }
+[data-view=game] .game .prow.dead { opacity: 1; color: var(--se-dim); }
+[data-view=game] .game .prow.dead .marker { filter: grayscale(1); opacity: .6; }
+[data-view=game] .game .prow .nm { font-weight: 700; }
+[data-view=game] .game .prow .tabular { font-family: var(--se-mono); font-weight: 700; }
+[data-view=game] .game .prow .sub { color: var(--se-ink2); }
+
+/* ---- B8. 채팅: 검정 오목 로그 + 오목 입력. 테두리는 border(스크롤 글자가 inset 그림자 위에 겹치지 않게), 높이 유지 위해 위아래 padding 2px ---- */
+[data-view=game] .game .gchat .chat-log { background: var(--se-log); color: var(--se-log-text); box-shadow: none; border: 2px solid; border-color: var(--se-shadow) var(--se-light) var(--se-light) var(--se-shadow); padding-top: 2px; padding-bottom: 2px; }
+[data-view=game] .game .gchat .chat-line b { color: var(--se-chat-name); }
+[data-view=game] .game .gchat .chat-line.sys { color: var(--se-wind); }
+[data-view=game] .game .gchat .chat-peek { color: var(--se-ink); font-weight: 700; }
+[data-view=game] .game:not(.wide) .gchat { box-shadow: inset 0 2px 0 var(--se-light), inset 0 -2px 0 var(--se-shadow); }
+[data-view=game] .game:not(.wide) .gchat .chat-log { margin: 4px 6px 0; }
+[data-view=game] .game.wide .side .gchat { margin: 10px 0 0; padding: 0 0 max(6px, env(safe-area-inset-bottom)); background: transparent; }
+[data-view=game] .game.wide .side .gchat .chat-form { padding: 6px 0 0; }
+
+/* ---- B9. 캔버스 위 안내(표적 선택) ---- */
+[data-view=game] .stage .banner { border: 0; border-radius: 0; background: var(--se-face); color: var(--se-ink); font-weight: 800; box-shadow: var(--se-raised), 0 0 0 2px var(--se-ink); }
+
+/* ---- B10. 무기 시트·인벤토리: 원작 무기 목록처럼 오목 행. 선택 = 밝은 면 + 검정 링 + 왼쪽 바깥 ▶ ---- */
+[data-view=game]:not(:has(.shop)) .layer-panel .weapon-grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px 22px; padding-left: 14px; }
+[data-view=game]:not(:has(.shop)) .layer-panel .wcard {
+  position: relative; border: 0; border-radius: 0; background: var(--se-face); color: var(--se-ink); box-shadow: var(--se-sunken);
+  grid-template-columns: minmax(0, 1fr) auto; column-gap: 8px; align-items: center; min-height: 64px; padding: 8px 10px;
+}
+[data-view=game]:not(:has(.shop)) .layer-panel .wcard > .wc-head { grid-column: 1; grid-row: 1; }
+[data-view=game]:not(:has(.shop)) .layer-panel .wcard > .c { grid-column: 2; grid-row: 1; font: 700 15px var(--se-mono); color: var(--se-ink); }
+[data-view=game]:not(:has(.shop)) .layer-panel .wcard > .s { grid-column: 1 / -1; color: var(--se-ink2); }
+[data-view=game]:not(:has(.shop)) .layer-panel .wcard > .btn { grid-column: 1 / -1; justify-self: start; }
+[data-view=game]:not(:has(.shop)) .layer-panel button.wcard:hover { background: var(--se-face-hi); }
+[data-view=game]:not(:has(.shop)) .layer-panel .wcard[aria-pressed=true] { background: var(--se-light); box-shadow: var(--se-sunken), inset 0 0 0 3px var(--se-light), inset 0 0 0 5px var(--se-ink); }
+[data-view=game]:not(:has(.shop)) .layer-panel .wcard:is([aria-pressed=true], :hover, :focus-visible)::before { content: ""; position: absolute; left: -16px; top: 50%; margin-top: -8px; border: 8px solid transparent; border-left: 10px solid var(--se-ink); border-right: 0; }
+[data-view=game]:not(:has(.shop)) .layer-panel .wcard .n { font-weight: 800; }
+[data-view=game]:not(:has(.shop)) .layer-panel .cp-item { border: 0; border-radius: 0; background: var(--se-face); box-shadow: var(--se-sunken); }
+[data-view=game]:not(:has(.shop)) .layer-panel .cp-item .energy .eb { border-radius: 0; background: var(--se-field); box-shadow: inset 1px 1px 0 var(--se-shadow), inset -1px -1px 0 var(--se-white); }
+[data-view=game]:not(:has(.shop)) .layer-panel .cp-item .energy .eb i { background: var(--se-ok); }
+
+/* ---- B11. 라운드 결과(table.rank 모달)·최종 순위(.result): 원작 Rankings 창. 제목 양옆 노랑 막대, 숫자 고정폭 ---- */
+[data-view=game] .layer-panel:has(table.rank) .layer-head h2,
+[data-view=game] .result .card > h1 { display: flex; align-items: center; gap: 12px; }
+[data-view=game] .layer-panel:has(table.rank) .layer-head h2::before, [data-view=game] .layer-panel:has(table.rank) .layer-head h2::after,
+[data-view=game] .result .card > h1::before, [data-view=game] .result .card > h1::after {
+  content: ""; flex: 1 1 0; height: 18px; background: var(--win-color, var(--se-yellow)); box-shadow: inset 1px 1px 0 var(--se-deep), inset -1px -1px 0 var(--se-light), 0 0 0 1px var(--se-shadow);
+}
+[data-view=game] :is(.layer-panel, .result) .rank { font-family: var(--se-font); }
+[data-view=game] :is(.layer-panel, .result) .rank th { color: var(--se-ink); font-weight: 800; border-bottom: 2px solid var(--se-shadow); box-shadow: 0 2px 0 var(--se-light); }
+[data-view=game] :is(.layer-panel, .result) .rank td { border-bottom: 1px solid #8C8C8C; font-family: var(--se-mono); font-weight: 700; color: var(--se-ink); }
+[data-view=game] :is(.layer-panel, .result) .rank td:nth-child(2) { font-family: var(--se-font); }
+[data-view=game] :is(.layer-panel, .result) .rank tr.win td { color: var(--se-ink); font-weight: 800; background: var(--se-light); }
+[data-view=game] :is(.layer-panel, .result) .rank tr.win td:first-child::before { content: ""; display: inline-block; width: 9px; height: 9px; margin-right: 6px; background: var(--se-yellow); box-shadow: 0 0 0 1px var(--se-ink); vertical-align: 1px; }
+[data-view=game] .layer-panel:has(table.rank) .layer-body > p { margin: 0 0 10px; font-weight: 700; }
+[data-view=game] .result { background: rgba(0,0,0,.55); }
+[data-view=game] .result .card { color-scheme: light; background: var(--se-face); color: var(--se-ink); border: 0; box-shadow: var(--se-frame); }
+[data-view=game] .result .card > h1 { font-size: 22px; padding-bottom: 12px; border-bottom: 2px solid var(--se-shadow); box-shadow: 0 2px 0 var(--se-light); }
+
+/* ---- B12. 메뉴 드로어: 볼록 버튼 세로 목록 ---- */
+[data-view=game]:not(:has(.shop)) .layer-panel.drawer .layer-body > div > .btn { min-height: 44px; }
+
+@media (pointer: coarse) {
+  [data-view=game] .layer-panel :is(input[type=text], input:not([type])) { font-size: 16px; }
+}
