@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>아이템 아이콘 미리보기</title>
+<style>
+  :root { --font: system-ui, "Segoe UI", "Malgun Gothic", sans-serif; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--font); }
+  .theme { padding: 20px 24px 28px; }
+  .dark { background: #0B0E16; color: #E6EAF2; }
+  .light { background: #E4E8EF; color: #1A1F2B; }
+  h1 { font-size: 20px; margin: 0 0 12px; }
+  h2 { font-size: 15px; margin: 22px 0 10px; display: flex; align-items: center; gap: 8px; }
+  h2 .sw { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 10px; }
+  .card { border-radius: 10px; padding: 10px; border: 1px solid; border-left-width: 4px; display: flex; gap: 10px; align-items: center; }
+  .dark .card { background: #161B27; }
+  .light .card { background: #F4F6FA; }
+  .sizes { display: flex; align-items: flex-end; gap: 6px; flex: none; }
+  .sizes img { display: block; }
+  .meta { min-width: 0; }
+  .nm { font-size: 13px; font-weight: 700; }
+  .en { font-size: 11px; opacity: .65; }
+  .sh { font-size: 11px; opacity: .85; margin-top: 2px; }
+  .tier { font-size: 10px; opacity: .6; }
+  .rows { display: flex; flex-direction: column; gap: 8px; }
+  .row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .row .lbl { width: 110px; font-size: 12px; opacity: .8; }
+  .cell { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 10px; opacity: .95; }
+  .cell .ic { padding: 4px; border-radius: 6px; }
+  .dark .cell .ic { background: #161B27; }
+  .light .cell .ic { background: #F4F6FA; }
+  .quick { display: flex; gap: 4px; flex-wrap: wrap; }
+  .quick .ic { padding: 3px; border-radius: 5px; }
+  .dark .quick .ic { background: #161B27; }
+  .light .quick .ic { background: #F4F6FA; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const DATA = {"categories":[{"key":"general","label":"일반","accent":"#FF6B57","onLight":"#C7341F","glyph":"circle","contrastOnDark":6.14,"contrastOnLight":4.93,"items":["baby_missile","missile","baby_nuke","nuke","leap_frog","funky_bomb","mirv","deaths_head","napalm","hot_napalm","tracer","smoke_tracer","baby_roller","roller","heavy_roller"]},{"key":"dig","label":"지형 파괴","accent":"#FFA62B","onLight":"#A35F00","glyph":"triangle-down","contrastOnDark":8.8,"contrastOnLight":4.63,"items":["riot_charge","riot_blast","riot_bomb","heavy_riot_bomb","baby_digger","digger","heavy_digger","baby_sandhog","sandhog","heavy_sandhog"]},{"key":"dirt","label":"지형 생성","accent":"#8BD450","onLight":"#3F7A12","glyph":"triangle-up","contrastOnDark":9.53,"contrastOnLight":4.85,"items":["dirt_clod","dirt_ball","ton_of_dirt","liquid_dirt","dirt_charge","earth_disrupter"]},{"key":"energy","label":"에너지","accent":"#2EE6F0","onLight":"#00737C","glyph":"bolt","contrastOnDark":11.22,"contrastOnLight":5.19,"items":["plasma_blast","laser"]},{"key":"guidance","label":"유도","accent":"#B48CFF","onLight":"#6A3FD1","glyph":"diamond","contrastOnDark":6.67,"contrastOnLight":5.98,"items":["heat_guidance","ballistic_guidance","horz_guidance","vert_guidance","lazy_boy"]},{"key":"defense","label":"방어","accent":"#4F9DFF","onLight":"#1E5FC4","glyph":"shield","contrastOnDark":6.23,"contrastOnLight":5.56,"items":["parachute","battery","mag_deflector","shield","force_shield","heavy_shield","super_mag","auto_defense"]},{"key":"misc","label":"기타","accent":"#A3ADBF","onLight":"#515B6E","glyph":"square","contrastOnDark":7.61,"contrastOnLight":6.32,"items":["fuel_tank","contact_trigger"]}],"items":[{"id":"baby_missile","name_ko":"베이비 미사일","name_en":"Baby Missile","short":"가장 기본인 무제한 무기","cat":"general","tier":"1/2"},{"id":"missile","name_ko":"미사일","name_en":"Missile","short":"베이비 미사일의 강화형","cat":"general","tier":"2/2"},{"id":"baby_nuke","name_ko":"전술 핵탄두","name_en":"Baby Nuke","short":"넓은 지역을 파괴하는 핵","cat":"general","tier":"1/2"},{"id":"nuke","name_ko":"핵폭탄","name_en":"Nuke","short":"대량 파괴용 대규모 핵","cat":"general","tier":"2/2"},{"id":"leap_frog","name_ko":"립 프로그","name_en":"Leap Frog","short":"탄두 3개를 차례로 발사","cat":"general","tier":""},{"id":"funky_bomb","name_ko":"펑키 봄브","name_en":"Funky Bomb","short":"독성 연쇄 폭발","cat":"general","tier":""},{"id":"mirv","name_ko":"MIRV","name_en":"MIRV","short":"정점에서 미사일 5발로 분리","cat":"general","tier":""},{"id":"deaths_head","name_ko":"데스 헤드","name_en":"Death's Head","short":"가장 파괴적인 분열탄","cat":"general","tier":""},{"id":"napalm","name_ko":"네이팜","name_en":"Napalm","short":"튀어 번지는 불꽃","cat":"general","tier":"1/2"},{"id":"hot_napalm","name_ko":"핫 네이팜","name_en":"Hot Napalm","short":"훨씬 뜨겁고 강한 네이팜","cat":"general","tier":"2/2"},{"id":"tracer","name_ko":"트레이서","name_en":"Tracer","short":"피해 없는 조준용 탄","cat":"general","tier":""},{"id":"smoke_tracer","name_ko":"스모크 트레이서","name_en":"Smoke Tracer","short":"색 연기 궤적을 남기는 조준탄","cat":"general","tier":""},{"id":"baby_roller","name_ko":"베이비 롤러","name_en":"Baby Roller","short":"땅에서 굴러 골짜기서 폭발","cat":"general","tier":"1/3"},{"id":"roller","name_ko":"롤러","name_en":"Roller","short":"미사일급 탄두의 롤러","cat":"general","tier":"2/3"},{"id":"heavy_roller","name_ko":"헤비 롤러","name_en":"Heavy Roller","short":"전술 핵탄두보다 강한 비핵탄","cat":"general","tier":"3/3"},{"id":"riot_charge","name_ko":"라이엇 차지","name_en":"Riot Charge","short":"포탑 주변 쐐기형 흙 제거","cat":"dig","tier":"1/2"},{"id":"riot_blast","name_ko":"라이엇 블라스트","name_en":"Riot Blast","short":"라이엇 차지의 대형","cat":"dig","tier":"2/2"},{"id":"riot_bomb","name_ko":"라이엇 봄브","name_en":"Riot Bomb","short":"구형으로 흙을 제거","cat":"dig","tier":"1/2"},{"id":"heavy_riot_bomb","name_ko":"헤비 라이엇 봄브","name_en":"Heavy Riot Bomb","short":"라이엇 봄브의 대형","cat":"dig","tier":"2/2"},{"id":"baby_digger","name_ko":"베이비 디거","name_en":"Baby Digger","short":"소량의 흙을 파내는 터널링","cat":"dig","tier":"1/3"},{"id":"digger","name_ko":"디거","name_en":"Digger","short":"베이비 디거의 강화형","cat":"dig","tier":"2/3"},{"id":"heavy_digger","name_ko":"헤비 디거","name_en":"Heavy Digger","short":"가장 큰 디거, 위력이 덜 나옴","cat":"dig","tier":"3/3"},{"id":"baby_sandhog","name_ko":"베이비 샌드호그","name_en":"Baby Sandhog","short":"밑에서 적 탱크를 노리는 터널탄","cat":"dig","tier":"1/3"},{"id":"sandhog","name_ko":"샌드호그","name_en":"Sandhog","short":"탄두가 더 많은 샌드호그","cat":"dig","tier":"2/3"},{"id":"heavy_sandhog","name_ko":"헤비 샌드호그","name_en":"Heavy Sandhog","short":"세계를 파괴할 수도 있는 대형","cat":"dig","tier":"3/3"},{"id":"dirt_clod","name_ko":"더트 클로드","name_en":"Dirt Clod","short":"닿으면 구형 흙으로 폭발","cat":"dirt","tier":"1/3"},{"id":"dirt_ball","name_ko":"더트 볼","name_en":"Dirt Ball","short":"더트 클로드의 대형","cat":"dirt","tier":"2/3"},{"id":"ton_of_dirt","name_ko":"톤 오브 더트","name_en":"Ton of Dirt","short":"사람을 산 채로 묻는 거대 흙덩이","cat":"dirt","tier":"3/3"},{"id":"liquid_dirt","name_ko":"리퀴드 더트","name_en":"Liquid Dirt","short":"흘러서 구멍을 메우는 흙","cat":"dirt","tier":""},{"id":"dirt_charge","name_ko":"더트 차지","name_en":"Dirt Charge","short":"쐐기형 흙구름을 분출","cat":"dirt","tier":""},{"id":"earth_disrupter","name_ko":"어스 디스럽터","name_en":"Earth Disrupter","short":"공중의 흙을 모두 낙하시킴","cat":"dirt","tier":""},{"id":"plasma_blast","name_ko":"플라즈마 블라스트","name_en":"Plasma Blast","short":"배터리로 쏘는 근접 에너지탄","cat":"energy","tier":""},{"id":"laser","name_ko":"레이저","name_en":"Laser","short":"산과 방어막까지 뚫는 빔","cat":"energy","tier":""},{"id":"heat_guidance","name_ko":"히트 가이던스","name_en":"Heat Guidance","short":"사정거리 내 적에게 직선 유도","cat":"guidance","tier":""},{"id":"ballistic_guidance","name_ko":"발리스틱 가이던스","name_en":"Ballistic Guidance","short":"표적에 맞는 파워를 자동 계산","cat":"guidance","tier":""},{"id":"horz_guidance","name_ko":"호리즌털 가이던스","name_en":"Horz Guidance","short":"표적과 수평이 되면 직선 비행","cat":"guidance","tier":""},{"id":"vert_guidance","name_ko":"버티컬 가이던스","name_en":"Vert Guidance","short":"표적 위에서 수직 낙하","cat":"guidance","tier":""},{"id":"lazy_boy","name_ko":"레이지 보이","name_en":"Lazy Boy","short":"고른 표적에서 정확히 폭발","cat":"guidance","tier":""},{"id":"parachute","name_ko":"파라슈트","name_en":"Parachute","short":"낙하 피해를 막아 줌","cat":"defense","tier":""},{"id":"battery","name_ko":"배터리","name_en":"Battery","short":"에너지 +10 충전, 에너지탄 연료","cat":"defense","tier":""},{"id":"mag_deflector","name_ko":"매그 디플렉터","name_en":"Mag Deflector","short":"투사체를 위로 밀어내는 방어","cat":"defense","tier":""},{"id":"shield","name_ko":"실드","name_en":"Shield","short":"폭발 피해를 흡수","cat":"defense","tier":""},{"id":"force_shield","name_ko":"포스 실드","name_en":"Force Shield","short":"투사체를 밀어내는 실드","cat":"defense","tier":""},{"id":"heavy_shield","name_ko":"헤비 실드","name_en":"Heavy Shield","short":"실드 오작동 면역, 매우 튼튼","cat":"defense","tier":""},{"id":"super_mag","name_ko":"슈퍼 매그","name_en":"Super Mag","short":"최강 실드, 레이저 면역","cat":"defense","tier":""},{"id":"auto_defense","name_ko":"오토 디펜스","name_en":"Auto Defense","short":"전투 전 방어 장치 가동 가능","cat":"defense","tier":""},{"id":"fuel_tank","name_ko":"연료 탱크","name_en":"Fuel Tank","short":"이동용 연료 10 충전","cat":"misc","tier":""},{"id":"contact_trigger","name_ko":"컨택트 트리거","name_en":"Contact Trigger","short":"닿자마자 폭발시킴","cat":"misc","tier":""}],"groups":[["미사일·핵",["baby_missile","missile","baby_nuke","nuke"]],["롤러",["baby_roller","roller","heavy_roller"]],["디거",["baby_digger","digger","heavy_digger"]],["샌드호그",["baby_sandhog","sandhog","heavy_sandhog"]],["흙덩이",["dirt_clod","dirt_ball","ton_of_dirt"]],["라이엇",["riot_charge","riot_blast","riot_bomb","heavy_riot_bomb","dirt_charge"]],["실드 4종+자석",["shield","force_shield","heavy_shield","super_mag","mag_deflector","auto_defense"]],["가이던스 5종",["heat_guidance","ballistic_guidance","horz_guidance","vert_guidance","lazy_boy"]],["궤적·분열",["tracer","smoke_tracer","leap_frog","mirv","deaths_head","funky_bomb"]],["불·에너지",["napalm","hot_napalm","plasma_blast","laser"]]]};
+const byId = Object.fromEntries(DATA.items.map(i => [i.id, i]));
+const catOf = Object.fromEntries(DATA.categories.map(c => [c.key, c]));
+function img(id, px) { return `<img src="${id}.svg" width="${px}" height="${px}" alt="${byId[id].name_ko}">`; }
+function theme(cls, title) {
+  const light = cls === 'light';
+  let h = `<section class="theme ${cls}"><h1>${title}</h1>`;
+  h += `<h2>HUD 퀵바 32px (전 48종)</h2><div class="quick">` + DATA.items.map(i => `<div class="ic" style="box-shadow: inset 0 0 0 1px ${light ? catOf[i.cat].onLight : catOf[i.cat].accent}">${img(i.id, 32)}</div>`).join('') + `</div>`;
+  for (const c of DATA.categories) {
+    const col = light ? c.onLight : c.accent;
+    h += `<h2><span class="sw" style="background:${col}"></span>${c.label} <span style="opacity:.6;font-weight:400">(${c.key}, ${c.items.length}종, ${col})</span></h2><div class="grid">`;
+    for (const id of c.items) {
+      const it = byId[id];
+      h += `<div class="card" style="border-color:${col}55;border-left-color:${col}"><div class="sizes">${img(id, 64)}${img(id, 48)}${img(id, 32)}</div>` +
+        `<div class="meta"><div class="nm">${it.name_ko}</div><div class="en">${it.name_en} · ${id}</div><div class="sh">${it.short}</div>${it.tier ? `<div class="tier">시리즈 단계 ${it.tier}</div>` : ''}</div></div>`;
+    }
+    h += `</div>`;
+  }
+  h += `<h2>혼동 점검 (같은 줄 비교, 48px / 32px)</h2><div class="rows">`;
+  for (const [label, ids] of DATA.groups) {
+    h += `<div class="row"><div class="lbl">${label}</div>` + ids.map(id => `<div class="cell"><div class="ic">${img(id, 48)}</div><div class="ic">${img(id, 32)}</div><span>${byId[id].name_ko}</span></div>`).join('') + `</div>`;
+  }
+  h += `</div></section>`;
+  return h;
+}
+document.getElementById('app').innerHTML = theme('dark', '아이템 아이콘 (어두운 UI)') + theme('light', '아이템 아이콘 (밝은 배경)');
+</script>
+</body>
+</html>

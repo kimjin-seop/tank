@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>tank preview</title>
+<style>
+body{margin:0;background:#11141B;color:#C9D1DE;font:12px/1.4 "Segoe UI",sans-serif}
+h2{font-size:13px;font-weight:600;margin:18px 12px 6px;color:#EEF2F8}
+canvas{display:block;margin:0 12px}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin:0 12px}
+.card{width:180px;background:#1B2030;border:1px solid #2A3142;border-radius:8px;padding:8px}
+.card canvas{margin:0 auto 6px}.card b{color:#EEF2F8;font-size:13px}
+.chip{display:inline-block;font-size:11px;padding:1px 7px;border-radius:9px;margin:4px 4px 0 0;background:#2A3142;color:#C9D1DE}
+.chip.on{background:#1E4D33;color:#9FF0BF}.chip.off{background:#4D2A1E;color:#FFB89A}.chip.cpu{background:#3A2A5C;color:#D8C2FF}
+.card p{margin:4px 0 0;font-size:11px;color:#9AA4B8}
+</style></head><body>
+<h2>0. 탱크 종류</h2><div class="row" id="cards"></div>
+<h2>1. 탱크 7종 × 10색 (×4)</h2><canvas id="c1"></canvas>
+<h2>2. 포신 각도 0–180 (×4)</h2><canvas id="c2"></canvas>
+<h2>3. 하늘 7종 실제 배율 (×2 / ×3)</h2><div id="skies"></div>
+<h2>4. 방어막 4종 (×5 / ×2)</h2><canvas id="c4"></canvas>
+<h2>5. 잔해 (×4)</h2><canvas id="c5"></canvas>
+<h2>6. 플레이어 마커</h2><canvas id="c6"></canvas>
+<h2>7. 이펙트 (×3, 시간순)</h2><canvas id="c7"></canvas>
+<h2>8. 루프</h2><canvas id="c8"></canvas>
+<script>
+const D = /*__DATA__*/null;
+const PAL = D.palette, META = D.tankMeta, FXD = D.effects;
+const TYPES = Object.keys(META);
+const SKY_KEYS = Object.keys(PAL.skies);
+const imgCache = new Map();
+function svgImg(rel, colorMap) {
+  const key = rel + JSON.stringify(colorMap || {});
+  if (imgCache.has(key)) return imgCache.get(key);
+  let s = D.files[rel];
+  if (colorMap) for (const [k, v] of Object.entries(colorMap)) s = s.split(k).join(v);
+  const im = new Image(); im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(s);
+  const p = im.decode().then(() => im); imgCache.set(key, { im, p }); return imgCache.get(key);
+}
+const T = PAL.tokens;
+const pcol = n => PAL.players[n - 1];
+const cmap = n => { const p = pcol(n); return { [T.PL]: p.PL, [T.PD]: p.PD, [T.P]: p.P }; };
+function preloadAll() {
+  const ps = [];
+  for (const t of TYPES) for (let n = 1; n <= 10; n++) for (const l of ['hull', 'turret', 'barrel']) ps.push(svgImg(`tanks/tank_${t}_${l}.svg`, cmap(n)).p);
+  for (const t of TYPES) ps.push(svgImg(`tanks/tank_${t}_wreck.svg`).p);
+  for (const s of Object.keys(PAL.shields)) ps.push(svgImg(`fx/fx_shield_${s}.svg`).p);
+  for (let n = 1; n <= 10; n++) { ps.push(svgImg(`tanks/marker_${String(n).padStart(2, '0')}.svg`).p); ps.push(svgImg('fx/fx_turn_ring.svg', { [T.P]: pcol(n).P }).p); ps.push(svgImg('fx/fx_turn_chevron.svg', { [T.P]: pcol(n).P }).p); }
+  ps.push(svgImg('fx/fx_ready_check.svg').p);
+  return Promise.all(ps);
+}
+const I = (rel, m) => svgImg(rel, m).im;
+function setup(cv, w, h) { const dpr = window.devicePixelRatio || 1; cv.width = w * dpr; cv.height = h * dpr; cv.style.width = w + 'px'; cv.style.height = h + 'px'; const c = cv.getContext('2d'); c.scale(dpr, dpr); return c; }
+
+// ---- tank draw (gx,gy = ground contact, game->css scale S) ----
+function drawTank(c, type, n, gx, gy, S, ang, o = {}) {
+  const u = S / 4, m = META[type], [px, py] = m.pivot;
+  c.save();
+  c.globalAlpha = 0.35; c.fillStyle = '#000'; c.beginPath(); c.ellipse(gx, gy - 0.3 * S, 5.5 * S, 0.7 * S, 0, 0, 7); c.fill(); c.globalAlpha = 1;
+  if (o.turn) c.drawImage(I('fx/fx_turn_ring.svg', { [T.P]: pcol(n).P }), gx - 30 * u, gy - 8 * u - 0.5 * S, 60 * u, 16 * u);
+  if (o.wreck) { c.drawImage(I(`tanks/tank_${type}_wreck.svg`), gx - 24 * u, gy - 40 * u, 48 * u, 40 * u); c.restore(); return; }
+  if (o.glow) { c.shadowColor = pcol(n).P; c.shadowBlur = Math.max(3, S * 1.2); }
+  c.drawImage(I(`tanks/tank_${type}_hull.svg`, cmap(n)), gx - 24 * u, gy - 40 * u, 48 * u, 40 * u);
+  c.save(); c.translate(gx + (px - 24) * u, gy + (py - 40) * u); c.rotate(-ang * Math.PI / 180);
+  c.drawImage(I(`tanks/tank_${type}_barrel.svg`, cmap(n)), -px * u, -py * u, 48 * u, 40 * u); c.restore();
+  c.drawImage(I(`tanks/tank_${type}_turret.svg`, cmap(n)), gx - 24 * u, gy - 40 * u, 48 * u, 40 * u);
+  c.shadowBlur = 0;
+  if (o.shield) { const cy = gy - 12 * u; c.globalAlpha = o.shieldHp ?? 1; c.drawImage(I(`fx/fx_shield_${o.shield}.svg`), gx - 32 * u, cy - 32 * u, 64 * u, 64 * u); c.globalAlpha = 1; }
+  c.restore();
+}
+function drawMarker(c, n, gx, gy, S, o = {}) {
+  const top = gy - 11 * S, sz = o.size || 18;
+  c.drawImage(I(`tanks/marker_${String(n).padStart(2, '0')}.svg`), gx - sz / 2, top - sz, sz, sz);
+  if (o.turn) c.drawImage(I('fx/fx_turn_chevron.svg', { [T.P]: pcol(n).P }), gx - 8, top - sz - 13, 16, 10.7);
+  if (o.ready) c.drawImage(I('fx/fx_ready_check.svg'), gx + sz / 2 - 2, top - sz - 4, 10, 10);
+}
+
+// ---- seeded rng ----
+function rng(seed) { let s = seed >>> 0; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+
+// ---- sky + terrain ----
+function drawSky(c, key, W, H, S, seed = 7) {
+  const sk = PAL.skies[key], r = rng(seed);
+  const g = c.createLinearGradient(0, 0, 0, H); sk.stops.forEach(([o, col]) => g.addColorStop(o, col));
+  c.fillStyle = g; c.fillRect(0, 0, W, H);
+  if (sk.deco === 'bands') { const n = sk.bands; for (let i = 0; i < n; i++) { c.globalAlpha = 0.06; c.fillStyle = i % 2 ? '#000' : '#fff'; c.fillRect(0, i * H / n, W, H / n); } c.globalAlpha = 1; }
+  if (sk.deco === 'stars') for (let i = 0; i < W * H / 900; i++) { const a = r(); c.globalAlpha = 0.3 + 0.7 * a; c.fillStyle = a > 0.92 ? '#CFE0FF' : '#FFFFFF'; const s = a > 0.95 ? 1.6 : 0.9; c.fillRect(r() * W, r() * H * 0.85, s, s); }
+  if (sk.deco === 'clouds' || sk.deco === 'stormclouds') { for (let i = 0; i < 9; i++) { c.globalAlpha = sk.deco === 'clouds' ? 0.22 : 0.45; c.fillStyle = sk.deco === 'clouds' ? '#FFFFFF' : '#141A22'; c.beginPath(); c.ellipse(r() * W, r() * H * 0.35, (20 + r() * 40) * S / 2, (5 + r() * 6) * S / 2, 0, 0, 7); c.fill(); } }
+  if (sk.deco === 'sun') { const sx = W * 0.72, sy = H * 0.78; const sg = c.createRadialGradient(sx, sy, 0, sx, sy, 40 * S); sg.addColorStop(0, 'rgba(255,240,200,0.95)'); sg.addColorStop(0.18, 'rgba(255,210,140,0.8)'); sg.addColorStop(1, 'rgba(255,160,90,0)'); c.fillStyle = sg; c.fillRect(0, 0, W, H); }
+  if (sk.deco === 'ceiling') { c.fillStyle = sk.terrain.layers[1]; c.beginPath(); c.moveTo(0, 0); for (let x = 0; x <= W; x += 3 * S) { const d = (4 + 3 * Math.sin(x / (9 * S)) + (r() < 0.12 ? 6 + r() * 6 : r() * 2)) * S; c.lineTo(x, d); } c.lineTo(W, 0); c.fill(); c.strokeStyle = sk.terrain.rimDark; c.lineWidth = S * 0.6; c.stroke(); }
+  c.globalAlpha = 1;
+}
+function heightAt(x, W, H, seed) { return H * 0.62 + Math.sin(x / W * 6.3 + seed) * H * 0.12 + Math.sin(x / W * 17 + seed * 2) * H * 0.04; }
+function drawTerrain(c, key, W, H, S, seed = 1) {
+  const t = PAL.skies[key].terrain, r = rng(seed * 99);
+  const surf = []; for (let x = 0; x <= W; x += 1) surf.push(heightAt(x, W, H, seed));
+  c.save(); c.beginPath(); c.moveTo(0, H); surf.forEach((y, x) => c.lineTo(x, y)); c.lineTo(W, H); c.closePath(); c.clip();
+  const g = c.createLinearGradient(0, H * 0.45, 0, H); g.addColorStop(0, t.layers[0]); g.addColorStop(0.55, t.layers[1]); g.addColorStop(1, t.layers[2]);
+  c.fillStyle = g; c.fillRect(0, 0, W, H);
+  c.globalAlpha = 0.18; c.strokeStyle = t.layers[2]; c.lineWidth = S * 0.8; for (let k = 1; k < 5; k++) { c.beginPath(); for (let x = 0; x <= W; x += 4) c.lineTo(x, surf[x] + k * 9 * S + Math.sin(x / 23 + k) * 2 * S); c.stroke(); }
+  c.globalAlpha = 0.5; c.fillStyle = t.speck; for (let i = 0; i < W * H / 200; i++) c.fillRect(r() * W, H * 0.4 + r() * H * 0.6, S * 0.5, S * 0.5);
+  c.globalAlpha = 1; c.restore();
+  c.lineJoin = 'round';
+  c.strokeStyle = t.rimDark; c.lineWidth = 2.2 * S; c.beginPath(); surf.forEach((y, x) => c.lineTo(x, y + 0.9 * S)); c.stroke();
+  c.strokeStyle = t.rim; c.lineWidth = 1.1 * S; c.beginPath(); surf.forEach((y, x) => c.lineTo(x, y + 0.3 * S)); c.stroke();
+  return surf;
+}
+function drawWalls(c, mode, W, H, S) {
+  const col = PAL.walls[mode]; c.save(); c.shadowColor = col; c.shadowBlur = 6; c.fillStyle = col; c.fillRect(0, 0, S, H); c.fillRect(W - S, 0, S, H); c.restore();
+}
+
+// ---- sections ----
+function sec0() {
+  const host = document.getElementById('cards');
+  TYPES.forEach((t, i) => { const m = META[t], d = document.createElement('div'); d.className = 'card';
+    const cv = document.createElement('canvas'); d.appendChild(cv); const c = setup(cv, 120, 64); drawTank(c, t, (i % 10) + 1, 60, 58, 5, 45);
+    d.insertAdjacentHTML('beforeend', `<b>${m.name_ko}</b><br><span class="chip ${m.can_move ? 'on' : 'off'}">${m.can_move ? '이동 가능' : '이동 불가'}</span><span class="chip ${m.cpu_only ? 'cpu' : ''}">${m.cpu_only ? '컴퓨터 전용' : '사람·컴퓨터'}</span><p>${m.desc_ko}</p>`);
+    host.appendChild(d); });
+}
+function sec1() {
+  const S = 4, cw = 15 * S, ch = 14 * S, W = 80 + 10 * cw, H = TYPES.length * ch + 10;
+  const c = setup(document.getElementById('c1'), W, H);
+  c.fillStyle = '#4B5260'; c.fillRect(0, 0, W, H);
+  TYPES.forEach((t, i) => { c.fillStyle = '#EEF2F8'; c.fillText(META[t].name_ko, 6, i * ch + ch * 0.6);
+    for (let n = 1; n <= 10; n++) drawTank(c, t, n, 80 + (n - 0.5) * cw, i * ch + ch - 6, S, 50); });
+}
+function sec2() {
+  const S = 4, angs = [0, 30, 60, 90, 120, 150, 180], cw = 17 * S, ch = 16 * S, W = 80 + angs.length * cw, H = TYPES.length * ch + 10;
+  const c = setup(document.getElementById('c2'), W, H);
+  c.fillStyle = '#6FB4F2'; c.fillRect(0, 0, W, H);
+  TYPES.forEach((t, i) => { c.fillStyle = '#0B0E16'; c.fillText(META[t].name_ko, 6, i * ch + ch * 0.6);
+    angs.forEach((a, j) => { drawTank(c, t, (i % 10) + 1, 80 + (j + 0.5) * cw, i * ch + ch - 6, S, a);
+      c.strokeStyle = 'rgba(255,0,0,.6)'; const m = META[t]; const x = 80 + (j + 0.5) * cw + (m.pivot[0] - 24) * S / 4, y = i * ch + ch - 6 + (m.pivot[1] - 40) * S / 4; c.strokeRect(x - 1, y - 1, 2, 2); }); });
+}
+function sec3() {
+  const host = document.getElementById('skies'); const walls = Object.keys(PAL.walls);
+  SKY_KEYS.forEach((key, si) => [2, 3].forEach(S => {
+    const gw = S === 2 ? 330 : 220, gh = 80, W = gw * S, H = gh * S;
+    const cv = document.createElement('canvas'); host.appendChild(cv); const c = setup(cv, W, H);
+    drawSky(c, key, W, H, S, si + 3); const surf = drawTerrain(c, key, W, H, S, si + 1);
+    drawWalls(c, walls[si % walls.length], W, H, S);
+    const count = S === 2 ? 10 : 7, dark = !!PAL.skies[key].darkSky;
+    const pos = [];
+    for (let k = 0; k < count; k++) { const x = Math.round((k + 0.5) * W / count); pos.push([x, surf[x]]); }
+    // trace path from tank 2
+    if (S === 2) { const [x0, y0] = pos[1]; c.save(); c.strokeStyle = pcol(2).P; c.globalAlpha = 0.75; c.shadowColor = pcol(2).P; c.shadowBlur = 6; c.lineWidth = 1.2 * S; c.beginPath(); for (let i = 0; i <= 60; i++) { const tt = i / 60; c.lineTo(x0 + tt * W * 0.32, y0 - 12 * S - Math.sin(tt * Math.PI) * H * 0.4); } c.stroke(); c.restore(); }
+    pos.forEach(([x, y], k) => { const n = k + 1, t = TYPES[k % TYPES.length];
+      const o = { glow: dark, turn: k === 0, shield: k === 2 ? 'shield' : k === 4 ? 'force' : k === 5 ? 'heavy' : k === 6 ? 'supermag' : null, wreck: k === 8 };
+      drawTank(c, t, n, x, y, S, 30 + k * 14, o); if (!o.wreck) drawMarker(c, n, x, y, S, { turn: k === 0, ready: k === 3 }); });
+    c.fillStyle = 'rgba(0,0,0,.55)'; c.fillRect(4, 4, 150, 16); c.fillStyle = '#fff'; c.fillText(`${key} ${PAL.skies[key].label} ×${S} / 벽 ${walls[si % walls.length]}`, 8, 16);
+  }));
+}
+function sec4() {
+  const ids = Object.keys(PAL.shields), W = 820, H = 200; const c = setup(document.getElementById('c4'), W, H);
+  c.fillStyle = '#1B2550'; c.fillRect(0, 0, W / 2, H); c.fillStyle = '#6FB4F2'; c.fillRect(W / 2, 0, W / 2, H);
+  ids.forEach((id, i) => { drawTank(c, 'classic', i + 1, 55 + i * 100, 140, 5, 45, { shield: id }); c.fillStyle = '#fff'; c.fillText(PAL.shields[id].label, 35 + i * 100, 190); });
+  ids.forEach((id, i) => { drawTank(c, TYPES[i + 1], i + 5, 450 + i * 95, 150, 2, 60, { shield: id }); drawTank(c, TYPES[i + 1], i + 5, 450 + i * 95, 80, 2, 60, { shield: id, shieldHp: 0.45 }); });
+}
+function sec5() {
+  const S = 4, cw = 16 * S, W = 20 + TYPES.length * cw, H = 14 * S; const c = setup(document.getElementById('c5'), W, H);
+  c.fillStyle = '#8A6A44'; c.fillRect(0, H - 8, W, 8); c.fillStyle = '#6FB4F2'; c.fillRect(0, 0, W, H - 8);
+  TYPES.forEach((t, i) => drawTank(c, t, 1, 20 + (i + 0.5) * cw, H - 8, S, 0, { wreck: true }));
+}
+function sec6() {
+  const W = 10 * 60 + 20, H = 110; const c = setup(document.getElementById('c6'), W, H);
+  c.fillStyle = '#4B5260'; c.fillRect(0, 0, W / 2, H); c.fillStyle = '#05060A'; c.fillRect(W / 2, 0, W / 2, H);
+  for (let n = 1; n <= 10; n++) { c.drawImage(I(`tanks/marker_${String(n).padStart(2, '0')}.svg`), 10 + (n - 1) * 60, 8, 40, 40); c.drawImage(I(`tanks/marker_${String(n).padStart(2, '0')}.svg`), 20 + (n - 1) * 60, 56, 20, 20); c.drawImage(I(`tanks/marker_${String(n).padStart(2, '0')}.svg`), 21 + (n - 1) * 60, 82, 18, 18); }
+}
+
+// ---- tiny particle runner following effects.json ----
+function resolveColor(s, ctx) { if (typeof s !== 'string') return s; if (s === '$player') return ctx.player; if (s.startsWith('$terrain')) { const t = ctx.terrain; if (s === '$terrainRim') return t.rim; return t.layers[+s.slice(-1)] || t.layers[0]; } return s; }
+function evalN(v, r) { if (typeof v === 'number') return v; if (typeof v === 'string') { if (/^[\d.]+r$/.test(v)) return parseFloat(v) * r; try { return Function('r', 'return ' + v.replace(/\(x2.*\)/, ''))(r); } catch { return 0; } } return 0; }
+function lerp(a, b, t) { return a + (b - a) * t; }
+function hexA(col, a) { if (col.startsWith('rgba')) return col; const v = col.match(/\w\w/g).map(h => parseInt(h, 16)); return `rgba(${v[0]},${v[1]},${v[2]},${a})`; }
+function lerpCol(cols, t) { const n = cols.length - 1, i = Math.min(n - 1, Math.floor(t * n)), f = t * n - i; if (n === 0) return cols[0]; const a = cols[i].match(/\w\w/g).map(h => parseInt(h, 16)), b = cols[i + 1].match(/\w\w/g).map(h => parseInt(h, 16)); return `rgb(${a.map((v, k) => Math.round(lerp(v, b[k], f))).join(',')})`; }
+function keyed(vals, ts, t) { if (t <= ts[0]) return vals[0]; for (let i = 1; i < ts.length; i++) if (t <= ts[i]) return lerp(vals[i - 1], vals[i], (t - ts[i - 1]) / (ts[i] - ts[i - 1])); return vals[vals.length - 1]; }
+function spawnParticles(L, r, R, ctx) {
+  const cnt = Math.round(evalN(L.count, r)), out = [], sp = L.spawn || 'point', sm = L.scaleWithR ? Math.sqrt(r / 20) : 1;
+  for (let i = 0; i < cnt; i++) {
+    let x = 0, y = 0; const a = (L.angle ? lerp(L.angle[0], L.angle[1], R()) : R() * 360) * Math.PI / 180;
+    if (sp.startsWith('disc')) { const k = parseFloat(sp.split(' ')[1]) * r * Math.sqrt(R()), b = R() * 7; x = Math.cos(b) * k; y = -Math.abs(Math.sin(b) * k); }
+    else if (sp.startsWith('rim')) { const b = R() * Math.PI; x = Math.cos(b) * r; y = -Math.sin(b) * r * 0.8; }
+    else if (sp.startsWith('column')) { x = (R() - 0.5) * 0.5 * r; y = -R() * 1.4 * r; }
+    else if (sp.startsWith('ellipse')) { const b = R() * 7; x = Math.cos(b) * 0.7 * r; y = -1.4 * r + Math.sin(b) * 0.25 * r; }
+    const s = lerp(L.speed[0], L.speed[1], R()) * sm;
+    out.push({ x, y, vx: Math.cos(a) * s, vy: -Math.sin(a) * s, life: lerp(L.life[0], L.life[1], R()), age: -(L.delay || 0) - R() * 0.05 });
+  }
+  return out;
+}
+function runFx(c, def, cx, cy, S, r, t, ctx, seed = 3) {
+  const R = rng(seed);
+  for (const L of def.layers || []) {
+    const blend = L.blend === 'lighter' ? 'lighter' : 'source-over';
+    c.save(); c.globalCompositeOperation = blend;
+    if (L.type === 'screenFlash') { const a = keyed(L.alpha, L.t, t); if (a > 0) { c.globalAlpha = a; c.fillStyle = L.color; c.fillRect(0, 0, c.canvas.width, c.canvas.height); } }
+    if (L.type === 'flash') { const a = keyed(L.alpha, L.t, t); if (a > 0) { const rr = L.r * r * S, g = c.createRadialGradient(cx, cy, 0, cx, cy, rr); g.addColorStop(0, hexA(L.color, a)); g.addColorStop(1, hexA(L.color, 0)); c.fillStyle = g; c.fillRect(cx - rr, cy - rr, rr * 2, rr * 2); } }
+    if (L.type === 'fireball') { const a = keyed(L.alpha, L.t, t), rr = keyed(L.r, L.t, t) * r * S; if (a > 0 && rr > 0) { const g = c.createRadialGradient(cx, cy, 0, cx, cy, rr); L.stops.forEach(([o, col]) => g.addColorStop(o, col.startsWith('#') ? col : col)); c.globalAlpha = a; c.fillStyle = g; c.beginPath(); c.arc(cx, cy, rr, 0, 7); c.fill(); } }
+    if (L.type === 'ring') { if (t >= L.t[0] && t <= L.t[1]) { const k = (t - L.t[0]) / (L.t[1] - L.t[0]); c.globalAlpha = lerp(L.alpha[0], L.alpha[1], k); c.strokeStyle = resolveColor(L.color, ctx); c.lineWidth = Math.max(0.1, lerp(L.w[0], L.w[1], k) * S); c.beginPath(); c.arc(cx, cy, lerp(L.r[0], L.r[1], k) * r * S, 0, 7); c.stroke(); } }
+    if (L.type === 'arcs') { if (t < 0.45) { const n = Math.round(evalN(L.count.split(' ')[0], r)); const AR = rng(seed + Math.floor(t * L.regenHz)); for (let i = 0; i < n; i++) { const b = AR() * 7, ex = Math.cos(b) * r, ey = -Math.abs(Math.sin(b)) * r; [[L.glow, L.glowW, 0.5], [L.core, L.w, 1]].forEach(([col, w, al]) => { c.globalAlpha = al; c.strokeStyle = col; c.lineWidth = w * S / 2; c.beginPath(); c.moveTo(cx, cy); for (let k = 1; k <= L.segments; k++) { const f = k / L.segments, j = k < L.segments ? (AR() - 0.5) * L.jitter * r * 2 : 0; c.lineTo(cx + (ex * f + j) * S, cy + (ey * f + j) * S); } c.stroke(); }); } } }
+    if (L.type === 'particles') {
+      const ps = spawnParticles(L, r, R, ctx); const cols = (L.colors || ['#FFFFFF']).map(k => resolveColor(k, ctx));
+      const s0 = evalN(L.size[0], r), s1 = evalN(L.size[1], r);
+      for (const p of ps) {
+        let age = p.age, x = p.x, y = p.y, vx = p.vx, vy = p.vy; const dt = 1 / 60;
+        for (let tt = 0; tt < t; tt += dt) { age += dt; if (age < 0) continue; vy += (L.gravity || 0) * dt; const dr = Math.exp(-(L.drag || 0) * dt); vx *= dr; vy *= dr; x += vx * dt; y += vy * dt; }
+        if (age < 0 || age > p.life) continue; const k = age / p.life;
+        const al = L.alpha ? lerp(L.alpha[0], L.alpha[1], k) : (k < 0.7 ? 1 : 1 - (k - 0.7) / 0.3);
+        c.globalAlpha = al; c.fillStyle = lerpCol(cols, k); const sz = Math.max(0.2, lerp(s0, s1, k)) * S;
+        if (L.stretch) { c.strokeStyle = c.fillStyle; c.lineWidth = sz; c.lineCap = 'round'; c.beginPath(); c.moveTo(cx + x * S, cy + y * S); c.lineTo(cx + (x - vx * L.stretch) * S, cy + (y - vy * L.stretch) * S); c.stroke(); }
+        else if (L.soft) { const col = lerpCol(cols, k), X = cx + x * S, Y = cy + y * S, g = c.createRadialGradient(X, Y, 0, X, Y, sz); g.addColorStop(0, col); g.addColorStop(0.55, col.replace('rgb(', 'rgba(').replace(')', ',0.6)')); g.addColorStop(1, col.replace('rgb(', 'rgba(').replace(')', ',0)')); c.fillStyle = g; c.fillRect(X - sz, Y - sz, sz * 2, sz * 2); }
+        else { c.beginPath(); c.arc(cx + x * S, cy + y * S, sz, 0, 7); c.fill(); }
+      }
+    }
+    c.restore();
+  }
+}
+function napalmFx(c, cx, cy, S, t, ctx, hot) {
+  const F = FXD.explosions.napalm, P = F.fire.particle, cols = hot ? F.hot.colorsOverride : P.colors, R = rng(11);
+  c.save(); c.globalCompositeOperation = 'lighter';
+  for (let i = -6; i <= 6; i++) { const x = cx + i * 2.2 * S, heat = 1 - Math.abs(i) / 7;
+    const g = c.createRadialGradient(x, cy, 0, x, cy, 3 * S); g.addColorStop(0, hexA(hot ? F.hot.groundGlowColor : F.fire.groundGlow.color, 0.25 + heat * 0.35)); g.addColorStop(1, hexA('#FF6A1A', 0)); c.fillStyle = g; c.fillRect(x - 3 * S, cy - 3 * S, 6 * S, 6 * S);
+    const rate = (4 + heat * 10) * (hot ? F.hot.rateMul : 1);
+    for (let k = 0; k < rate * P.life[1]; k++) { const age = R() * P.life[1], life = lerp(P.life[0], P.life[1], R()); if (age > life) continue; const kk = age / life, sp = lerp(P.speed[0], P.speed[1], R());
+      const px = x + Math.sin(t * 9 + k) * P.wobbleX * kk * S / 3, py = cy - (sp * age + 0.5 * -P.gravity * age * age) * S;
+      const sz = Math.max(0.2, lerp(P.size[0], P.size[1], kk)) * S; c.globalCompositeOperation = 'source-over'; c.globalAlpha = lerp(P.alpha[0], P.alpha[1], kk); c.fillStyle = lerpCol(cols, kk); c.beginPath(); c.arc(px, py, sz, 0, 7); c.fill();
+      if (kk < 0.4) { c.globalCompositeOperation = 'lighter'; c.globalAlpha = P.coreGlow.alpha * (1 - kk / 0.4); c.fillStyle = P.coreGlow.color; c.beginPath(); c.arc(px, py, sz * P.coreGlow.sizeMul, 0, 7); c.fill(); } } }
+  c.restore();
+}
+function laserFx(c, x0, y0, x1, y1, S, t, ctx) {
+  const B = FXD.explosions.laser.beam; if (t > FXD.explosions.laser.duration) return; const k = t / FXD.explosions.laser.duration, fl = 1 - B.flickerAmp * Math.abs(Math.sin(t * B.flickerHz * 6.28));
+  c.save(); c.globalCompositeOperation = 'lighter'; c.lineCap = 'round';
+  c.globalAlpha = lerp(B.glowAlpha[0], B.glowAlpha[1], k) * fl; c.strokeStyle = ctx.player; c.lineWidth = B.glowW * S; c.shadowColor = ctx.player; c.shadowBlur = 8; c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke();
+  c.shadowBlur = 0; c.globalAlpha = 1 - k * 0.8; c.strokeStyle = B.core; c.lineWidth = B.coreW * S; c.stroke(); c.restore();
+}
+function shieldHitFx(c, id, gx, gy, S, t, ang) {
+  const u = S / 4, cy = gy - 12 * u, R0 = 26 * u, rim = PAL.shields[id].rim, core = PAL.shields[id].core, H = FXD.shieldHit.common.ripple;
+  if (t > H.t[1] + 0.2) return; const k = Math.min(1, t / H.t[1]);
+  c.save(); c.globalCompositeOperation = 'lighter'; c.strokeStyle = rim; c.shadowColor = core; c.shadowBlur = 8; c.lineWidth = Math.max(0.2, lerp(H.w[0], H.w[1], k)) * S; c.globalAlpha = 1 - k * 0.6;
+  const a = -ang * Math.PI / 180, sp = H.span * Math.PI / 360 * (0.6 + k); c.beginPath(); c.arc(gx, cy, R0 * (1 + 0.05 * k), a - sp, a + sp); c.stroke(); c.restore();
+}
+function sec7() {
+  const S = 3, times = [0.03, 0.1, 0.2, 0.35, 0.6, 1.0, 1.5], cw = 130, rows = ['blast', 'nuke', 'funky', 'riot', 'dirtAdd', 'plasma', 'napalm', 'hotNapalm', 'laser', 'shieldHit'], ch = 130;
+  const W = 80 + times.length * cw, H = rows.length * ch; const c = setup(document.getElementById('c7'), W, H);
+  const ctx = { player: pcol(2).P, terrain: PAL.skies.PLAIN.terrain };
+  rows.forEach((row, ri) => times.forEach((t, ti) => {
+    const x0 = 80 + ti * cw, y0 = ri * ch; c.save(); c.beginPath(); c.rect(x0, y0, cw - 2, ch - 2); c.clip();
+    const sky = ri % 2 ? 'STARS' : 'PLAIN'; c.translate(x0, y0); drawSky(c, sky, cw, ch, 1, 5); c.fillStyle = PAL.skies[sky].terrain.layers[0]; c.fillRect(0, ch * 0.78, cw, ch); c.fillStyle = PAL.skies[sky].terrain.rim; c.fillRect(0, ch * 0.78, cw, 3);
+    const cx = cw / 2, cy = ch * 0.78, E = FXD.explosions;
+    if (row === 'blast') runFx(c, E.blast, cx, cy, S, 12, t, ctx);
+    if (row === 'nuke') runFx(c, E.nuke, cx, cy, S * 0.6, 30, t, ctx);
+    if (row === 'riot') runFx(c, E.riot, cx, cy, S, 14, t, ctx);
+    if (row === 'dirtAdd') runFx(c, E.dirtAdd, cx, cy - 10, S, 12, t, ctx);
+    if (row === 'plasma') runFx(c, E.plasma, cx, cy - 8, S, 14, t, ctx);
+    if (row === 'funky') E.funky.childHues.forEach((h, i) => { const tt = t - i * E.funky.childStagger; if (tt < 0) return; const def = JSON.parse(JSON.stringify(E.blast)); def.layers[1].stops = [[0, '#FFFFFF'], [0.4, h], [1, hexA(h, 0)]]; def.layers[3].colors = ['#FFFFFF', h]; def.layers.splice(4, 2); runFx(c, def, cx + Math.cos(i * 2.4) * 22, cy - 14 - Math.sin(i * 1.7) * 14, S * 0.8, 7, tt, ctx, 10 + i); });
+    if (row === 'napalm') napalmFx(c, cx, cy, S, t, ctx, false);
+    if (row === 'hotNapalm') napalmFx(c, cx, cy, S, t, ctx, true);
+    if (row === 'laser') { drawTank(c, 'classic', 2, 18, cy, 2, 20); drawTank(c, 'heavy', 5, cw - 18, cy, 2, 160); laserFx(c, 18 + 4, cy - 7, cw, cy - 30, S, t, ctx); }
+    if (row === 'shieldHit') { const id = Object.keys(PAL.shields)[ti % 4]; drawTank(c, 'classic', 1, cx, cy, 4, 45, { shield: id }); shieldHitFx(c, id, cx, cy, 4, Math.min(t, 0.25) * (ti % 2 ? 1 : 0.4), 140); }
+    c.restore();
+  }));
+  c.fillStyle = '#EEF2F8'; rows.forEach((r, i) => c.fillText(r, 6, i * ch + 16)); times.forEach((t, i) => c.fillText('t=' + t, 84 + i * cw, H - 4));
+}
+function sec8() {
+  const W = 640, H = 240, S = 2; const c = setup(document.getElementById('c8'), W, H); const ctx = { player: pcol(7).P, terrain: PAL.skies.SUNSET.terrain };
+  const seq = ['blast', 'nuke', 'plasma', 'riot']; let t0 = performance.now();
+  (function loop(now) { const tt = (now - t0) / 1000, idx = Math.floor(tt / 2.4) % seq.length, t = tt % 2.4;
+    drawSky(c, 'SUNSET', W, H, S, 4); const surf = drawTerrain(c, 'SUNSET', W, H, S, 2);
+    drawTank(c, 'classic', 7, 120, surf[120], S, 40 + 20 * Math.sin(tt), { turn: true }); drawMarker(c, 7, 120, surf[120], S, { turn: true });
+    const def = FXD.explosions[seq[idx]]; runFx(c, def, 420, surf[420], S, seq[idx] === 'nuke' ? 35 : 20, t, ctx);
+    requestAnimationFrame(loop); })(t0);
+}
+preloadAll().then(() => { sec0(); sec1(); sec2(); sec3(); sec4(); sec5(); sec6(); sec7(); sec8(); document.title = 'ready'; });
+</script></body></html>

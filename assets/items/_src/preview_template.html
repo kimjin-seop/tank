@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>아이템 아이콘 미리보기</title>
+<style>
+  :root { --font: system-ui, "Segoe UI", "Malgun Gothic", sans-serif; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--font); }
+  .theme { padding: 20px 24px 28px; }
+  .dark { background: #0B0E16; color: #E6EAF2; }
+  .light { background: #E4E8EF; color: #1A1F2B; }
+  h1 { font-size: 20px; margin: 0 0 12px; }
+  h2 { font-size: 15px; margin: 22px 0 10px; display: flex; align-items: center; gap: 8px; }
+  h2 .sw { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 10px; }
+  .card { border-radius: 10px; padding: 10px; border: 1px solid; border-left-width: 4px; display: flex; gap: 10px; align-items: center; }
+  .dark .card { background: #161B27; }
+  .light .card { background: #F4F6FA; }
+  .sizes { display: flex; align-items: flex-end; gap: 6px; flex: none; }
+  .sizes img { display: block; }
+  .meta { min-width: 0; }
+  .nm { font-size: 13px; font-weight: 700; }
+  .en { font-size: 11px; opacity: .65; }
+  .sh { font-size: 11px; opacity: .85; margin-top: 2px; }
+  .tier { font-size: 10px; opacity: .6; }
+  .rows { display: flex; flex-direction: column; gap: 8px; }
+  .row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .row .lbl { width: 110px; font-size: 12px; opacity: .8; }
+  .cell { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 10px; opacity: .95; }
+  .cell .ic { padding: 4px; border-radius: 6px; }
+  .dark .cell .ic { background: #161B27; }
+  .light .cell .ic { background: #F4F6FA; }
+  .quick { display: flex; gap: 4px; flex-wrap: wrap; }
+  .quick .ic { padding: 3px; border-radius: 5px; }
+  .dark .quick .ic { background: #161B27; }
+  .light .quick .ic { background: #F4F6FA; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const DATA = /*__DATA__*/null;
+const byId = Object.fromEntries(DATA.items.map(i => [i.id, i]));
+const catOf = Object.fromEntries(DATA.categories.map(c => [c.key, c]));
+function img(id, px) { return `<img src="${id}.svg" width="${px}" height="${px}" alt="${byId[id].name_ko}">`; }
+function theme(cls, title) {
+  const light = cls === 'light';
+  let h = `<section class="theme ${cls}"><h1>${title}</h1>`;
+  h += `<h2>HUD 퀵바 32px (전 48종)</h2><div class="quick">` + DATA.items.map(i => `<div class="ic" style="box-shadow: inset 0 0 0 1px ${light ? catOf[i.cat].onLight : catOf[i.cat].accent}">${img(i.id, 32)}</div>`).join('') + `</div>`;
+  for (const c of DATA.categories) {
+    const col = light ? c.onLight : c.accent;
+    h += `<h2><span class="sw" style="background:${col}"></span>${c.label} <span style="opacity:.6;font-weight:400">(${c.key}, ${c.items.length}종, ${col})</span></h2><div class="grid">`;
+    for (const id of c.items) {
+      const it = byId[id];
+      h += `<div class="card" style="border-color:${col}55;border-left-color:${col}"><div class="sizes">${img(id, 64)}${img(id, 48)}${img(id, 32)}</div>` +
+        `<div class="meta"><div class="nm">${it.name_ko}</div><div class="en">${it.name_en} · ${id}</div><div class="sh">${it.short}</div>${it.tier ? `<div class="tier">시리즈 단계 ${it.tier}</div>` : ''}</div></div>`;
+    }
+    h += `</div>`;
+  }
+  h += `<h2>혼동 점검 (같은 줄 비교, 48px / 32px)</h2><div class="rows">`;
+  for (const [label, ids] of DATA.groups) {
+    h += `<div class="row"><div class="lbl">${label}</div>` + ids.map(id => `<div class="cell"><div class="ic">${img(id, 48)}</div><div class="ic">${img(id, 32)}</div><span>${byId[id].name_ko}</span></div>`).join('') + `</div>`;
+  }
+  h += `</div></section>`;
+  return h;
+}
+document.getElementById('app').innerHTML = theme('dark', '아이템 아이콘 (어두운 UI)') + theme('light', '아이템 아이콘 (밝은 배경)');
+</script>
+</body>
+</html>

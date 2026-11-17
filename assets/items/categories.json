@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "note": "아이템 분류 강조색. accent=어두운 카드(#161B27) 위, onLight=밝은 배경(#F4F6FA) 위 글자·테두리용. 색만으로 구분하지 않도록 glyph(분류 기호)와 이름을 함께 표시.",
+  "cardDark": "#161B27",
+  "cardLight": "#F4F6FA",
+  "categories": [
+    {
+      "key": "general",
+      "label": "일반",
+      "accent": "#FF6B57",
+      "onLight": "#C7341F",
+      "glyph": "circle",
+      "contrastOnDark": 6.14,
+      "contrastOnLight": 4.93,
+      "items": [
+        "baby_missile",
+        "missile",
+        "baby_nuke",
+        "nuke",
+        "leap_frog",
+        "funky_bomb",
+        "mirv",
+        "deaths_head",
+        "napalm",
+        "hot_napalm",
+        "tracer",
+        "smoke_tracer",
+        "baby_roller",
+        "roller",
+        "heavy_roller"
+      ]
+    },
+    {
+      "key": "dig",
+      "label": "지형 파괴",
+      "accent": "#FFA62B",
+      "onLight": "#A35F00",
+      "glyph": "triangle-down",
+      "contrastOnDark": 8.8,
+      "contrastOnLight": 4.63,
+      "items": [
+        "riot_charge",
+        "riot_blast",
+        "riot_bomb",
+        "heavy_riot_bomb",
+        "baby_digger",
+        "digger",
+        "heavy_digger",
+        "baby_sandhog",
+        "sandhog",
+        "heavy_sandhog"
+      ]
+    },
+    {
+      "key": "dirt",
+      "label": "지형 생성",
+      "accent": "#8BD450",
+      "onLight": "#3F7A12",
+      "glyph": "triangle-up",
+      "contrastOnDark": 9.53,
+      "contrastOnLight": 4.85,
+      "items": [
+        "dirt_clod",
+        "dirt_ball",
+        "ton_of_dirt",
+        "liquid_dirt",
+        "dirt_charge",
+        "earth_disrupter"
+      ]
+    },
+    {
+      "key": "energy",
+      "label": "에너지",
+      "accent": "#2EE6F0",
+      "onLight": "#00737C",
+      "glyph": "bolt",
+      "contrastOnDark": 11.22,
+      "contrastOnLight": 5.19,
+      "items": [
+        "plasma_blast",
+        "laser"
+      ]
+    },
+    {
+      "key": "guidance",
+      "label": "유도",
+      "accent": "#B48CFF",
+      "onLight": "#6A3FD1",
+      "glyph": "diamond",
+      "contrastOnDark": 6.67,
+      "contrastOnLight": 5.98,
+      "items": [
+        "heat_guidance",
+        "ballistic_guidance",
+        "horz_guidance",
+        "vert_guidance",
+        "lazy_boy"
+      ]
+    },
+    {
+      "key": "defense",
+      "label": "방어",
+      "accent": "#4F9DFF",
+      "onLight": "#1E5FC4",
+      "glyph": "shield",
+      "contrastOnDark": 6.23,
+      "contrastOnLight": 5.56,
+      "items": [
+        "parachute",
+        "battery",
+        "mag_deflector",
+        "shield",
+        "force_shield",
+        "heavy_shield",
+        "super_mag",
+        "auto_defense"
+      ]
+    },
+    {
+      "key": "misc",
+      "label": "기타",
+      "accent": "#A3ADBF",
+      "onLight": "#515B6E",
+      "glyph": "square",
+      "contrastOnDark": 7.61,
+      "contrastOnLight": 6.32,
+      "items": [
+        "fuel_tank",
+        "contact_trigger"
+      ]
+    }
+  ]
+}

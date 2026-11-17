@@ -1,0 +1,7 @@
+node_modules/
+_verify/
+_dev/
+_reference/
+*.bak
+*.bak[0-9]
+*.log

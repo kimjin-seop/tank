@@ -1,0 +1,1536 @@
+{
+  "version": 1,
+  "units": {
+    "length": "game px (engine logical px). r = engine blast radius after Scale option",
+    "time": "seconds",
+    "angle": "deg, 0=+x, 90=up",
+    "speed": "game px/s",
+    "gravity": "game px/s^2 (+ = down)",
+    "size": "radius in game px",
+    "colors": "over-life gradient, evenly spaced",
+    "blend": "lighter = additive, normal = source-over",
+    "scaleWithR": "value * (r/20) when true; speeds use sqrt(r/20)",
+    "soft": "soft=true: draw as radial gradient (center alpha -> 0 at edge) instead of solid disc"
+  },
+  "global": {
+    "maxParticles": 1500,
+    "lowFx": {
+      "particleMul": 0.4,
+      "disable": [
+        "heat",
+        "shake",
+        "smokeColumn"
+      ]
+    },
+    "reducedMotion": {
+      "shakeMul": 0,
+      "flashAlphaMul": 0.35
+    },
+    "shake": {
+      "falloff": "linear",
+      "freqHz": 28
+    }
+  },
+  "projectiles": {
+    "missile": {
+      "shape": "capsule",
+      "len": 3,
+      "w": 1.6,
+      "core": "#FFFFFF",
+      "glow": "$player",
+      "glowR": 3,
+      "trail": {
+        "kind": "ribbon",
+        "life": 0.35,
+        "w": [
+          1.4,
+          0
+        ],
+        "color": "$player",
+        "alpha": [
+          0.9,
+          0
+        ],
+        "blend": "lighter"
+      }
+    },
+    "nuke": {
+      "shape": "capsule",
+      "len": 4,
+      "w": 2.2,
+      "core": "#FFF4B0",
+      "glow": "#FFB13B",
+      "glowR": 5,
+      "pulseHz": 4,
+      "trail": {
+        "kind": "ribbon",
+        "life": 0.5,
+        "w": [
+          2,
+          0
+        ],
+        "color": "#FFB13B",
+        "alpha": [
+          0.9,
+          0
+        ],
+        "blend": "lighter"
+      }
+    },
+    "napalm": {
+      "shape": "blob",
+      "r": 1.6,
+      "core": "#FFE08A",
+      "glow": "#FF6A1A",
+      "glowR": 4,
+      "flicker": 0.25,
+      "trail": {
+        "kind": "particles",
+        "rate": 60,
+        "life": [
+          0.25,
+          0.45
+        ],
+        "size": [
+          1.2,
+          0.3
+        ],
+        "colors": [
+          "#FFD27A",
+          "#FF6A1A",
+          "#5A1A0A"
+        ],
+        "speed": [
+          5,
+          15
+        ],
+        "gravity": -30,
+        "blend": "lighter"
+      }
+    },
+    "roller": {
+      "shape": "ball",
+      "r": 1.8,
+      "fill": "#C9D1DE",
+      "stripe": "$player",
+      "spin": "distance / r",
+      "outline": "#0B0E16",
+      "rollSparks": {
+        "rate": 8,
+        "life": [
+          0.15,
+          0.3
+        ],
+        "size": [
+          0.8,
+          0
+        ],
+        "colors": [
+          "#FFE7B0",
+          "#FF9A3B"
+        ],
+        "speed": [
+          20,
+          50
+        ],
+        "gravity": 200,
+        "blend": "lighter"
+      }
+    },
+    "digger": {
+      "shape": "drill",
+      "len": 3,
+      "w": 1.8,
+      "core": "#C9D1DE",
+      "glow": "$player",
+      "glowR": 2,
+      "trail": {
+        "kind": "ribbon",
+        "life": 0.25,
+        "w": [
+          1,
+          0
+        ],
+        "color": "$player",
+        "alpha": [
+          0.7,
+          0
+        ],
+        "blend": "lighter"
+      }
+    },
+    "dirt": {
+      "shape": "blob",
+      "r": 1.8,
+      "fill": "$terrainRim",
+      "outline": "#0B0E16",
+      "trail": {
+        "kind": "particles",
+        "rate": 25,
+        "life": [
+          0.3,
+          0.6
+        ],
+        "size": [
+          0.8,
+          0.3
+        ],
+        "colors": [
+          "$terrainLayer0",
+          "$terrainLayer1"
+        ],
+        "speed": [
+          0,
+          8
+        ],
+        "gravity": 120,
+        "blend": "normal"
+      }
+    },
+    "tracer": {
+      "shape": "dot",
+      "r": 0.9,
+      "core": "$player",
+      "trail": {
+        "kind": "dots",
+        "spacing": 3,
+        "life": 1.2,
+        "r": 0.6,
+        "color": "$player"
+      }
+    },
+    "smokeTracer": {
+      "shape": "dot",
+      "r": 1,
+      "core": "$player",
+      "trail": {
+        "kind": "puffs",
+        "spacing": 2.5,
+        "life": "persist",
+        "r": [
+          1,
+          2.6
+        ],
+        "color": "$player",
+        "alpha": 0.45,
+        "clearOn": "system:clearScreen"
+      }
+    },
+    "bombIcon": {
+      "INVISIBLE": "no body, trail only if Trace Paths",
+      "SMALL": "size x0.6",
+      "BIG": "size x1"
+    }
+  },
+  "tracePath": {
+    "color": "$player",
+    "w": 1.2,
+    "alpha": 0.75,
+    "glowBlur": 6,
+    "glowAlpha": 0.5,
+    "persist": "until round end",
+    "dashWhenGuided": [
+      3,
+      2
+    ]
+  },
+  "explosions": {
+    "blast": {
+      "use": [
+        "Baby Missile",
+        "Missile",
+        "Leap Frog",
+        "MIRV",
+        "Death's Head",
+        "Baby Roller",
+        "Roller",
+        "Heavy Roller",
+        "Sandhog warhead"
+      ],
+      "duration": 0.7,
+      "layers": [
+        {
+          "type": "flash",
+          "r": 1.3,
+          "color": "#FFFFFF",
+          "alpha": [
+            0.9,
+            0
+          ],
+          "t": [
+            0,
+            0.08
+          ],
+          "blend": "lighter"
+        },
+        {
+          "type": "fireball",
+          "r": [
+            0.35,
+            1.0,
+            0.6
+          ],
+          "t": [
+            0,
+            0.22,
+            0.6
+          ],
+          "stops": [
+            [
+              0,
+              "#FFF7D6"
+            ],
+            [
+              0.35,
+              "#FFC94A"
+            ],
+            [
+              0.7,
+              "#FF6A1F"
+            ],
+            [
+              1,
+              "rgba(255,60,20,0)"
+            ]
+          ],
+          "alpha": [
+            1,
+            1,
+            0
+          ],
+          "blend": "lighter"
+        },
+        {
+          "type": "ring",
+          "r": [
+            0.6,
+            1.6
+          ],
+          "t": [
+            0,
+            0.3
+          ],
+          "w": [
+            2,
+            0
+          ],
+          "color": "#FFE7B0",
+          "alpha": [
+            0.8,
+            0
+          ]
+        },
+        {
+          "type": "particles",
+          "name": "sparks",
+          "count": "10 + r*0.8",
+          "spawn": "point",
+          "angle": [
+            0,
+            360
+          ],
+          "speed": [
+            60,
+            220
+          ],
+          "scaleWithR": true,
+          "life": [
+            0.3,
+            0.7
+          ],
+          "gravity": 300,
+          "drag": 1.5,
+          "size": [
+            1.4,
+            0.3
+          ],
+          "colors": [
+            "#FFF3B0",
+            "#FFB13B",
+            "#FF4A1A"
+          ],
+          "blend": "lighter",
+          "stretch": 0.02
+        },
+        {
+          "type": "particles",
+          "name": "smoke",
+          "count": "4 + r/5",
+          "spawn": "disc 0.5",
+          "angle": [
+            60,
+            120
+          ],
+          "speed": [
+            8,
+            25
+          ],
+          "life": [
+            1.0,
+            2.0
+          ],
+          "gravity": -12,
+          "drag": 0.8,
+          "size": [
+            "0.3r",
+            "0.8r"
+          ],
+          "colors": [
+            "#4A4440",
+            "#2A2624"
+          ],
+          "alpha": [
+            0.5,
+            0
+          ],
+          "blend": "normal",
+          "delay": 0.12,
+          "soft": true
+        },
+        {
+          "type": "particles",
+          "name": "debris",
+          "count": "r*0.6",
+          "spawn": "rim 1.0",
+          "angle": [
+            20,
+            160
+          ],
+          "speed": [
+            80,
+            200
+          ],
+          "scaleWithR": true,
+          "life": [
+            0.6,
+            1.2
+          ],
+          "gravity": 420,
+          "size": [
+            1.2,
+            0.8
+          ],
+          "colors": [
+            "$terrainLayer0",
+            "$terrainLayer2"
+          ],
+          "blend": "normal",
+          "onlyIfTerrainHit": true
+        }
+      ],
+      "shake": {
+        "amp": "min(6, r/12)",
+        "dur": 0.25
+      },
+      "craterRim": {
+        "color": "#FF8A3B",
+        "alpha": [
+          0.7,
+          0
+        ],
+        "w": 1.2,
+        "t": [
+          0.1,
+          1.2
+        ],
+        "blend": "lighter"
+      }
+    },
+    "nuke": {
+      "use": [
+        "Baby Nuke",
+        "Nuke"
+      ],
+      "duration": 2.2,
+      "layers": [
+        {
+          "type": "screenFlash",
+          "color": "#FFFFFF",
+          "alpha": [
+            0.65,
+            0
+          ],
+          "t": [
+            0,
+            0.4
+          ]
+        },
+        {
+          "type": "fireball",
+          "r": [
+            0.2,
+            1.05,
+            0.8
+          ],
+          "t": [
+            0,
+            0.35,
+            1.1
+          ],
+          "stops": [
+            [
+              0,
+              "#FFFFFF"
+            ],
+            [
+              0.25,
+              "#FFF2A8"
+            ],
+            [
+              0.55,
+              "#FFA330"
+            ],
+            [
+              0.85,
+              "#E5381A"
+            ],
+            [
+              1,
+              "rgba(120,20,10,0)"
+            ]
+          ],
+          "alpha": [
+            1,
+            1,
+            0
+          ],
+          "blend": "lighter"
+        },
+        {
+          "type": "ring",
+          "r": [
+            0.5,
+            2.4
+          ],
+          "t": [
+            0,
+            0.55
+          ],
+          "w": [
+            4,
+            0
+          ],
+          "color": "#FFF2C8",
+          "alpha": [
+            0.9,
+            0
+          ]
+        },
+        {
+          "type": "ring",
+          "r": [
+            0.3,
+            1.6
+          ],
+          "t": [
+            0.1,
+            0.7
+          ],
+          "w": [
+            2,
+            0
+          ],
+          "color": "#FFB13B",
+          "alpha": [
+            0.7,
+            0
+          ]
+        },
+        {
+          "type": "particles",
+          "name": "sparks",
+          "count": "30 + r*0.6",
+          "spawn": "point",
+          "angle": [
+            0,
+            360
+          ],
+          "speed": [
+            100,
+            320
+          ],
+          "scaleWithR": true,
+          "life": [
+            0.5,
+            1.1
+          ],
+          "gravity": 260,
+          "drag": 1.2,
+          "size": [
+            1.8,
+            0.4
+          ],
+          "colors": [
+            "#FFFFFF",
+            "#FFD25A",
+            "#FF5A1F"
+          ],
+          "blend": "lighter",
+          "stretch": 0.025
+        },
+        {
+          "type": "particles",
+          "name": "smokeColumn",
+          "count": "18 + r/3",
+          "spawn": "column 0.25 x 1.4",
+          "angle": [
+            85,
+            95
+          ],
+          "speed": [
+            25,
+            60
+          ],
+          "life": [
+            1.4,
+            2.4
+          ],
+          "gravity": -18,
+          "drag": 0.5,
+          "size": [
+            "0.25r",
+            "0.6r"
+          ],
+          "colors": [
+            "#FFB13B",
+            "#8A3A20",
+            "#3A2A26",
+            "#2A2624"
+          ],
+          "alpha": [
+            0.75,
+            0
+          ],
+          "blend": "normal",
+          "delay": 0.25,
+          "soft": true
+        },
+        {
+          "type": "particles",
+          "name": "cap",
+          "count": "12 + r/6",
+          "spawn": "ellipse at y=-1.4r, rx 0.7r ry 0.25r",
+          "angle": [
+            0,
+            360
+          ],
+          "speed": [
+            10,
+            30
+          ],
+          "life": [
+            1.2,
+            2.0
+          ],
+          "gravity": -6,
+          "size": [
+            "0.3r",
+            "0.55r"
+          ],
+          "colors": [
+            "#A04A26",
+            "#4A3A36",
+            "#2A2624"
+          ],
+          "alpha": [
+            0.7,
+            0
+          ],
+          "blend": "normal",
+          "delay": 0.35,
+          "soft": true
+        }
+      ],
+      "heat": {
+        "kind": "refraction wobble",
+        "r": 1.3,
+        "amp": 1.5,
+        "dur": 1.0,
+        "optional": true
+      },
+      "shake": {
+        "amp": 8,
+        "dur": 0.6
+      },
+      "craterRim": {
+        "color": "#FF6A1A",
+        "alpha": [
+          0.9,
+          0
+        ],
+        "w": 1.6,
+        "t": [
+          0.2,
+          2.0
+        ],
+        "blend": "lighter"
+      }
+    },
+    "funky": {
+      "use": [
+        "Funky Bomb"
+      ],
+      "note": "sub-blast positions/count from engine; each child = blast with hue override",
+      "childHues": [
+        "#FF3BD4",
+        "#3BFFD9",
+        "#FFE53B",
+        "#7A3BFF",
+        "#3BFF6E",
+        "#FF7A3B"
+      ],
+      "childStagger": 0.07,
+      "childLayers": "blast.layers with fireball stops [[0,'#FFFFFF'],[0.4,hue],[1,'rgba(hue,0)']] and sparks colors ['#FFFFFF', hue]"
+    },
+    "napalm": {
+      "use": [
+        "Napalm",
+        "Hot Napalm"
+      ],
+      "splash": {
+        "type": "particles",
+        "count": 24,
+        "angle": [
+          20,
+          160
+        ],
+        "speed": [
+          40,
+          120
+        ],
+        "life": [
+          0.4,
+          0.8
+        ],
+        "gravity": 260,
+        "size": [
+          1.4,
+          0.6
+        ],
+        "colors": [
+          "#FFD27A",
+          "#FF6A1A"
+        ],
+        "blend": "lighter"
+      },
+      "fire": {
+        "source": "engine burning cells (x,y,heat)",
+        "perCellRate": "4 + heat*10 /s",
+        "particle": {
+          "angle": [
+            80,
+            100
+          ],
+          "speed": [
+            18,
+            45
+          ],
+          "life": [
+            0.35,
+            0.75
+          ],
+          "gravity": -40,
+          "drag": 0.6,
+          "size": [
+            1.5,
+            0.3
+          ],
+          "wobbleX": 6,
+          "colors": [
+            "#FFF3B0",
+            "#FFB02E",
+            "#FF4A1A",
+            "#5A1A0A"
+          ],
+          "blend": "normal",
+          "alpha": [
+            0.9,
+            0
+          ],
+          "coreGlow": {
+            "blend": "lighter",
+            "sizeMul": 0.5,
+            "alpha": 0.5,
+            "color": "#FFD27A",
+            "note": "additive only for inner core; bright skies saturate if whole flame is additive"
+          }
+        },
+        "groundGlow": {
+          "color": "#FF6A1A",
+          "r": 3,
+          "alpha": "0.25 + heat*0.35",
+          "blend": "lighter",
+          "flickerHz": 9
+        },
+        "smoke": {
+          "perCellRate": 1.5,
+          "life": [
+            1.2,
+            2.2
+          ],
+          "speed": [
+            10,
+            20
+          ],
+          "gravity": -10,
+          "size": [
+            1.5,
+            4
+          ],
+          "colors": [
+            "#3A2A26",
+            "#1E1A18"
+          ],
+          "alpha": [
+            0.35,
+            0
+          ],
+          "soft": true
+        }
+      },
+      "hot": {
+        "colorsOverride": [
+          "#E8F4FF",
+          "#FFD27A",
+          "#FF8A2E",
+          "#FF4A1A",
+          "#5A1A0A"
+        ],
+        "rateMul": 1.4,
+        "groundGlowColor": "#FFB13B"
+      },
+      "embers": {
+        "afterBurnOut": 1.5,
+        "color": "#FF7A1A",
+        "alpha": [
+          0.6,
+          0
+        ]
+      }
+    },
+    "dirtAdd": {
+      "use": [
+        "Dirt Clod",
+        "Dirt Ball",
+        "Ton of Dirt"
+      ],
+      "duration": 0.5,
+      "layers": [
+        {
+          "type": "ring",
+          "r": [
+            0.2,
+            1.0
+          ],
+          "t": [
+            0,
+            0.18
+          ],
+          "w": [
+            3,
+            0
+          ],
+          "color": "$terrainRim",
+          "alpha": [
+            0.9,
+            0
+          ]
+        },
+        {
+          "type": "particles",
+          "name": "clods",
+          "count": "8 + r*0.4",
+          "spawn": "rim 1.0",
+          "angle": [
+            0,
+            360
+          ],
+          "speed": [
+            20,
+            60
+          ],
+          "life": [
+            0.4,
+            0.8
+          ],
+          "gravity": 300,
+          "size": [
+            1.4,
+            0.9
+          ],
+          "colors": [
+            "$terrainLayer0",
+            "$terrainLayer1"
+          ],
+          "blend": "normal"
+        }
+      ],
+      "newDirtFadeIn": 0.15
+    },
+    "liquidDirt": {
+      "use": [
+        "Liquid Dirt"
+      ],
+      "front": {
+        "highlight": "$terrainRim",
+        "gloss": "#FFFFFF",
+        "glossAlpha": 0.25
+      },
+      "drips": {
+        "rate": 20,
+        "life": [
+          0.3,
+          0.6
+        ],
+        "gravity": 300,
+        "size": [
+          0.9,
+          0.5
+        ],
+        "colors": [
+          "$terrainLayer0"
+        ]
+      }
+    },
+    "dirtCharge": {
+      "use": [
+        "Dirt Charge"
+      ],
+      "cone": {
+        "type": "particles",
+        "count": "40 (x2 Extra Dirt)",
+        "angle": "turret angle +-25",
+        "speed": [
+          60,
+          160
+        ],
+        "life": [
+          0.6,
+          1.0
+        ],
+        "gravity": 260,
+        "size": [
+          1.4,
+          1.0
+        ],
+        "colors": [
+          "$terrainLayer0",
+          "$terrainRim"
+        ]
+      }
+    },
+    "riot": {
+      "use": [
+        "Riot Charge",
+        "Riot Blast",
+        "Riot Bomb",
+        "Heavy Riot Bomb"
+      ],
+      "duration": 0.9,
+      "layers": [
+        {
+          "type": "fireball",
+          "r": [
+            0.3,
+            1.0,
+            0.9
+          ],
+          "t": [
+            0,
+            0.15,
+            0.4
+          ],
+          "stops": [
+            [
+              0,
+              "rgba(240,230,210,0.9)"
+            ],
+            [
+              1,
+              "rgba(200,180,150,0)"
+            ]
+          ],
+          "alpha": [
+            0.8,
+            0.8,
+            0
+          ],
+          "blend": "normal"
+        },
+        {
+          "type": "particles",
+          "name": "dust",
+          "count": "10 + r/3",
+          "spawn": "disc 0.9",
+          "angle": [
+            0,
+            360
+          ],
+          "speed": [
+            10,
+            40
+          ],
+          "life": [
+            0.6,
+            1.4
+          ],
+          "gravity": -5,
+          "drag": 1,
+          "size": [
+            "0.15r",
+            "0.35r"
+          ],
+          "colors": [
+            "#D8C7A6",
+            "#A89478"
+          ],
+          "alpha": [
+            0.5,
+            0
+          ],
+          "blend": "normal",
+          "soft": true
+        }
+      ],
+      "wedgeForCharge": "spawn limited to turret angle +-(36 Charge | 60 Blast) deg"
+    },
+    "tunnel": {
+      "use": [
+        "Baby Digger",
+        "Digger",
+        "Heavy Digger",
+        "Baby Sandhog",
+        "Sandhog",
+        "Heavy Sandhog"
+      ],
+      "entryPuff": {
+        "count": 10,
+        "angle": [
+          30,
+          150
+        ],
+        "speed": [
+          20,
+          60
+        ],
+        "life": [
+          0.3,
+          0.6
+        ],
+        "gravity": 200,
+        "size": [
+          1.2,
+          0.5
+        ],
+        "colors": [
+          "$terrainRim",
+          "$terrainLayer0"
+        ]
+      },
+      "head": {
+        "glow": "$player",
+        "r": 2.5,
+        "alpha": 0.6,
+        "blend": "lighter",
+        "crumbsRate": 40,
+        "crumbColors": [
+          "$terrainLayer0",
+          "$terrainLayer2"
+        ]
+      },
+      "tunnelWall": {
+        "innerShadow": "mix(terrainLayer, #000, 0.45)",
+        "w": 1,
+        "hotEdge": "#FF8A3B",
+        "hotFade": 0.5
+      },
+      "sandhogCharge": "blast with r from engine, sparks x0.5, no smoke when underground",
+      "fizzle": {
+        "count": 6,
+        "colors": [
+          "#8A8F98",
+          "#4A4E55"
+        ],
+        "speed": [
+          10,
+          30
+        ],
+        "life": [
+          0.4,
+          0.7
+        ],
+        "gravity": -20,
+        "size": [
+          1,
+          2
+        ],
+        "alpha": [
+          0.6,
+          0
+        ]
+      }
+    },
+    "laser": {
+      "use": [
+        "Laser"
+      ],
+      "duration": 0.45,
+      "beam": {
+        "path": "engine ray segments",
+        "core": "#FFFFFF",
+        "coreW": 1.2,
+        "glow": "$player",
+        "glowW": 3,
+        "glowAlpha": [
+          0.9,
+          0
+        ],
+        "flickerHz": 30,
+        "flickerAmp": 0.25,
+        "blend": "lighter",
+        "chargeUp": 0.08
+      },
+      "impactSparks": {
+        "at": "every hit point",
+        "count": 8,
+        "angle": "normal +-60",
+        "speed": [
+          40,
+          120
+        ],
+        "life": [
+          0.15,
+          0.35
+        ],
+        "gravity": 200,
+        "size": [
+          1,
+          0.2
+        ],
+        "colors": [
+          "#FFFFFF",
+          "$player"
+        ],
+        "blend": "lighter"
+      },
+      "scorch": {
+        "color": "#FF8A3B",
+        "w": 1,
+        "alpha": [
+          0.8,
+          0
+        ],
+        "t": [
+          0,
+          0.8
+        ]
+      },
+      "blockedBySuperMag": "beam ends at shield rim + shieldHit.supermag"
+    },
+    "plasma": {
+      "use": [
+        "Plasma Blast"
+      ],
+      "duration": 0.6,
+      "rFromEngine": "10..75 by batteries",
+      "layers": [
+        {
+          "type": "fireball",
+          "r": [
+            0.2,
+            1.0,
+            0.95
+          ],
+          "t": [
+            0,
+            0.18,
+            0.6
+          ],
+          "stops": [
+            [
+              0,
+              "#FFFFFF"
+            ],
+            [
+              0.3,
+              "#7DF9FF"
+            ],
+            [
+              0.8,
+              "#9B5CFF"
+            ],
+            [
+              1,
+              "rgba(155,92,255,0)"
+            ]
+          ],
+          "alpha": [
+            0.9,
+            0.9,
+            0
+          ],
+          "blend": "lighter"
+        },
+        {
+          "type": "ring",
+          "r": [
+            0.3,
+            1.05
+          ],
+          "t": [
+            0,
+            0.2
+          ],
+          "w": [
+            2.5,
+            0.5
+          ],
+          "color": "#CFFBFF",
+          "alpha": [
+            1,
+            0
+          ]
+        },
+        {
+          "type": "arcs",
+          "count": "3 + targets",
+          "to": "targets in r, else random rim points",
+          "segments": 7,
+          "jitter": 0.18,
+          "core": "#FFFFFF",
+          "glow": "#7DF9FF",
+          "w": 1,
+          "glowW": 4,
+          "life": 0.12,
+          "regenHz": 20
+        },
+        {
+          "type": "particles",
+          "name": "crackle",
+          "count": "8 + r/4",
+          "spawn": "rim 1.0",
+          "angle": [
+            0,
+            360
+          ],
+          "speed": [
+            5,
+            30
+          ],
+          "life": [
+            0.1,
+            0.3
+          ],
+          "size": [
+            0.8,
+            0
+          ],
+          "colors": [
+            "#FFFFFF",
+            "#7DF9FF"
+          ],
+          "blend": "lighter"
+        }
+      ],
+      "shake": {
+        "amp": 3,
+        "dur": 0.2
+      }
+    },
+    "lightning": {
+      "use": [
+        "Hostile Environment strike"
+      ],
+      "bolt": {
+        "from": "sky top",
+        "to": "engine strike point",
+        "segments": 12,
+        "jitter": 0.12,
+        "branchChance": 0.3,
+        "core": "#FFFFFF",
+        "glow": "#9FD0FF",
+        "w": 1.4,
+        "glowW": 7,
+        "life": 0.25,
+        "restrikes": 2
+      },
+      "screenFlash": {
+        "color": "#CFE6FF",
+        "alpha": [
+          0.35,
+          0
+        ],
+        "t": [
+          0,
+          0.15
+        ]
+      },
+      "impact": "blast with r=engine, fireball stops white->#9FD0FF",
+      "shake": {
+        "amp": 4,
+        "dur": 0.2
+      }
+    },
+    "tankDeath": {
+      "use": [
+        "tank destroyed"
+      ],
+      "sequence": [
+        "blast (r = engine death blast)",
+        "swap sprite to tank_<type>_wreck at t=0.1",
+        "smoke column persist 3s rate 6/s"
+      ],
+      "smoke": {
+        "rate": 6,
+        "life": [
+          1.5,
+          2.5
+        ],
+        "speed": [
+          10,
+          25
+        ],
+        "gravity": -14,
+        "size": [
+          1.5,
+          5
+        ],
+        "colors": [
+          "#3A3532",
+          "#1E1A18"
+        ],
+        "alpha": [
+          0.5,
+          0
+        ],
+        "soft": true
+      },
+      "embers": {
+        "rate": 4,
+        "life": [
+          0.6,
+          1.2
+        ],
+        "speed": [
+          10,
+          30
+        ],
+        "gravity": -30,
+        "size": [
+          0.6,
+          0
+        ],
+        "colors": [
+          "#FFD27A",
+          "#FF7A1A"
+        ],
+        "blend": "lighter"
+      }
+    },
+    "mirvSplit": {
+      "flash": {
+        "r": 4,
+        "color": "#FFFFFF",
+        "alpha": [
+          0.9,
+          0
+        ],
+        "t": [
+          0,
+          0.1
+        ]
+      },
+      "childTrail": "projectiles.missile.trail"
+    },
+    "landingDust": {
+      "use": [
+        "tank fall landing"
+      ],
+      "count": 8,
+      "angle": [
+        0,
+        30,
+        150,
+        180
+      ],
+      "speed": [
+        20,
+        50
+      ],
+      "life": [
+        0.3,
+        0.6
+      ],
+      "gravity": 100,
+      "size": [
+        1,
+        2
+      ],
+      "colors": [
+        "$terrainRim",
+        "$terrainLayer0"
+      ],
+      "alpha": [
+        0.7,
+        0
+      ]
+    }
+  },
+  "shieldHit": {
+    "common": {
+      "ripple": {
+        "kind": "arc on shield circle centered at impact angle",
+        "span": 70,
+        "w": [
+          2.5,
+          0
+        ],
+        "t": [
+          0,
+          0.3
+        ],
+        "color": "$shieldRim",
+        "blend": "lighter"
+      },
+      "shieldAlphaByHp": "0.35 + 0.65*hp",
+      "lowHpFlickerBelow": 0.25,
+      "lowHpFlickerHz": 6
+    },
+    "shield": {
+      "sparks": {
+        "count": 6,
+        "colors": [
+          "#FFFFFF",
+          "#5AC8FA"
+        ],
+        "speed": [
+          30,
+          80
+        ],
+        "life": [
+          0.15,
+          0.3
+        ],
+        "size": [
+          0.8,
+          0
+        ]
+      }
+    },
+    "force": {
+      "hexFlash": {
+        "alpha": [
+          0.6,
+          0
+        ],
+        "t": [
+          0,
+          0.25
+        ]
+      },
+      "pushPulse": {
+        "ring": [
+          1.0,
+          1.25
+        ],
+        "t": [
+          0,
+          0.2
+        ],
+        "color": "#36F5C0"
+      }
+    },
+    "heavy": {
+      "sparks": {
+        "count": 10,
+        "colors": [
+          "#FFFFFF",
+          "#FFB21E",
+          "#FF6A1A"
+        ],
+        "speed": [
+          50,
+          140
+        ],
+        "gravity": 300,
+        "life": [
+          0.2,
+          0.5
+        ],
+        "size": [
+          1,
+          0.2
+        ],
+        "blend": "lighter"
+      },
+      "clang": "plate seam near impact brightens 0.2s"
+    },
+    "supermag": {
+      "arcs": {
+        "count": 3,
+        "segments": 5,
+        "jitter": 0.2,
+        "core": "#FFFFFF",
+        "glow": "#C46BFF",
+        "life": 0.1,
+        "regenHz": 25,
+        "t": [
+          0,
+          0.3
+        ]
+      },
+      "deflectSwirl": "particles orbit 90deg along rim, colors ['#FF6BE6','#C46BFF']"
+    },
+    "break": {
+      "shards": 12,
+      "shape": "triangle 1.5-3px",
+      "color": "$shieldCore",
+      "alpha": [
+        0.8,
+        0
+      ],
+      "speed": [
+        40,
+        110
+      ],
+      "gravity": 260,
+      "spin": [
+        -8,
+        8
+      ],
+      "life": [
+        0.5,
+        0.9
+      ]
+    }
+  },
+  "walls": {
+    "draw": "full-height bars at world x=0 and x=W (+ceiling line if engine reflects ceiling)",
+    "w": 2,
+    "glowW": 6,
+    "glowAlpha": 0.35,
+    "colors": "palette.walls[mode]",
+    "erratic": "color changes per shot with 0.2s crossfade",
+    "hit": {
+      "count": 6,
+      "colors": [
+        "#FFFFFF",
+        "$wall"
+      ],
+      "speed": [
+        30,
+        90
+      ],
+      "life": [
+        0.15,
+        0.3
+      ],
+      "size": [
+        1,
+        0
+      ],
+      "blend": "lighter"
+    },
+    "wrapGhost": "draw projectile at both edges for 0.1s around wrap"
+  }
+}

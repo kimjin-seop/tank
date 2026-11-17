@@ -1,0 +1,172 @@
+{
+  "unitsPerGamePx": 4,
+  "viewBox": [
+    48,
+    40
+  ],
+  "anchor": "bottom-center (24,40) = engine tank position on ground",
+  "angle": "degrees, 0=+x(right), 90=up, 180=left; canvas: rotate(-angle) about pivot",
+  "drawOrder": [
+    "shadow",
+    "hull",
+    "barrel",
+    "turret",
+    "shield",
+    "marker"
+  ],
+  "tokens": {
+    "P": "#FF00FF",
+    "PD": "#990099",
+    "PL": "#FF99FF"
+  },
+  "types": {
+    "classic": {
+      "name_ko": "표준형",
+      "desc_ko": "반구 돔 포탑 · 외형만 다름, 성능 동일",
+      "can_move": true,
+      "cpu_only": false,
+      "label": "표준형",
+      "mobile": true,
+      "cpuOnly": false,
+      "pivot": [
+        24,
+        21
+      ],
+      "barrelLen": 17,
+      "muzzle": [
+        [
+          41,
+          0
+        ]
+      ]
+    },
+    "wedge": {
+      "name_ko": "쐐기형",
+      "desc_ko": "낮은 차체·납작 포탑·안테나 · 외형만 다름, 성능 동일",
+      "can_move": true,
+      "cpu_only": false,
+      "label": "쐐기형",
+      "mobile": true,
+      "cpuOnly": false,
+      "pivot": [
+        24,
+        24
+      ],
+      "barrelLen": 18,
+      "muzzle": [
+        [
+          42,
+          0
+        ]
+      ]
+    },
+    "heavy": {
+      "name_ko": "중전차",
+      "desc_ko": "사각 포탑·측면 장갑판·굵은 포신 · 외형만 다름, 성능 동일",
+      "can_move": true,
+      "cpu_only": false,
+      "label": "중전차",
+      "mobile": true,
+      "cpuOnly": false,
+      "pivot": [
+        24,
+        18
+      ],
+      "barrelLen": 18,
+      "muzzle": [
+        [
+          42,
+          0
+        ]
+      ]
+    },
+    "wheeled": {
+      "name_ko": "장륜형",
+      "desc_ko": "큰 바퀴 3개 · 외형만 다름, 성능 동일",
+      "can_move": true,
+      "cpu_only": false,
+      "label": "장륜형",
+      "mobile": true,
+      "cpuOnly": false,
+      "pivot": [
+        24,
+        22.5
+      ],
+      "barrelLen": 16,
+      "muzzle": [
+        [
+          40,
+          0
+        ]
+      ]
+    },
+    "scout": {
+      "name_ko": "정찰형",
+      "desc_ko": "기둥 위 구형 포탑 · 외형만 다름, 성능 동일",
+      "can_move": true,
+      "cpu_only": false,
+      "label": "정찰형",
+      "mobile": true,
+      "cpuOnly": false,
+      "pivot": [
+        24,
+        16
+      ],
+      "barrelLen": 15,
+      "muzzle": [
+        [
+          39,
+          0
+        ]
+      ]
+    },
+    "fixed": {
+      "name_ko": "고정 포대",
+      "desc_ko": "바퀴·트레드 없음 · 연료 구매·이동 불가, 낙하만 함",
+      "can_move": false,
+      "cpu_only": false,
+      "label": "고정 포대",
+      "mobile": false,
+      "cpuOnly": false,
+      "pivot": [
+        24,
+        25
+      ],
+      "barrelLen": 17,
+      "muzzle": [
+        [
+          41,
+          0
+        ]
+      ]
+    },
+    "triple": {
+      "name_ko": "트리플 터렛",
+      "desc_ko": "포신 3개 · 미사일/베이비 미사일 3연발 (원본 등록판)",
+      "can_move": true,
+      "cpu_only": true,
+      "label": "삼연장",
+      "mobile": true,
+      "cpuOnly": true,
+      "pivot": [
+        24,
+        18.5
+      ],
+      "barrelLen": 19,
+      "muzzle": [
+        [
+          41,
+          -3.2
+        ],
+        [
+          43,
+          0
+        ],
+        [
+          41,
+          3.2
+        ]
+      ]
+    }
+  }
+}

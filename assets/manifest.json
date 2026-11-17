@@ -1,0 +1,2683 @@
+{
+  "version": 1,
+  "root": "assets/",
+  "units": "SVG 4 units = 1 game px",
+  "recolorTokens": {
+    "P": "#FF00FF",
+    "PD": "#990099",
+    "PL": "#FF99FF"
+  },
+  "recolorRule": "SVG 문자열에서 토큰 3개를 palette.players[n].P/PD/PL로 치환 후 Blob URL → Image → 배율별 오프스크린 캔버스 캐시",
+  "rebuild": "node assets/tanks/_src/build.mjs",
+  "license": "프로젝트 자체 제작(외부 소스·폰트 파일 없음, 마커 숫자는 시스템 sans-serif)",
+  "assets": [
+    {
+      "key": "tank.classic.hull",
+      "path": "tanks/tank_classic_hull.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        21
+      ],
+      "recolor": true,
+      "usage": "차체+트레드(정적)",
+      "tankType": "classic",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "표준형",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.classic.turret",
+      "path": "tanks/tank_classic_turret.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        21
+      ],
+      "recolor": true,
+      "usage": "포탑(정적, 포신 위에 그림)",
+      "tankType": "classic",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "표준형",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.classic.barrel",
+      "path": "tanks/tank_classic_barrel.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        21
+      ],
+      "recolor": true,
+      "usage": "포신(pivot 기준 회전, 0도=오른쪽)",
+      "tankType": "classic",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "표준형",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.classic.wreck",
+      "path": "tanks/tank_classic_wreck.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        21
+      ],
+      "recolor": false,
+      "usage": "사망 잔해(색 고정)",
+      "tankType": "classic",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "표준형",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.classic.ref",
+      "path": "tanks/tank_classic.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        21
+      ],
+      "recolor": true,
+      "usage": "레이어 합본 참고용(포신 45도)",
+      "tankType": "classic",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "표준형",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.wedge.hull",
+      "path": "tanks/tank_wedge_hull.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        24
+      ],
+      "recolor": true,
+      "usage": "차체+트레드(정적)",
+      "tankType": "wedge",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "쐐기형",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.wedge.turret",
+      "path": "tanks/tank_wedge_turret.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        24
+      ],
+      "recolor": true,
+      "usage": "포탑(정적, 포신 위에 그림)",
+      "tankType": "wedge",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "쐐기형",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.wedge.barrel",
+      "path": "tanks/tank_wedge_barrel.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        24
+      ],
+      "recolor": true,
+      "usage": "포신(pivot 기준 회전, 0도=오른쪽)",
+      "tankType": "wedge",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "쐐기형",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.wedge.wreck",
+      "path": "tanks/tank_wedge_wreck.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        24
+      ],
+      "recolor": false,
+      "usage": "사망 잔해(색 고정)",
+      "tankType": "wedge",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "쐐기형",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.wedge.ref",
+      "path": "tanks/tank_wedge.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        24
+      ],
+      "recolor": true,
+      "usage": "레이어 합본 참고용(포신 45도)",
+      "tankType": "wedge",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "쐐기형",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.heavy.hull",
+      "path": "tanks/tank_heavy_hull.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        18
+      ],
+      "recolor": true,
+      "usage": "차체+트레드(정적)",
+      "tankType": "heavy",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "중전차",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.heavy.turret",
+      "path": "tanks/tank_heavy_turret.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        18
+      ],
+      "recolor": true,
+      "usage": "포탑(정적, 포신 위에 그림)",
+      "tankType": "heavy",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "중전차",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.heavy.barrel",
+      "path": "tanks/tank_heavy_barrel.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        18
+      ],
+      "recolor": true,
+      "usage": "포신(pivot 기준 회전, 0도=오른쪽)",
+      "tankType": "heavy",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "중전차",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.heavy.wreck",
+      "path": "tanks/tank_heavy_wreck.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        18
+      ],
+      "recolor": false,
+      "usage": "사망 잔해(색 고정)",
+      "tankType": "heavy",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "중전차",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.heavy.ref",
+      "path": "tanks/tank_heavy.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        18
+      ],
+      "recolor": true,
+      "usage": "레이어 합본 참고용(포신 45도)",
+      "tankType": "heavy",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "중전차",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.wheeled.hull",
+      "path": "tanks/tank_wheeled_hull.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        22.5
+      ],
+      "recolor": true,
+      "usage": "차체+트레드(정적)",
+      "tankType": "wheeled",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "장륜형",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.wheeled.turret",
+      "path": "tanks/tank_wheeled_turret.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        22.5
+      ],
+      "recolor": true,
+      "usage": "포탑(정적, 포신 위에 그림)",
+      "tankType": "wheeled",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "장륜형",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.wheeled.barrel",
+      "path": "tanks/tank_wheeled_barrel.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        22.5
+      ],
+      "recolor": true,
+      "usage": "포신(pivot 기준 회전, 0도=오른쪽)",
+      "tankType": "wheeled",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "장륜형",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.wheeled.wreck",
+      "path": "tanks/tank_wheeled_wreck.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        22.5
+      ],
+      "recolor": false,
+      "usage": "사망 잔해(색 고정)",
+      "tankType": "wheeled",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "장륜형",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.wheeled.ref",
+      "path": "tanks/tank_wheeled.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        22.5
+      ],
+      "recolor": true,
+      "usage": "레이어 합본 참고용(포신 45도)",
+      "tankType": "wheeled",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "장륜형",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.scout.hull",
+      "path": "tanks/tank_scout_hull.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        16
+      ],
+      "recolor": true,
+      "usage": "차체+트레드(정적)",
+      "tankType": "scout",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "정찰형",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.scout.turret",
+      "path": "tanks/tank_scout_turret.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        16
+      ],
+      "recolor": true,
+      "usage": "포탑(정적, 포신 위에 그림)",
+      "tankType": "scout",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "정찰형",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.scout.barrel",
+      "path": "tanks/tank_scout_barrel.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        16
+      ],
+      "recolor": true,
+      "usage": "포신(pivot 기준 회전, 0도=오른쪽)",
+      "tankType": "scout",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "정찰형",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.scout.wreck",
+      "path": "tanks/tank_scout_wreck.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        16
+      ],
+      "recolor": false,
+      "usage": "사망 잔해(색 고정)",
+      "tankType": "scout",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "정찰형",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.scout.ref",
+      "path": "tanks/tank_scout.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        16
+      ],
+      "recolor": true,
+      "usage": "레이어 합본 참고용(포신 45도)",
+      "tankType": "scout",
+      "mobile": true,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "정찰형",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.fixed.hull",
+      "path": "tanks/tank_fixed_hull.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        25
+      ],
+      "recolor": true,
+      "usage": "차체+트레드(정적)",
+      "tankType": "fixed",
+      "mobile": false,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "고정 포대",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.fixed.turret",
+      "path": "tanks/tank_fixed_turret.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        25
+      ],
+      "recolor": true,
+      "usage": "포탑(정적, 포신 위에 그림)",
+      "tankType": "fixed",
+      "mobile": false,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "고정 포대",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.fixed.barrel",
+      "path": "tanks/tank_fixed_barrel.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        25
+      ],
+      "recolor": true,
+      "usage": "포신(pivot 기준 회전, 0도=오른쪽)",
+      "tankType": "fixed",
+      "mobile": false,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "고정 포대",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.fixed.wreck",
+      "path": "tanks/tank_fixed_wreck.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        25
+      ],
+      "recolor": false,
+      "usage": "사망 잔해(색 고정)",
+      "tankType": "fixed",
+      "mobile": false,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "고정 포대",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.fixed.ref",
+      "path": "tanks/tank_fixed.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        25
+      ],
+      "recolor": true,
+      "usage": "레이어 합본 참고용(포신 45도)",
+      "tankType": "fixed",
+      "mobile": false,
+      "cpuOnly": false,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "고정 포대",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.triple.hull",
+      "path": "tanks/tank_triple_hull.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        18.5
+      ],
+      "recolor": true,
+      "usage": "차체+트레드(정적)",
+      "tankType": "triple",
+      "mobile": true,
+      "cpuOnly": true,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "트리플 터렛",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.triple.turret",
+      "path": "tanks/tank_triple_turret.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        18.5
+      ],
+      "recolor": true,
+      "usage": "포탑(정적, 포신 위에 그림)",
+      "tankType": "triple",
+      "mobile": true,
+      "cpuOnly": true,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "트리플 터렛",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.triple.barrel",
+      "path": "tanks/tank_triple_barrel.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        18.5
+      ],
+      "recolor": true,
+      "usage": "포신(pivot 기준 회전, 0도=오른쪽)",
+      "tankType": "triple",
+      "mobile": true,
+      "cpuOnly": true,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "트리플 터렛",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.triple.wreck",
+      "path": "tanks/tank_triple_wreck.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        18.5
+      ],
+      "recolor": false,
+      "usage": "사망 잔해(색 고정)",
+      "tankType": "triple",
+      "mobile": true,
+      "cpuOnly": true,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "트리플 터렛",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "tank.triple.ref",
+      "path": "tanks/tank_triple.svg",
+      "type": "svg",
+      "size": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        40
+      ],
+      "pivot": [
+        24,
+        18.5
+      ],
+      "recolor": true,
+      "usage": "레이어 합본 참고용(포신 45도)",
+      "tankType": "triple",
+      "mobile": true,
+      "cpuOnly": true,
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": true,
+      "name_ko": "트리플 터렛",
+      "verifyNote": "원본 아이콘과 1:1 대응 미확인"
+    },
+    {
+      "key": "marker.01",
+      "path": "tanks/marker_01.svg",
+      "type": "svg",
+      "size": [
+        24,
+        24
+      ],
+      "recolor": false,
+      "usage": "플레이어 번호+형태 마커(탱크 위, 화면 18px 고정)",
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass"
+    },
+    {
+      "key": "marker.02",
+      "path": "tanks/marker_02.svg",
+      "type": "svg",
+      "size": [
+        24,
+        24
+      ],
+      "recolor": false,
+      "usage": "플레이어 번호+형태 마커(탱크 위, 화면 18px 고정)",
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass"
+    },
+    {
+      "key": "marker.03",
+      "path": "tanks/marker_03.svg",
+      "type": "svg",
+      "size": [
+        24,
+        24
+      ],
+      "recolor": false,
+      "usage": "플레이어 번호+형태 마커(탱크 위, 화면 18px 고정)",
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass"
+    },
+    {
+      "key": "marker.04",
+      "path": "tanks/marker_04.svg",
+      "type": "svg",
+      "size": [
+        24,
+        24
+      ],
+      "recolor": false,
+      "usage": "플레이어 번호+형태 마커(탱크 위, 화면 18px 고정)",
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass"
+    },
+    {
+      "key": "marker.05",
+      "path": "tanks/marker_05.svg",
+      "type": "svg",
+      "size": [
+        24,
+        24
+      ],
+      "recolor": false,
+      "usage": "플레이어 번호+형태 마커(탱크 위, 화면 18px 고정)",
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass"
+    },
+    {
+      "key": "marker.06",
+      "path": "tanks/marker_06.svg",
+      "type": "svg",
+      "size": [
+        24,
+        24
+      ],
+      "recolor": false,
+      "usage": "플레이어 번호+형태 마커(탱크 위, 화면 18px 고정)",
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass"
+    },
+    {
+      "key": "marker.07",
+      "path": "tanks/marker_07.svg",
+      "type": "svg",
+      "size": [
+        24,
+        24
+      ],
+      "recolor": false,
+      "usage": "플레이어 번호+형태 마커(탱크 위, 화면 18px 고정)",
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass"
+    },
+    {
+      "key": "marker.08",
+      "path": "tanks/marker_08.svg",
+      "type": "svg",
+      "size": [
+        24,
+        24
+      ],
+      "recolor": false,
+      "usage": "플레이어 번호+형태 마커(탱크 위, 화면 18px 고정)",
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass"
+    },
+    {
+      "key": "marker.09",
+      "path": "tanks/marker_09.svg",
+      "type": "svg",
+      "size": [
+        24,
+        24
+      ],
+      "recolor": false,
+      "usage": "플레이어 번호+형태 마커(탱크 위, 화면 18px 고정)",
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass"
+    },
+    {
+      "key": "marker.10",
+      "path": "tanks/marker_10.svg",
+      "type": "svg",
+      "size": [
+        24,
+        24
+      ],
+      "recolor": false,
+      "usage": "플레이어 번호+형태 마커(탱크 위, 화면 18px 고정)",
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass"
+    },
+    {
+      "key": "fx.shield.shield",
+      "path": "fx/fx_shield_shield.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "anchor": "center = tank (24,28) in tank frame",
+      "recolor": false,
+      "usage": "방어막 상시 표시, alpha=0.35+0.65*hp",
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass"
+    },
+    {
+      "key": "fx.shield.force",
+      "path": "fx/fx_shield_force.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "anchor": "center = tank (24,28) in tank frame",
+      "recolor": false,
+      "usage": "역장 상시 표시, alpha=0.35+0.65*hp",
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass"
+    },
+    {
+      "key": "fx.shield.heavy",
+      "path": "fx/fx_shield_heavy.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "anchor": "center = tank (24,28) in tank frame",
+      "recolor": false,
+      "usage": "중장갑 상시 표시, alpha=0.35+0.65*hp",
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass"
+    },
+    {
+      "key": "fx.shield.supermag",
+      "path": "fx/fx_shield_supermag.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "anchor": "center = tank (24,28) in tank frame",
+      "recolor": false,
+      "usage": "초자력 상시 표시, alpha=0.35+0.65*hp",
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass"
+    },
+    {
+      "key": "fx.turn.ring",
+      "path": "fx/fx_turn_ring.svg",
+      "type": "svg",
+      "size": [
+        60,
+        16
+      ],
+      "anchor": "center at ground",
+      "recolor": true,
+      "usage": "현재 턴 발밑 링",
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass"
+    },
+    {
+      "key": "fx.turn.chevron",
+      "path": "fx/fx_turn_chevron.svg",
+      "type": "svg",
+      "size": [
+        24,
+        16
+      ],
+      "recolor": true,
+      "usage": "현재 턴 마커 위 화살표(상하 2px 0.8s 바운스)",
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass"
+    },
+    {
+      "key": "fx.ready",
+      "path": "fx/fx_ready_check.svg",
+      "type": "svg",
+      "size": [
+        16,
+        16
+      ],
+      "recolor": false,
+      "usage": "동시 모드 발사 준비 표시",
+      "generator": "assets/tanks/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass"
+    },
+    {
+      "key": "data.effects",
+      "path": "fx/effects.json",
+      "type": "json",
+      "usage": "탄·폭발·방어막 히트 연출 파라미터(EFFECTS_SPEC 기계판독본)"
+    },
+    {
+      "key": "data.palette",
+      "path": "palette.json",
+      "type": "json",
+      "usage": "플레이어 10색·음영, 하늘 7종, 지형, 벽, 방어막 색"
+    },
+    {
+      "key": "data.tanksMeta",
+      "path": "tanks/tanks_meta.json",
+      "type": "json",
+      "usage": "탱크 pivot·포구 위치·그리기 순서·각도 규약"
+    },
+    {
+      "key": "preview.tanks",
+      "path": "tanks/preview.html",
+      "type": "html",
+      "usage": "자체 QA 미리보기(빌드 산출물)"
+    },
+    {
+      "key": "item_baby_missile",
+      "path": "items/baby_missile.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "baby_missile",
+      "name_ko": "베이비 미사일",
+      "category": "일반",
+      "categoryKey": "general",
+      "accent": "#FF6B57",
+      "series": "missile",
+      "tier": 1,
+      "tierOf": 2,
+      "motif": "작은 미사일(미사일 계열 1/2)",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2107,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_missile",
+      "path": "items/missile.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "missile",
+      "name_ko": "미사일",
+      "category": "일반",
+      "categoryKey": "general",
+      "accent": "#FF6B57",
+      "series": "missile",
+      "tier": 2,
+      "tierOf": 2,
+      "motif": "미사일(1/2보다 큼)",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2108,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_baby_nuke",
+      "path": "items/baby_nuke.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "baby_nuke",
+      "name_ko": "전술 핵탄두",
+      "category": "일반",
+      "categoryKey": "general",
+      "accent": "#FF6B57",
+      "series": "nuke",
+      "tier": 1,
+      "tierOf": 2,
+      "motif": "방사능 마크 폭탄(소)",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2095,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_nuke",
+      "path": "items/nuke.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "nuke",
+      "name_ko": "핵폭탄",
+      "category": "일반",
+      "categoryKey": "general",
+      "accent": "#FF6B57",
+      "series": "nuke",
+      "tier": 2,
+      "tierOf": 2,
+      "motif": "방사능 마크 폭탄(대)+주황 섬광",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2405,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_leap_frog",
+      "path": "items/leap_frog.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "leap_frog",
+      "name_ko": "립 프로그",
+      "category": "일반",
+      "categoryKey": "general",
+      "accent": "#FF6B57",
+      "motif": "초록 탄두 3개가 점선으로 도약",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 3589,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_funky_bomb",
+      "path": "items/funky_bomb.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "funky_bomb",
+      "name_ko": "펑키 봄브",
+      "category": "일반",
+      "categoryKey": "general",
+      "accent": "#FF6B57",
+      "motif": "4색 구형 폭탄+색 방울",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2182,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_mirv",
+      "path": "items/mirv.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "mirv",
+      "name_ko": "MIRV",
+      "category": "일반",
+      "categoryKey": "general",
+      "accent": "#FF6B57",
+      "motif": "모선 1+분리 탄두 5",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 6861,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_deaths_head",
+      "path": "items/deaths_head.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "deaths_head",
+      "name_ko": "데스 헤드",
+      "category": "일반",
+      "categoryKey": "general",
+      "accent": "#FF6B57",
+      "motif": "해골+교차 뼈+붉은 섬광",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2927,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_napalm",
+      "path": "items/napalm.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "napalm",
+      "name_ko": "네이팜",
+      "category": "일반",
+      "categoryKey": "general",
+      "accent": "#FF6B57",
+      "series": "napalm",
+      "tier": 1,
+      "tierOf": 2,
+      "motif": "주황 불꽃",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 1645,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_hot_napalm",
+      "path": "items/hot_napalm.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "hot_napalm",
+      "name_ko": "핫 네이팜",
+      "category": "일반",
+      "categoryKey": "general",
+      "accent": "#FF6B57",
+      "series": "napalm",
+      "tier": 2,
+      "tierOf": 2,
+      "motif": "분홍·흰 고온 불꽃(대)+붉은 섬광",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2215,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_tracer",
+      "path": "items/tracer.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "tracer",
+      "name_ko": "트레이서",
+      "category": "일반",
+      "categoryKey": "general",
+      "accent": "#FF6B57",
+      "motif": "흰 점선 궤적+빛나는 탄",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 1155,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_smoke_tracer",
+      "path": "items/smoke_tracer.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "smoke_tracer",
+      "name_ko": "스모크 트레이서",
+      "category": "일반",
+      "categoryKey": "general",
+      "accent": "#FF6B57",
+      "motif": "무지개 연기 궤적",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2128,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_baby_roller",
+      "path": "items/baby_roller.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "baby_roller",
+      "name_ko": "베이비 롤러",
+      "category": "일반",
+      "categoryKey": "general",
+      "accent": "#FF6B57",
+      "series": "roller",
+      "tier": 1,
+      "tierOf": 3,
+      "motif": "바퀴 달린 탄(소)",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2212,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_roller",
+      "path": "items/roller.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "roller",
+      "name_ko": "롤러",
+      "category": "일반",
+      "categoryKey": "general",
+      "accent": "#FF6B57",
+      "series": "roller",
+      "tier": 2,
+      "tierOf": 3,
+      "motif": "바퀴 달린 탄(중)",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2212,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_heavy_roller",
+      "path": "items/heavy_roller.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "heavy_roller",
+      "name_ko": "헤비 롤러",
+      "category": "일반",
+      "categoryKey": "general",
+      "accent": "#FF6B57",
+      "series": "roller",
+      "tier": 3,
+      "tierOf": 3,
+      "motif": "바퀴 달린 탄(대, 짙은 장갑)",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2716,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_riot_charge",
+      "path": "items/riot_charge.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "riot_charge",
+      "name_ko": "라이엇 차지",
+      "category": "지형 파괴",
+      "categoryKey": "dig",
+      "accent": "#FFA62B",
+      "series": "riot_charge",
+      "tier": 1,
+      "tierOf": 2,
+      "motif": "포탑에서 쐐기형 충격파(소)",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2791,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_riot_blast",
+      "path": "items/riot_blast.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "riot_blast",
+      "name_ko": "라이엇 블라스트",
+      "category": "지형 파괴",
+      "categoryKey": "dig",
+      "accent": "#FFA62B",
+      "series": "riot_charge",
+      "tier": 2,
+      "tierOf": 2,
+      "motif": "쐐기형 충격파(대)",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2805,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_riot_bomb",
+      "path": "items/riot_bomb.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "riot_bomb",
+      "name_ko": "라이엇 봄브",
+      "category": "지형 파괴",
+      "categoryKey": "dig",
+      "accent": "#FFA62B",
+      "series": "riot_bomb",
+      "tier": 1,
+      "tierOf": 2,
+      "motif": "구멍 뚫린 별형 충격파",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 3579,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_heavy_riot_bomb",
+      "path": "items/heavy_riot_bomb.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "heavy_riot_bomb",
+      "name_ko": "헤비 라이엇 봄브",
+      "category": "지형 파괴",
+      "categoryKey": "dig",
+      "accent": "#FFA62B",
+      "series": "riot_bomb",
+      "tier": 2,
+      "tierOf": 2,
+      "motif": "별형 충격파 2겹(대)",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 4044,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_baby_digger",
+      "path": "items/baby_digger.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "baby_digger",
+      "name_ko": "베이비 디거",
+      "category": "지형 파괴",
+      "categoryKey": "dig",
+      "accent": "#FFA62B",
+      "series": "digger",
+      "tier": 1,
+      "tierOf": 3,
+      "motif": "아래로 향한 드릴(소)",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 3362,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_digger",
+      "path": "items/digger.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "digger",
+      "name_ko": "디거",
+      "category": "지형 파괴",
+      "categoryKey": "dig",
+      "accent": "#FFA62B",
+      "series": "digger",
+      "tier": 2,
+      "tierOf": 3,
+      "motif": "드릴(중)",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 3362,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_heavy_digger",
+      "path": "items/heavy_digger.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "heavy_digger",
+      "name_ko": "헤비 디거",
+      "category": "지형 파괴",
+      "categoryKey": "dig",
+      "accent": "#FFA62B",
+      "series": "digger",
+      "tier": 3,
+      "tierOf": 3,
+      "motif": "드릴(대)",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 3359,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_baby_sandhog",
+      "path": "items/baby_sandhog.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "baby_sandhog",
+      "name_ko": "베이비 샌드호그",
+      "category": "지형 파괴",
+      "categoryKey": "dig",
+      "accent": "#FFA62B",
+      "series": "sandhog",
+      "tier": 1,
+      "tierOf": 3,
+      "motif": "흙더미에서 위로 나오는 드릴 코 두더지(소)",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2746,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_sandhog",
+      "path": "items/sandhog.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "sandhog",
+      "name_ko": "샌드호그",
+      "category": "지형 파괴",
+      "categoryKey": "dig",
+      "accent": "#FFA62B",
+      "series": "sandhog",
+      "tier": 2,
+      "tierOf": 3,
+      "motif": "두더지(중)",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2746,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_heavy_sandhog",
+      "path": "items/heavy_sandhog.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "heavy_sandhog",
+      "name_ko": "헤비 샌드호그",
+      "category": "지형 파괴",
+      "categoryKey": "dig",
+      "accent": "#FFA62B",
+      "series": "sandhog",
+      "tier": 3,
+      "tierOf": 3,
+      "motif": "두더지(대)",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2746,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_dirt_clod",
+      "path": "items/dirt_clod.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "dirt_clod",
+      "name_ko": "더트 클로드",
+      "category": "지형 생성",
+      "categoryKey": "dirt",
+      "accent": "#8BD450",
+      "series": "dirt",
+      "tier": 1,
+      "tierOf": 3,
+      "motif": "울퉁불퉁 작은 흙덩이",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 1990,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_dirt_ball",
+      "path": "items/dirt_ball.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "dirt_ball",
+      "name_ko": "더트 볼",
+      "category": "지형 생성",
+      "categoryKey": "dirt",
+      "accent": "#8BD450",
+      "series": "dirt",
+      "tier": 2,
+      "tierOf": 3,
+      "motif": "둥근 흙공",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 1820,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_ton_of_dirt",
+      "path": "items/ton_of_dirt.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "ton_of_dirt",
+      "name_ko": "톤 오브 더트",
+      "category": "지형 생성",
+      "categoryKey": "dirt",
+      "accent": "#8BD450",
+      "series": "dirt",
+      "tier": 3,
+      "tierOf": 3,
+      "motif": "거대 흙덩이+낙하선",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2057,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_liquid_dirt",
+      "path": "items/liquid_dirt.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "liquid_dirt",
+      "name_ko": "리퀴드 더트",
+      "category": "지형 생성",
+      "categoryKey": "dirt",
+      "accent": "#8BD450",
+      "motif": "윤기 나는 흙 방울+웅덩이",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 1163,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_dirt_charge",
+      "path": "items/dirt_charge.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "dirt_charge",
+      "name_ko": "더트 차지",
+      "category": "지형 생성",
+      "categoryKey": "dirt",
+      "accent": "#8BD450",
+      "motif": "위로 뿜는 쐐기형 흙구름",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2747,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_earth_disrupter",
+      "path": "items/earth_disrupter.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "earth_disrupter",
+      "name_ko": "어스 디스럽터",
+      "category": "지형 생성",
+      "categoryKey": "dirt",
+      "accent": "#8BD450",
+      "motif": "공중 흙덩이 3개+아래 화살표",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2694,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_plasma_blast",
+      "path": "items/plasma_blast.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "plasma_blast",
+      "name_ko": "플라즈마 블라스트",
+      "category": "에너지",
+      "categoryKey": "energy",
+      "accent": "#2EE6F0",
+      "motif": "하늘색 에너지 구+전기 아크",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2228,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_laser",
+      "path": "items/laser.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "laser",
+      "name_ko": "레이저",
+      "category": "에너지",
+      "categoryKey": "energy",
+      "accent": "#2EE6F0",
+      "motif": "발사기+붉은 직선 빔",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 1775,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_heat_guidance",
+      "path": "items/heat_guidance.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "heat_guidance",
+      "name_ko": "히트 가이던스",
+      "category": "유도",
+      "categoryKey": "guidance",
+      "accent": "#B48CFF",
+      "motif": "조준경+열원(주황)",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2000,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_ballistic_guidance",
+      "path": "items/ballistic_guidance.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "ballistic_guidance",
+      "name_ko": "발리스틱 가이던스",
+      "category": "유도",
+      "categoryKey": "guidance",
+      "accent": "#B48CFF",
+      "motif": "노란 포물선 화살표→과녁",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 1241,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_horz_guidance",
+      "path": "items/horz_guidance.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "horz_guidance",
+      "name_ko": "호리즌털 가이던스",
+      "category": "유도",
+      "categoryKey": "guidance",
+      "accent": "#B48CFF",
+      "motif": "민트 수평 화살표→과녁",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 1030,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_vert_guidance",
+      "path": "items/vert_guidance.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "vert_guidance",
+      "name_ko": "버티컬 가이던스",
+      "category": "유도",
+      "categoryKey": "guidance",
+      "accent": "#B48CFF",
+      "motif": "하늘색 수직 낙하 화살표→과녁",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 1056,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_lazy_boy",
+      "path": "items/lazy_boy.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "lazy_boy",
+      "name_ko": "레이지 보이",
+      "category": "유도",
+      "categoryKey": "guidance",
+      "accent": "#B48CFF",
+      "motif": "분홍 위치 핀이 과녁에 꽂힘",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 1224,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_parachute",
+      "path": "items/parachute.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "parachute",
+      "name_ko": "파라슈트",
+      "category": "방어",
+      "categoryKey": "defense",
+      "accent": "#4F9DFF",
+      "motif": "주황 낙하산+미니 탱크",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 1778,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_battery",
+      "path": "items/battery.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "battery",
+      "name_ko": "배터리",
+      "category": "방어",
+      "categoryKey": "defense",
+      "accent": "#4F9DFF",
+      "motif": "전지+번개",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 1433,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_mag_deflector",
+      "path": "items/mag_deflector.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "mag_deflector",
+      "name_ko": "매그 디플렉터",
+      "category": "방어",
+      "categoryKey": "defense",
+      "accent": "#4F9DFF",
+      "motif": "말굽 자석+위로 밀어내는 화살표",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 1903,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_shield",
+      "path": "items/shield.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "shield",
+      "name_ko": "실드",
+      "category": "방어",
+      "categoryKey": "defense",
+      "accent": "#4F9DFF",
+      "motif": "하늘색 거품 돔",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 1367,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_force_shield",
+      "path": "items/force_shield.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "force_shield",
+      "name_ko": "포스 실드",
+      "category": "방어",
+      "categoryKey": "defense",
+      "accent": "#4F9DFF",
+      "motif": "민트 육각 격자 돔+모서리 꺾쇠",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 8274,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_heavy_shield",
+      "path": "items/heavy_shield.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "heavy_shield",
+      "name_ko": "헤비 실드",
+      "category": "방어",
+      "categoryKey": "defense",
+      "accent": "#4F9DFF",
+      "motif": "호박색 두꺼운 장갑 링+이음매",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 3518,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_super_mag",
+      "path": "items/super_mag.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "super_mag",
+      "name_ko": "슈퍼 매그",
+      "category": "방어",
+      "categoryKey": "defense",
+      "accent": "#4F9DFF",
+      "motif": "보라 자기장 궤도 3개+점선 외곽",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2296,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_auto_defense",
+      "path": "items/auto_defense.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "auto_defense",
+      "name_ko": "오토 디펜스",
+      "category": "방어",
+      "categoryKey": "defense",
+      "accent": "#4F9DFF",
+      "motif": "방패 문장+전원 기호+순환 화살표",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 1979,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_fuel_tank",
+      "path": "items/fuel_tank.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "fuel_tank",
+      "name_ko": "연료 탱크",
+      "category": "기타",
+      "categoryKey": "misc",
+      "accent": "#A3ADBF",
+      "motif": "붉은 연료통",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 1702,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "item_contact_trigger",
+      "path": "items/contact_trigger.svg",
+      "type": "svg",
+      "size": [
+        64,
+        64
+      ],
+      "viewBox": "0 0 64 64",
+      "displaySizes": [
+        32,
+        48,
+        64
+      ],
+      "alpha": true,
+      "recolor": false,
+      "itemId": "contact_trigger",
+      "name_ko": "컨택트 트리거",
+      "category": "기타",
+      "categoryKey": "misc",
+      "accent": "#A3ADBF",
+      "motif": "붉은 누름 버튼+불꽃",
+      "usage": "상점·인벤토리·무기 선택 시트·HUD 퀵바 아이콘",
+      "bytes": 2486,
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)",
+      "qa": "pass",
+      "verify": false,
+      "license": "프로젝트 자체 제작(원본 게임 에셋 미사용)"
+    },
+    {
+      "key": "data.itemCategories",
+      "path": "items/categories.json",
+      "type": "json",
+      "usage": "아이템 분류 7종 강조색·대비·분류 기호",
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)"
+    },
+    {
+      "key": "preview.items",
+      "path": "items/preview.html",
+      "type": "html",
+      "usage": "아이템 아이콘 자체 QA 미리보기(빌드 산출물)",
+      "generator": "assets/items/_src/build.mjs (hand-written SVG, no image API)"
+    }
+  ],
+  "rebuildItems": "node assets/items/_src/build.mjs"
+}

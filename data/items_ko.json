@@ -1,0 +1,483 @@
+[
+  {
+    "id": "baby_missile",
+    "name_en": "Baby Missile",
+    "name_ko": "베이비 미사일",
+    "category": "일반",
+    "short": "가장 기본인 무제한 무기",
+    "detail": "가장 먼저 개발된 기본 무기다. 모든 플레이어가 무제한으로 가지고 있다. 피해 수치는 공개되지 않았다.",
+    "source": "DOC p.24",
+    "tips": "돈이 없을 때의 기본 선택지다."
+  },
+  {
+    "id": "missile",
+    "name_en": "Missile",
+    "name_ko": "미사일",
+    "category": "일반",
+    "short": "베이비 미사일의 강화형",
+    "detail": "베이비 미사일을 개량해 폭발 반경과 피해를 모두 키운 무기다. 피해 수치는 공개되지 않았다.",
+    "source": "DOC p.24"
+  },
+  {
+    "id": "baby_nuke",
+    "name_en": "Baby Nuke",
+    "name_ko": "전술 핵탄두",
+    "category": "일반",
+    "short": "넓은 지역을 파괴하는 핵",
+    "detail": "넓은 지역을 파괴할 수 있는 핵폭발 무기다. 피해 수치는 공개되지 않았다.",
+    "source": "DOC p.24, 31",
+    "tips": "방어막 바로 옆에 떨어뜨리면 실드를 간접 공격할 수 있다.",
+    "counters": "실드는 직격에는 강해도 근접 폭발에는 취약하다."
+  },
+  {
+    "id": "nuke",
+    "name_en": "Nuke",
+    "name_ko": "핵폭탄",
+    "category": "일반",
+    "short": "대량 파괴용 대규모 핵",
+    "detail": "대규모 파괴가 가능한 대형 핵 무기다. 피해 수치는 공개되지 않았다.",
+    "source": "DOC p.24"
+  },
+  {
+    "id": "leap_frog",
+    "name_en": "Leap Frog",
+    "name_ko": "립 프로그",
+    "category": "일반",
+    "short": "탄두 3개를 차례로 발사",
+    "detail": "탄두 세 개가 차례로 이어서 발사된다. 방어막을 뚫는 데 자주 효과적이다.",
+    "source": "DOC p.24",
+    "tips": "실드 돌파가 필요할 때 고려한다."
+  },
+  {
+    "id": "funky_bomb",
+    "name_en": "Funky Bomb",
+    "name_ko": "펑키 봄브",
+    "category": "일반",
+    "short": "독성 연쇄 폭발",
+    "detail": "여러 색의 독성 연쇄 폭발을 일으킨다. 원하는 지점에서 정확히 터지지 않을 때도 있지만 대체로 맞은 지역 안에 머문다.",
+    "source": "DOC p.24"
+  },
+  {
+    "id": "mirv",
+    "name_en": "MIRV",
+    "name_ko": "MIRV",
+    "category": "일반",
+    "short": "정점에서 미사일 5발로 분리",
+    "detail": "미사일 탄두 다섯 개를 담고 있으며 궤적의 정점에서 분리된다. 정점에 닿기 전에 무언가에 맞으면 폭발하지 않는다.",
+    "source": "DOC p.24, 29",
+    "tips": "정점 전에 장애물에 걸리지 않게 쏜다.",
+    "counters": "유도 불가 무기다."
+  },
+  {
+    "id": "deaths_head",
+    "name_en": "Death's Head",
+    "name_ko": "데스 헤드",
+    "category": "일반",
+    "short": "가장 파괴적인 분열탄",
+    "detail": "지금까지 만들어진 가장 파괴적인 무기다. MIRV와 기능이 같고 대형 폭발 탄두 아홉 개를 담고 있다.",
+    "source": "DOC p.24, 29",
+    "tips": "MIRV처럼 정점 전에 걸리지 않게 쏜다.",
+    "counters": "유도 불가 무기다."
+  },
+  {
+    "id": "napalm",
+    "name_en": "Napalm",
+    "name_ko": "네이팜",
+    "category": "일반",
+    "short": "튀어 번지는 불꽃",
+    "detail": "맞은 곳에 튀어 퍼진 뒤 뜨거운 불꽃으로 타오른다. 깊게 고이면 열이 더 높아져 더 큰 피해를 준다. 흙 속에 파고들면 퍼질 기회를 잃을 수 있다.",
+    "source": "DOC p.24, 31",
+    "tips": "불발이 잦으면 컨택트 트리거를 써 본다.",
+    "counters": "실드에는 불꽃의 2차 피해로 간접 공격할 수 있다."
+  },
+  {
+    "id": "hot_napalm",
+    "name_en": "Hot Napalm",
+    "name_ko": "핫 네이팜",
+    "category": "일반",
+    "short": "훨씬 뜨겁고 강한 네이팜",
+    "detail": "네이팜의 치명적인 상위형으로 훨씬 뜨겁고 강력하다. 그 밖에는 네이팜과 거의 같게 동작한다.",
+    "source": "DOC p.24",
+    "tips": "네이팜처럼 흙에 파고들면 컨택트 트리거가 도움이 된다."
+  },
+  {
+    "id": "tracer",
+    "name_en": "Tracer",
+    "name_ko": "트레이서",
+    "category": "일반",
+    "short": "피해 없는 조준용 탄",
+    "detail": "파괴력이 전혀 없어서 불필요한 피해 없이 표적을 조준하는 데 쓴다.",
+    "source": "DOC p.24"
+  },
+  {
+    "id": "smoke_tracer",
+    "name_en": "Smoke Tracer",
+    "name_ko": "스모크 트레이서",
+    "category": "일반",
+    "short": "색 연기 궤적을 남기는 조준탄",
+    "detail": "트레이서와 같지만 화려한 색의 연기 궤적을 남겨 조준이 더 쉽다. 남은 궤적은 시스템 메뉴에서 지울 수 있다.",
+    "source": "DOC p.25, 22",
+    "tips": "궤적 표시 옵션이 켜져 있으면 쓸모가 없어 기본적으로 상점에서 숨겨진다."
+  },
+  {
+    "id": "baby_roller",
+    "name_en": "Baby Roller",
+    "name_ko": "베이비 롤러",
+    "category": "일반",
+    "short": "땅에서 굴러 골짜기서 폭발",
+    "detail": "땅에 닿으면 내리막으로 굴러 골짜기나 탱크에 닿을 때 베이비 미사일급으로 폭발한다. 실드에 닿으면 그냥 굴러 떨어진다.",
+    "source": "DOC p.25, 27",
+    "tips": "굴러갈 길이 막히면 리퀴드 더트로 길을 열어 준다.",
+    "counters": "실드를 두른 상대에게는 효과가 없다."
+  },
+  {
+    "id": "roller",
+    "name_en": "Roller",
+    "name_ko": "롤러",
+    "category": "일반",
+    "short": "미사일급 탄두의 롤러",
+    "detail": "베이비 롤러와 기능이 같고 탄두만 일반 미사일급이다.",
+    "source": "DOC p.25, 27",
+    "tips": "리퀴드 더트로 굴러갈 길을 평탄하게 열 수 있다.",
+    "counters": "실드에 닿으면 굴러 떨어진다."
+  },
+  {
+    "id": "heavy_roller",
+    "name_en": "Heavy Roller",
+    "name_ko": "헤비 롤러",
+    "category": "일반",
+    "short": "전술 핵탄두보다 강한 비핵탄",
+    "detail": "핵은 아니지만 전술 핵탄두보다 폭발력이 큰 탄두를 싣고 굴러간다.",
+    "source": "DOC p.25",
+    "tips": "굴러갈 경로가 막히지 않게 지형을 살핀다.",
+    "counters": "실드에 닿으면 굴러 떨어진다."
+  },
+  {
+    "id": "riot_charge",
+    "name_en": "Riot Charge",
+    "name_ko": "라이엇 차지",
+    "category": "지형 파괴",
+    "short": "포탑 주변 쐐기형 흙 제거",
+    "detail": "포탑 주위의 흙을 쐐기 모양으로 파낸다. 흙에 파묻혔을 때 빠져나오는 것이 주된 용도다.",
+    "source": "DOC p.26, 29",
+    "tips": "흙에 묻혔을 때 탈출용으로 쓴다.",
+    "counters": "유도 불가 무기다."
+  },
+  {
+    "id": "riot_blast",
+    "name_en": "Riot Blast",
+    "name_ko": "라이엇 블라스트",
+    "category": "지형 파괴",
+    "short": "라이엇 차지의 대형",
+    "detail": "라이엇 차지의 큰 버전으로 더 넓은 각도와 더 두꺼운 흙을 제거한다.",
+    "source": "DOC p.26, 29",
+    "counters": "유도 불가 무기다."
+  },
+  {
+    "id": "riot_bomb",
+    "name_en": "Riot Bomb",
+    "name_ko": "라이엇 봄브",
+    "category": "지형 파괴",
+    "short": "구형으로 흙을 제거",
+    "detail": "터진 곳의 흙을 구형으로 파낸다. 탱크에는 피해를 주지 않는다. 라이엇 차지·블라스트와 달리 투사체 무기다.",
+    "source": "DOC p.26"
+  },
+  {
+    "id": "heavy_riot_bomb",
+    "name_en": "Heavy Riot Bomb",
+    "name_ko": "헤비 라이엇 봄브",
+    "category": "지형 파괴",
+    "short": "라이엇 봄브의 대형",
+    "detail": "라이엇 봄브를 확대한 버전이다.",
+    "source": "DOC p.26"
+  },
+  {
+    "id": "baby_digger",
+    "name_en": "Baby Digger",
+    "name_ko": "베이비 디거",
+    "category": "지형 파괴",
+    "short": "소량의 흙을 파내는 터널링",
+    "detail": "적은 양의 흙을 제거할 때 쓴다. 땅에 닿으면 파고들며, 탱크에 맞으면 불발된다.",
+    "source": "DOC p.26"
+  },
+  {
+    "id": "digger",
+    "name_en": "Digger",
+    "name_ko": "디거",
+    "category": "지형 파괴",
+    "short": "베이비 디거의 강화형",
+    "detail": "베이비 디거보다 강력한 버전이다.",
+    "source": "DOC p.26"
+  },
+  {
+    "id": "heavy_digger",
+    "name_en": "Heavy Digger",
+    "name_ko": "헤비 디거",
+    "category": "지형 파괴",
+    "short": "가장 큰 디거, 위력이 덜 나옴",
+    "detail": "디거 계열 중 가장 크지만 종종 제 위력을 다 내지 못한다.",
+    "source": "DOC p.26"
+  },
+  {
+    "id": "baby_sandhog",
+    "name_en": "Baby Sandhog",
+    "name_ko": "베이비 샌드호그",
+    "category": "지형 파괴",
+    "short": "밑에서 적 탱크를 노리는 터널탄",
+    "detail": "디거와 비슷한 효과를 다른 방식으로 낸다. 터널을 파는 탄두마다 작지만 강력한 장약이 있어 적 탱크를 아래에서 파괴할 수 있다. 적 실드 밑으로 파고들어 탱크를 직접 공격하는 데 자주 유용하다.",
+    "source": "DOC p.26, 31",
+    "tips": "실드를 두른 적에게 밑에서 접근할 때 쓴다.",
+    "counters": "실드를 우회하는 수단이다."
+  },
+  {
+    "id": "sandhog",
+    "name_en": "Sandhog",
+    "name_ko": "샌드호그",
+    "category": "지형 파괴",
+    "short": "탄두가 더 많은 샌드호그",
+    "detail": "베이비 샌드호그보다 탄두가 많다.",
+    "source": "DOC p.26, 31",
+    "tips": "흙을 덮은 실드에 컨택트 트리거와 함께 써도 좋다."
+  },
+  {
+    "id": "heavy_sandhog",
+    "name_en": "Heavy Sandhog",
+    "name_ko": "헤비 샌드호그",
+    "category": "지형 파괴",
+    "short": "세계를 파괴할 수도 있는 대형",
+    "detail": "세계를 파괴할 수도 있으니 조심해서 써야 한다.",
+    "source": "DOC p.26"
+  },
+  {
+    "id": "dirt_clod",
+    "name_en": "Dirt Clod",
+    "name_ko": "더트 클로드",
+    "category": "지형 생성",
+    "short": "닿으면 구형 흙으로 폭발",
+    "detail": "닿는 순간 구 모양의 흙으로 폭발하는 작은 탄두다.",
+    "source": "DOC p.27, 31",
+    "tips": "실드 위에 흙을 얇게 덮은 뒤 컨택트 트리거 무기로 노리는 수법에 쓴다."
+  },
+  {
+    "id": "dirt_ball",
+    "name_en": "Dirt Ball",
+    "name_ko": "더트 볼",
+    "category": "지형 생성",
+    "short": "더트 클로드의 대형",
+    "detail": "더트 클로드를 키운 형태다.",
+    "source": "DOC p.27"
+  },
+  {
+    "id": "ton_of_dirt",
+    "name_en": "Ton of Dirt",
+    "name_ko": "톤 오브 더트",
+    "category": "지형 생성",
+    "short": "사람을 산 채로 묻는 거대 흙덩이",
+    "detail": "아주 큰 더트 볼로, 상대를 산 채로 묻어 버릴 수 있다.",
+    "source": "DOC p.27"
+  },
+  {
+    "id": "liquid_dirt",
+    "name_en": "Liquid Dirt",
+    "name_ko": "리퀴드 더트",
+    "category": "지형 생성",
+    "short": "흘러서 구멍을 메우는 흙",
+    "detail": "떨어진 곳에서 흘러 퍼지며 구멍을 메우고 지형을 평탄하게 한다. 롤러가 굴러갈 길을 열 때 유용하다.",
+    "source": "DOC p.27",
+    "tips": "롤러 계열을 쏘기 전에 길을 터 준다."
+  },
+  {
+    "id": "dirt_charge",
+    "name_en": "Dirt Charge",
+    "name_ko": "더트 차지",
+    "category": "지형 생성",
+    "short": "쐐기형 흙구름을 분출",
+    "detail": "공중으로 쐐기 모양의 흙구름을 내뿜는다.",
+    "source": "DOC p.27"
+  },
+  {
+    "id": "earth_disrupter",
+    "name_en": "Earth Disrupter",
+    "name_ko": "어스 디스럽터",
+    "category": "지형 생성",
+    "short": "공중의 흙을 모두 낙하시킴",
+    "detail": "공중에 떠 있는 흙을 모두 땅으로 가라앉힌다. 흙 공중 부양 확률을 0% 이상으로 둔 게임에서만 쓸모가 있다.",
+    "source": "DOC p.27",
+    "tips": "공중 부양 흙 옵션이 꺼져 있으면 사지 않는다."
+  },
+  {
+    "id": "plasma_blast",
+    "name_en": "Plasma Blast",
+    "name_ko": "플라즈마 블라스트",
+    "category": "에너지",
+    "short": "배터리로 쏘는 근접 에너지탄",
+    "detail": "배터리 에너지로 탱크에서 방사성 에너지를 내뿜어 가까이 있는 적을 공격한다. 발사 후 사용할 배터리 수(0~9)를 고른다. 포탑 방향은 영향을 주지 않는다.",
+    "source": "DOC p.27, 29",
+    "tips": "배터리를 많이 쓸수록 효과적이다. 보유량 이상은 쓸 수 없다.",
+    "counters": "유도 불가 무기다."
+  },
+  {
+    "id": "laser",
+    "name_en": "Laser",
+    "name_ko": "레이저",
+    "category": "에너지",
+    "short": "산과 방어막까지 뚫는 빔",
+    "detail": "고출력 광선을 직선으로 쏘아 산, 방어막 등 길 위의 모든 것을 뚫는다. 쏜 뒤 사용할 배터리 수를 고른다.",
+    "source": "DOC p.27, 32",
+    "tips": "배터리를 많이 쓸수록 효과적이다.",
+    "counters": "슈퍼 매그에는 통하지 않는다."
+  },
+  {
+    "id": "heat_guidance",
+    "name_en": "Heat Guidance",
+    "name_ko": "히트 가이던스",
+    "category": "유도",
+    "short": "사정거리 내 적에게 직선 유도",
+    "detail": "적 탱크가 사정거리에 들어오면 열 감지기로 그 탱크를 향해 직선으로 유도한다. 표적 선택은 필요 없다. 사정거리 수치는 공개되지 않았다.",
+    "source": "DOC p.29",
+    "tips": "표적 근처까지는 직접 쏴서 보내야 한다.",
+    "counters": "MIRV, 데스 헤드, 라이엇 차지, 라이엇 블라스트, 플라즈마 블라스트에는 쓸 수 없다."
+  },
+  {
+    "id": "ballistic_guidance",
+    "name_en": "Ballistic Guidance",
+    "name_ko": "발리스틱 가이던스",
+    "category": "유도",
+    "short": "표적에 맞는 파워를 자동 계산",
+    "detail": "표적을 고르면 현재 각도에서 필요한 파워를 계산해 쏜다. 각도나 최대 파워 때문에 불가능하면 혼란에 빠져 임의의 파워로 발사한다. 바람은 어떤 종류든 보정하지만 공기 점성은 보정하지 못한다.",
+    "source": "DOC p.29~30",
+    "tips": "각도를 먼저 맞춘 뒤 표적을 고른다.",
+    "counters": "MIRV, 데스 헤드, 라이엇 차지, 라이엇 블라스트, 플라즈마 블라스트에는 쓸 수 없다."
+  },
+  {
+    "id": "horz_guidance",
+    "name_en": "Horz Guidance",
+    "name_ko": "호리즌털 가이던스",
+    "category": "유도",
+    "short": "표적과 수평이 되면 직선 비행",
+    "detail": "표적을 고르면 무기가 표적과 같은 높이가 되는 순간부터 수평 직선으로 날아간다.",
+    "source": "DOC p.30",
+    "counters": "MIRV, 데스 헤드, 라이엇 차지, 라이엇 블라스트, 플라즈마 블라스트에는 쓸 수 없다."
+  },
+  {
+    "id": "vert_guidance",
+    "name_en": "Vert Guidance",
+    "name_ko": "버티컬 가이던스",
+    "category": "유도",
+    "short": "표적 위에서 수직 낙하",
+    "detail": "호리즌털 가이던스와 같지만 수직으로 작동한다. 탄두를 표적 위로 넘기기만 하면 곧장 내리꽂혀 맞는다.",
+    "source": "DOC p.30",
+    "tips": "표적 위를 지나가게만 쏘면 된다.",
+    "counters": "MIRV, 데스 헤드, 라이엇 차지, 라이엇 블라스트, 플라즈마 블라스트에는 쓸 수 없다."
+  },
+  {
+    "id": "lazy_boy",
+    "name_en": "Lazy Boy",
+    "name_ko": "레이지 보이",
+    "category": "유도",
+    "short": "고른 표적에서 정확히 폭발",
+    "detail": "궁극의 유도 장치다. 표적을 고르면 그 지점에서 폭발한다. 다른 탱크에 맞으면 일찍 터진다. 탱크를 정확히 클릭하지 않으면 바로 옆에서 터져 처치 효과가 약해질 수 있다.",
+    "source": "DOC p.30",
+    "tips": "탱크를 정확히 클릭한다.",
+    "counters": "MIRV, 데스 헤드, 라이엇 차지, 라이엇 블라스트, 플라즈마 블라스트에는 쓸 수 없다."
+  },
+  {
+    "id": "parachute",
+    "name_en": "Parachute",
+    "name_ko": "파라슈트",
+    "category": "방어",
+    "short": "낙하 피해를 막아 줌",
+    "detail": "낙하 전에 예상 피해를 계산해, 전개 상태이고 안전 임계값이 예상 피해보다 작으면 펼쳐져 낙하 피해를 막는다. 대기 상태이거나 예상 피해가 임계값 이하면 피해를 입는다. 적 탱크 위에 떨어지면 막지 못한다. 기본값은 전개, 임계값 5다.",
+    "source": "DOC p.31",
+    "tips": "제어판에서 대기/전개와 임계값을 정한다."
+  },
+  {
+    "id": "battery",
+    "name_en": "Battery",
+    "name_ko": "배터리",
+    "category": "방어",
+    "short": "에너지 +10 충전, 에너지탄 연료",
+    "detail": "탱크 충전용 에너지원이자 플라즈마 블라스트와 레이저의 연료다. 충전에는 한 개가 에너지 10%(10점)에 해당하며 탱크 제어판에서 쓴다.",
+    "source": "DOC p.31",
+    "tips": "에너지 무기를 쓸 계획이면 넉넉히 챙긴다."
+  },
+  {
+    "id": "mag_deflector",
+    "name_en": "Mag Deflector",
+    "name_ko": "매그 디플렉터",
+    "category": "방어",
+    "short": "투사체를 위로 밀어내는 방어",
+    "detail": "탱크 근처와 위쪽의 투사체에 위로 향하는 힘을 준다. 너무 빠르게 떨어지는 탄은 막지 못하며, 많은 발수를 견디지 못하고 파괴된다.",
+    "source": "DOC p.31",
+    "counters": "빠르게 낙하하는 탄에는 뚫린다."
+  },
+  {
+    "id": "shield",
+    "name_en": "Shield",
+    "name_ko": "실드",
+    "category": "방어",
+    "short": "폭발 피해를 흡수",
+    "detail": "폭발 피해를 흡수해 탱크를 지킨다. 직격한 무기는 폭발하지 않고 실드에 약간의 피해만 준다. 내구 수치는 공개되지 않았다. 자신의 실드는 자기 직접 사격을 막지 못한다.",
+    "source": "DOC p.31",
+    "tips": "자신의 직접 사격에는 소용없으니 위로 쏘지 않는다.",
+    "counters": "직격에는 강하다. 근접 폭발, 네이팜, 샌드호그 같은 간접 공격에 약하다."
+  },
+  {
+    "id": "force_shield",
+    "name_en": "Force Shield",
+    "name_ko": "포스 실드",
+    "category": "방어",
+    "short": "투사체를 밀어내는 실드",
+    "detail": "투사체를 몸에서 멀리 밀어내며, 보통 일반 실드보다 더 많은 피해를 견딘다. 내구 수치는 공개되지 않았다.",
+    "source": "DOC p.31"
+  },
+  {
+    "id": "heavy_shield",
+    "name_en": "Heavy Shield",
+    "name_ko": "헤비 실드",
+    "category": "방어",
+    "short": "실드 오작동 면역, 매우 튼튼",
+    "detail": "낮은 등급의 실드를 자주 괴롭히는 오작동에 면역이며 엄청난 피해를 견딘다. 내구 수치는 공개되지 않았다.",
+    "source": "DOC p.32"
+  },
+  {
+    "id": "super_mag",
+    "name_en": "Super Mag",
+    "name_ko": "슈퍼 매그",
+    "category": "방어",
+    "short": "최강 실드, 레이저 면역",
+    "detail": "헤비 실드보다 강하고 레이저에 면역이며 매그 디플렉터의 효과도 함께 가진 최고의 방어구다.",
+    "source": "DOC p.32",
+    "tips": "레이저가 무서운 상대와 싸울 때 가장 든든하다.",
+    "counters": "레이저에 면역이다."
+  },
+  {
+    "id": "auto_defense",
+    "name_en": "Auto Defense",
+    "name_ko": "오토 디펜스",
+    "category": "방어",
+    "short": "전투 전 방어 장치 가동 가능",
+    "detail": "매 라운드 전투 시작 전에 탱크 제어판의 방어 기능을 모두 쓸 수 있게 한다. 한 번 사면 게임이 끝날 때까지 유효하며, 가격은 남은 라운드 수에 따라 달라진다.",
+    "source": "DOC p.32",
+    "tips": "라운드가 많이 남았을 때 사야 오래 쓴다."
+  },
+  {
+    "id": "fuel_tank",
+    "name_en": "Fuel Tank",
+    "name_ko": "연료 탱크",
+    "category": "기타",
+    "short": "이동용 연료 10 충전",
+    "detail": "트레드가 있는 탱크가 움직일 수 있게 한다. 연료 1단위로 1픽셀 이동하며 오르막에서는 덜 간다. 제어판에서 f를 고른다.",
+    "source": "DOC p.32"
+  },
+  {
+    "id": "contact_trigger",
+    "name_en": "Contact Trigger",
+    "name_ko": "컨택트 트리거",
+    "category": "기타",
+    "short": "닿자마자 폭발시킴",
+    "detail": "투사체가 무언가에 닿는 순간 폭발하게 한다. 터널링 옵션을 끈 것과 같다. 트리거 하나가 투사체 한 발에 적용되며, MIRV 같은 다탄두는 한 번 쏜 전체에 하나만 쓰면 된다.",
+    "source": "DOC p.32, 31",
+    "tips": "네이팜이나 디거가 흙에 파고들 때, 흙 덮은 실드를 노릴 때 쓴다. 제어판에서 켠다."
+  }
+]

@@ -1,0 +1,4752 @@
+{
+ "_meta": {
+  "source": "SCORCH.EXE v1.5 (Borland C++ 1993, 16-bit real-mode, not compressed)",
+  "exe_layout": {
+   "mz_header_bytes": "0x6a00",
+   "image_offset": "file = 0x6a00 + img",
+   "ds_segment": "0x4f38 (relative)",
+   "ds_file_base": "0x55d80"
+  },
+  "confidence_legend": [
+   "확인됨(EXE 오프셋)",
+   "매뉴얼",
+   "추정",
+   "미상"
+  ],
+  "note": "모든 이름/설명/메시지는 name_en(원문) + name_ko(한국어 의역) 쌍"
+ },
+ "items": [
+  {
+   "id": 0,
+   "name_en": "Baby Missile",
+   "name_ko": "아기 미사일",
+   "category": "standard",
+   "category_ko": "일반 무기",
+   "price": 400,
+   "bundle_size": 10,
+   "arms_level": 0,
+   "blast_radius_raw": 10,
+   "handler_far_ptr": "3d1e:0021",
+   "record_exe_offset": "0x056f76",
+   "desc_en": "The Baby Missile is the earliest developed weapon. Every player has an UNLIMITED supply of them.",
+   "desc_ko": "가장 먼저 개발된 무기. 모든 플레이어는 무제한으로 가지고 있다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 1,
+   "name_en": "Missile",
+   "name_ko": "미사일",
+   "category": "standard",
+   "category_ko": "일반 무기",
+   "price": 1875,
+   "bundle_size": 5,
+   "arms_level": 0,
+   "blast_radius_raw": 20,
+   "handler_far_ptr": "3d1e:0021",
+   "record_exe_offset": "0x056faa",
+   "desc_en": "The Missile is an enhancement of the baby missile, increasing both the blast radius and the damage delivered.",
+   "desc_ko": "아기 미사일을 개량해 폭발 반경과 피해를 키운 무기.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 2,
+   "name_en": "Baby Nuke",
+   "name_ko": "아기 핵",
+   "category": "standard",
+   "category_ko": "일반 무기",
+   "price": 10000,
+   "bundle_size": 3,
+   "arms_level": 0,
+   "blast_radius_raw": 40,
+   "handler_far_ptr": "3d1e:0021",
+   "record_exe_offset": "0x056fde",
+   "desc_en": "The Baby Nuke is a nuclear explosive capable of destroying a large region.",
+   "desc_ko": "넓은 지역을 파괴할 수 있는 핵폭발 무기.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 3,
+   "name_en": "Nuke",
+   "name_ko": "핵",
+   "category": "standard",
+   "category_ko": "일반 무기",
+   "price": 12000,
+   "bundle_size": 1,
+   "arms_level": 1,
+   "blast_radius_raw": 75,
+   "handler_far_ptr": "3d1e:0021",
+   "record_exe_offset": "0x057012",
+   "desc_en": "The Nuke is a large-scale nuclear weapon capable of mass destruction.",
+   "desc_ko": "대량 파괴가 가능한 대형 핵무기.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 4,
+   "name_en": "LeapFrog",
+   "name_ko": "개구리 폭탄",
+   "category": "standard",
+   "category_ko": "일반 무기",
+   "price": 10000,
+   "bundle_size": 2,
+   "arms_level": 3,
+   "blast_radius_raw": 3,
+   "handler_far_ptr": "2382:0006",
+   "record_exe_offset": "0x057046",
+   "desc_en": "The Leapfrog has three warheads which launch one after another. Often very effective for penetrating shields.",
+   "desc_ko": "탄두 세 개가 차례로 발사되는 무기. 방패를 뚫는 데 효과적이다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 5,
+   "name_en": "Funky Bomb",
+   "name_ko": "펑키 폭탄",
+   "category": "standard",
+   "category_ko": "일반 무기",
+   "price": 7000,
+   "bundle_size": 2,
+   "arms_level": 4,
+   "blast_radius_raw": 80,
+   "handler_far_ptr": "1dce:0000",
+   "record_exe_offset": "0x05707a",
+   "desc_en": "The Funky Bomb explodes in a multi-colored toxic chain reaction. Sometimes they don't explode exactly where you want them to, but they are generally confined to the area where they hit.",
+   "desc_ko": "알록달록한 독성 연쇄 반응으로 폭발한다. 원하는 곳에서 정확히 터지지 않기도 하지만 대체로 명중 지점 근처에 머문다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 6,
+   "name_en": "MIRV",
+   "name_ko": "MIRV",
+   "category": "standard",
+   "category_ko": "일반 무기",
+   "price": 10000,
+   "bundle_size": 3,
+   "arms_level": 2,
+   "blast_radius_raw": 0,
+   "handler_far_ptr": "25d5:0239",
+   "record_exe_offset": "0x0570ae",
+   "desc_en": "The MIRV contains five Missile warheads, which split apart when the original missile reaches apogee. If the warhead hits something before reaching apogee, it will not explode.",
+   "desc_ko": "미사일 탄두 5개가 들어 있으며, 최고점(정점)에 이르면 분리된다. 정점 전에 무언가에 맞으면 폭발하지 않는다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 7,
+   "name_en": "Death's Head",
+   "name_ko": "죽음의 머리",
+   "category": "standard",
+   "category_ko": "일반 무기",
+   "price": 20000,
+   "bundle_size": 1,
+   "arms_level": 4,
+   "blast_radius_raw": 1,
+   "handler_far_ptr": "25d5:0239",
+   "record_exe_offset": "0x0570e2",
+   "desc_en": "The Death's Head is the most destructive weapon created to date. Functionally equivalent to MIRVs, it contains nine large scale explosive warheads.",
+   "desc_ko": "지금까지 만들어진 가장 파괴적인 무기. MIRV와 같은 방식이며 대형 폭발 탄두 9개가 들어 있다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 8,
+   "name_en": "Napalm",
+   "name_ko": "네이팜",
+   "category": "standard",
+   "category_ko": "일반 무기",
+   "price": 10000,
+   "bundle_size": 10,
+   "arms_level": 2,
+   "blast_radius_raw": 15,
+   "handler_far_ptr": "26e6:01a0",
+   "record_exe_offset": "0x057116",
+   "desc_en": "Napalm splashes around wherever it hits and then bursts into hot flame. It creates more heat (and is thus more destructive!) if it forms deep pools.",
+   "desc_ko": "떨어진 곳에서 퍼져 나가 뜨거운 불길로 타오른다. 깊게 고일수록 열이 세져 더 파괴적이다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 9,
+   "name_en": "Hot Napalm",
+   "name_ko": "핫 네이팜",
+   "category": "standard",
+   "category_ko": "일반 무기",
+   "price": 20000,
+   "bundle_size": 2,
+   "arms_level": 4,
+   "blast_radius_raw": 20,
+   "handler_far_ptr": "26e6:01a0",
+   "record_exe_offset": "0x05714a",
+   "desc_en": "Hot Napalm is a deadly form of Napalm... much hotter and more powerful.",
+   "desc_ko": "훨씬 뜨겁고 강력한 치명적 네이팜.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 10,
+   "name_en": "Tracer",
+   "name_ko": "예광탄",
+   "category": "standard",
+   "category_ko": "일반 무기",
+   "price": 10,
+   "bundle_size": 20,
+   "arms_level": 0,
+   "blast_radius_raw": 0,
+   "handler_far_ptr": "3d1e:0002",
+   "record_exe_offset": "0x05717e",
+   "desc_en": "Tracers have no destructive capability, but are useful for targeting someone without causing unwanted damage.",
+   "desc_ko": "파괴력은 없지만 원치 않는 피해 없이 조준을 확인하는 데 쓴다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 11,
+   "name_en": "Smoke Tracer",
+   "name_ko": "연기 예광탄",
+   "category": "standard",
+   "category_ko": "일반 무기",
+   "price": 500,
+   "bundle_size": 10,
+   "arms_level": 0,
+   "blast_radius_raw": 1,
+   "handler_far_ptr": "3d1e:0002",
+   "record_exe_offset": "0x0571b2",
+   "desc_en": "Smoke Tracers function as Tracers, except they leave a brilliantly colored smoke trail behind them.",
+   "desc_ko": "예광탄처럼 작동하되 선명한 색의 연기 궤적을 남긴다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 12,
+   "name_en": "Baby Roller",
+   "name_ko": "아기 롤러",
+   "category": "standard",
+   "category_ko": "일반 무기",
+   "price": 5000,
+   "bundle_size": 10,
+   "arms_level": 2,
+   "blast_radius_raw": 10,
+   "handler_far_ptr": "2fbd:0003",
+   "record_exe_offset": "0x0571e6",
+   "desc_en": "Baby Rollers are the smallest of the roller family. When they hit ground, they roll downhill until reaching a valley or a tank, then explode with the force of a baby missile. If a roller hits a shield, it will just roll off!",
+   "desc_ko": "롤러 계열 중 가장 작다. 땅에 닿으면 계곡이나 탱크에 닿을 때까지 내리막을 굴러가 아기 미사일 위력으로 폭발한다. 방패에 맞으면 그냥 굴러 떨어진다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 13,
+   "name_en": "Roller",
+   "name_ko": "롤러",
+   "category": "standard",
+   "category_ko": "일반 무기",
+   "price": 6000,
+   "bundle_size": 5,
+   "arms_level": 2,
+   "blast_radius_raw": 20,
+   "handler_far_ptr": "2fbd:0003",
+   "record_exe_offset": "0x05721a",
+   "desc_en": "Rollers are functionally the same as baby rollers, but contain a warhead equivalent to a standard missile.",
+   "desc_ko": "아기 롤러와 같지만 일반 미사일에 해당하는 탄두를 가졌다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 14,
+   "name_en": "Heavy Roller",
+   "name_ko": "헤비 롤러",
+   "category": "standard",
+   "category_ko": "일반 무기",
+   "price": 6750,
+   "bundle_size": 2,
+   "arms_level": 3,
+   "blast_radius_raw": 45,
+   "handler_far_ptr": "2fbd:0003",
+   "record_exe_offset": "0x05724e",
+   "desc_en": "Heavy Rollers are non-nuclear, but deliver a payload more explosive than a baby nuke.",
+   "desc_ko": "핵은 아니지만 아기 핵보다 폭발력이 큰 탄두를 싣는다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 15,
+   "name_en": "Riot Charge",
+   "name_ko": "폭동 진압탄",
+   "category": "earth_destroying",
+   "category_ko": "지형 파괴 무기",
+   "price": 2000,
+   "bundle_size": 10,
+   "arms_level": 2,
+   "blast_radius_raw": 0,
+   "handler_far_ptr": "2f76:000d",
+   "record_exe_offset": "0x057282",
+   "desc_en": "Riot Charges destroy a wedge-shaped section of dirt from around your turret. Primary use is to unbury yourself.",
+   "desc_ko": "포탑 주위의 쐐기꼴 흙을 제거한다. 흙에 묻혔을 때 빠져나오는 용도.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 16,
+   "name_en": "Riot Blast",
+   "name_ko": "폭동 진압 폭발",
+   "category": "earth_destroying",
+   "category_ko": "지형 파괴 무기",
+   "price": 5000,
+   "bundle_size": 5,
+   "arms_level": 3,
+   "blast_radius_raw": 1,
+   "handler_far_ptr": "2f76:000d",
+   "record_exe_offset": "0x0572b6",
+   "desc_en": "Riot Blasts are a larger version of the Riot Charge. They destroy a wider angle of dirt, and the wedge is thicker.",
+   "desc_ko": "폭동 진압탄의 대형판. 더 넓은 각도, 더 두꺼운 쐐기를 제거한다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 17,
+   "name_en": "Riot Bomb",
+   "name_ko": "폭동 진압 폭탄",
+   "category": "earth_destroying",
+   "category_ko": "지형 파괴 무기",
+   "price": 5000,
+   "bundle_size": 5,
+   "arms_level": 3,
+   "blast_radius_raw": 30,
+   "handler_far_ptr": "2f76:03bd",
+   "record_exe_offset": "0x0572ea",
+   "desc_en": "Riot Bombs destroy a spherical section of dirt wherever they detonate. They do no damage to tanks. Unlike Riot Charges and Blasts, the Riot Bomb is a projectile weapon.",
+   "desc_ko": "터진 곳의 구형 영역 흙을 제거한다. 탱크에는 피해를 주지 않는다. 투사체 무기다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 18,
+   "name_en": "Heavy Riot Bomb",
+   "name_ko": "헤비 폭동 진압 폭탄",
+   "category": "earth_destroying",
+   "category_ko": "지형 파괴 무기",
+   "price": 4750,
+   "bundle_size": 2,
+   "arms_level": 3,
+   "blast_radius_raw": 45,
+   "handler_far_ptr": "2f76:03bd",
+   "record_exe_offset": "0x05731e",
+   "desc_en": "Heavy Riot Bombs are scaled up versions of Riot Bombs.",
+   "desc_ko": "폭동 진압 폭탄의 확대판.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 19,
+   "name_en": "Baby Digger",
+   "name_ko": "아기 굴착기",
+   "category": "earth_destroying",
+   "category_ko": "지형 파괴 무기",
+   "price": 3000,
+   "bundle_size": 10,
+   "arms_level": 0,
+   "blast_radius_raw": -10,
+   "handler_far_ptr": "151b:000a",
+   "record_exe_offset": "0x057352",
+   "desc_en": "Baby Diggers are useful for removing small amounts of dirt. They tunnel when they hit ground. If they hit a tank, they fizzle.",
+   "desc_ko": "소량의 흙을 제거한다. 땅에 닿으면 파고든다. 탱크에 맞으면 불발된다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 20,
+   "name_en": "Digger",
+   "name_ko": "굴착기",
+   "category": "earth_destroying",
+   "category_ko": "지형 파괴 무기",
+   "price": 2500,
+   "bundle_size": 5,
+   "arms_level": 0,
+   "blast_radius_raw": -20,
+   "handler_far_ptr": "151b:000a",
+   "record_exe_offset": "0x057386",
+   "desc_en": "Diggers are more powerful versions of Baby Diggers.",
+   "desc_ko": "아기 굴착기의 강화판.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 21,
+   "name_en": "Heavy Digger",
+   "name_ko": "헤비 굴착기",
+   "category": "earth_destroying",
+   "category_ko": "지형 파괴 무기",
+   "price": 6750,
+   "bundle_size": 2,
+   "arms_level": 1,
+   "blast_radius_raw": -35,
+   "handler_far_ptr": "151b:000a",
+   "record_exe_offset": "0x0573ba",
+   "desc_en": "Heavy Diggers are the largest Digger-weapon available, but often fail to reach their full potential.",
+   "desc_ko": "가장 큰 굴착 무기지만 제 성능을 못 내는 경우가 많다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 22,
+   "name_en": "Baby Sandhog",
+   "name_ko": "아기 샌드호그",
+   "category": "earth_destroying",
+   "category_ko": "지형 파괴 무기",
+   "price": 10000,
+   "bundle_size": 10,
+   "arms_level": 0,
+   "blast_radius_raw": 10,
+   "handler_far_ptr": "151b:000a",
+   "record_exe_offset": "0x0573ee",
+   "desc_en": "Baby Sandhogs achieve an effect similar to the Diggers; each tunneling warhead contains a small but powerful charge which can destroy an enemy tank from beneath.",
+   "desc_ko": "굴착기와 비슷하게 파고들되, 각 굴착 탄두에 작지만 강한 장약이 들어 있어 아래에서 적 탱크를 파괴할 수 있다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 23,
+   "name_en": "Sandhog",
+   "name_ko": "샌드호그",
+   "category": "earth_destroying",
+   "category_ko": "지형 파괴 무기",
+   "price": 16750,
+   "bundle_size": 5,
+   "arms_level": 0,
+   "blast_radius_raw": 20,
+   "handler_far_ptr": "151b:000a",
+   "record_exe_offset": "0x057422",
+   "desc_en": "Sandhogs contain more warheads than the Baby Sandhogs.",
+   "desc_ko": "아기 샌드호그보다 탄두가 많다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 24,
+   "name_en": "Heavy Sandhog",
+   "name_ko": "헤비 샌드호그",
+   "category": "earth_destroying",
+   "category_ko": "지형 파괴 무기",
+   "price": 25000,
+   "bundle_size": 2,
+   "arms_level": 1,
+   "blast_radius_raw": 35,
+   "handler_far_ptr": "151b:000a",
+   "record_exe_offset": "0x057456",
+   "desc_en": "Heavy Sandhogs can potentially destroy the world, and should be used with caution...",
+   "desc_ko": "세상을 파괴할 수도 있으니 주의해서 사용할 것.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 25,
+   "name_en": "Dirt Clod",
+   "name_ko": "흙덩이",
+   "category": "earth_producing",
+   "category_ko": "지형 생성 무기",
+   "price": 5000,
+   "bundle_size": 10,
+   "arms_level": 0,
+   "blast_radius_raw": 20,
+   "handler_far_ptr": "15a0:0009",
+   "record_exe_offset": "0x05748a",
+   "desc_en": "Dirt Clods are small warheads which explode into a sphere of dirt when hitting something.",
+   "desc_ko": "무언가에 맞으면 구형의 흙으로 폭발하는 작은 탄두.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 26,
+   "name_en": "Dirt Ball",
+   "name_ko": "흙공",
+   "category": "earth_producing",
+   "category_ko": "지형 생성 무기",
+   "price": 5000,
+   "bundle_size": 5,
+   "arms_level": 0,
+   "blast_radius_raw": 35,
+   "handler_far_ptr": "15a0:0009",
+   "record_exe_offset": "0x0574be",
+   "desc_en": "Dirt Balls are a larger form of Dirt Clods.",
+   "desc_ko": "흙덩이의 대형판.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 27,
+   "name_en": "Ton of Dirt",
+   "name_ko": "흙 한 톤",
+   "category": "earth_producing",
+   "category_ko": "지형 생성 무기",
+   "price": 6750,
+   "bundle_size": 2,
+   "arms_level": 1,
+   "blast_radius_raw": 70,
+   "handler_far_ptr": "15a0:0009",
+   "record_exe_offset": "0x0574f2",
+   "desc_en": "A Ton of Dirt is a very large Dirt Ball, easily capable of burying someone alive.",
+   "desc_ko": "누군가를 산 채로 묻을 수 있는 아주 큰 흙공.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 28,
+   "name_en": "Liquid Dirt",
+   "name_ko": "액체 흙",
+   "category": "earth_producing",
+   "category_ko": "지형 생성 무기",
+   "price": 5000,
+   "bundle_size": 5,
+   "arms_level": 2,
+   "blast_radius_raw": -20,
+   "handler_far_ptr": "26e6:01a0",
+   "record_exe_offset": "0x057526",
+   "desc_en": "Liquid Dirt oozes out wherever it lands, filling holes and smoothing the terrain.",
+   "desc_ko": "떨어진 곳에서 흘러내려 구덩이를 메우고 지형을 매끄럽게 한다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 29,
+   "name_en": "Dirt Charge",
+   "name_ko": "흙 장약",
+   "category": "earth_producing",
+   "category_ko": "지형 생성 무기",
+   "price": 5000,
+   "bundle_size": 10,
+   "arms_level": 1,
+   "blast_radius_raw": 0,
+   "handler_far_ptr": "15a0:0081",
+   "record_exe_offset": "0x05755a",
+   "desc_en": "A Dirt Charge expels a cloud of dirt into the air in a wedge shape.",
+   "desc_ko": "쐐기꼴로 흙구름을 공중에 뿜어낸다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 30,
+   "name_en": "Earth Disrupter",
+   "name_ko": "대지 교란기",
+   "category": "earth_producing",
+   "category_ko": "지형 생성 무기",
+   "price": 5000,
+   "bundle_size": 10,
+   "arms_level": 0,
+   "blast_radius_raw": 0,
+   "handler_far_ptr": "162c:013e",
+   "record_exe_offset": "0x05758e",
+   "desc_en": "Earth Disrupters force all dirt to settle to the ground if dirt is being suspended in the air. Only useful with Suspend Dirt greater than 0%.",
+   "desc_ko": "공중에 떠 있는 흙을 모두 땅으로 가라앉힌다. 흙 부유 확률이 0%보다 클 때만 쓸모가 있다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 31,
+   "name_en": "Plasma Blast",
+   "name_ko": "플라즈마 블라스트",
+   "category": "energy",
+   "category_ko": "에너지 무기",
+   "price": 9000,
+   "bundle_size": 5,
+   "arms_level": 3,
+   "blast_radius_raw": 0,
+   "handler_far_ptr": "2770:0009",
+   "record_exe_offset": "0x0575c2",
+   "desc_en": "The Plasma Blast allows you to expel radioactive energy from your tank to kill neighboring enemies. Your turret direction has no effect.",
+   "desc_ko": "탱크에서 방사능 에너지를 뿜어 주변 적을 죽인다. 포탑 방향은 영향을 주지 않는다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 32,
+   "name_en": "Laser",
+   "name_ko": "레이저",
+   "category": "energy",
+   "category_ko": "에너지 무기",
+   "price": 5000,
+   "bundle_size": 5,
+   "arms_level": 2,
+   "blast_radius_raw": 0,
+   "handler_far_ptr": "2319:0004",
+   "record_exe_offset": "0x0575f6",
+   "desc_en": "The Laser shoots a high-intensity beam of light in a straight line, cutting through mountains, shields, and anything else in its way.",
+   "desc_ko": "고강도 광선을 직선으로 쏘아 산과 방패 등 앞을 가로막는 모든 것을 관통한다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 33,
+   "name_en": "Heat Guidance",
+   "name_ko": "열 유도",
+   "category": "guidance",
+   "category_ko": "유도 장치",
+   "price": 10000,
+   "bundle_size": 6,
+   "arms_level": 2,
+   "blast_radius_raw": 0,
+   "handler_far_ptr": null,
+   "record_exe_offset": "0x05762a",
+   "desc_en": "Heat Guidance (Ht) equips your weapon with a heat detector which, when in range of any enemy tank, will guide it in a straight line to that tank.",
+   "desc_ko": "열 감지기를 장착해, 적 탱크가 사정권에 들어오면 직선으로 유도한다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 34,
+   "name_en": "Bal Guidance",
+   "name_ko": "탄도 유도",
+   "category": "guidance",
+   "category_ko": "유도 장치",
+   "price": 10000,
+   "bundle_size": 2,
+   "arms_level": 2,
+   "blast_radius_raw": 0,
+   "handler_far_ptr": null,
+   "record_exe_offset": "0x05765e",
+   "desc_en": "Ballistic Guidance (B) determines the power needed to hit a chosen target based on your current firing angle. It can correct for any type of wind, but not for air viscosity.",
+   "desc_ko": "현재 발사각을 기준으로 선택한 목표에 맞는 파워를 계산한다. 모든 바람을 보정하지만 공기 점성은 보정하지 못한다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 35,
+   "name_en": "Horz Guidance",
+   "name_ko": "수평 유도",
+   "category": "guidance",
+   "category_ko": "유도 장치",
+   "price": 15000,
+   "bundle_size": 5,
+   "arms_level": 1,
+   "blast_radius_raw": 0,
+   "handler_far_ptr": null,
+   "record_exe_offset": "0x057692",
+   "desc_en": "Horizontal Guidance (H) sends your weapons in a horizontal straight line as soon as they are even with your target.",
+   "desc_ko": "목표와 같은 높이가 되는 즉시 무기를 수평 직선으로 보낸다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 36,
+   "name_en": "Vert Guidance",
+   "name_ko": "수직 유도",
+   "category": "guidance",
+   "category_ko": "유도 장치",
+   "price": 20000,
+   "bundle_size": 5,
+   "arms_level": 1,
+   "blast_radius_raw": 0,
+   "handler_far_ptr": null,
+   "record_exe_offset": "0x0576c6",
+   "desc_en": "Vertical Guidance (V) performs as Horizontal Guidance, except it operates vertically; once above the target it heads straight down.",
+   "desc_ko": "수평 유도와 같되 수직으로 작동한다. 목표 위에 오면 곧장 내리꽂는다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 37,
+   "name_en": "Lazy Boy",
+   "name_ko": "게으름뱅이",
+   "category": "guidance",
+   "category_ko": "유도 장치",
+   "price": 20000,
+   "bundle_size": 2,
+   "arms_level": 3,
+   "blast_radius_raw": 0,
+   "handler_far_ptr": null,
+   "record_exe_offset": "0x0576fa",
+   "desc_en": "The Lazy Boy (L) is the ultimate guidance system. Choose your target and watch it die. If the weapon hits a different tank, it explodes prematurely.",
+   "desc_ko": "궁극의 유도 장치. 목표를 고르면 알아서 죽인다. 다른 탱크에 맞으면 일찍 폭발한다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 38,
+   "name_en": "Parachute",
+   "name_ko": "낙하산",
+   "category": "defense",
+   "category_ko": "방어 장치",
+   "price": 10000,
+   "bundle_size": 8,
+   "arms_level": 2,
+   "blast_radius_raw": 0,
+   "handler_far_ptr": null,
+   "record_exe_offset": "0x05772e",
+   "desc_en": "Parachutes prevent fall damage. If estimated damage exceeds the safety threshold (default 5) and parachutes are deployed (default), the tank takes no fall damage.",
+   "desc_ko": "낙하 피해를 막는다. 예상 피해가 안전 임계값(기본 5)을 넘고 낙하산이 전개 상태(기본)면 낙하 피해가 없다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 39,
+   "name_en": "Battery",
+   "name_ko": "배터리",
+   "category": "defense",
+   "category_ko": "방어 장치",
+   "price": 5000,
+   "bundle_size": 10,
+   "arms_level": 2,
+   "blast_radius_raw": 0,
+   "handler_far_ptr": null,
+   "record_exe_offset": "0x057762",
+   "desc_en": "Batteries recharge your tank (each is 10% / 10 points of energy) and power Plasma Blasts.",
+   "desc_ko": "탱크를 충전하고(하나당 에너지 10%, 10포인트) 플라즈마 블라스트의 동력이 된다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 40,
+   "name_en": "Mag Deflector",
+   "name_ko": "자기 편향기",
+   "category": "defense",
+   "category_ko": "방어 장치",
+   "price": 10000,
+   "bundle_size": 2,
+   "arms_level": 2,
+   "blast_radius_raw": 0,
+   "handler_far_ptr": null,
+   "record_exe_offset": "0x057796",
+   "desc_en": "Mag Deflectors are simple shields which exert an upward force on projectiles that are near and over your tank. Cannot absorb many shots before being destroyed.",
+   "desc_ko": "탱크 위로 접근하는 투사체에 위쪽 힘을 가하는 간단한 방패. 많은 공격을 버티지 못한다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 41,
+   "name_en": "Shield",
+   "name_ko": "방패",
+   "category": "defense",
+   "category_ko": "방어 장치",
+   "price": 20000,
+   "bundle_size": 3,
+   "arms_level": 3,
+   "blast_radius_raw": 0,
+   "handler_far_ptr": null,
+   "record_exe_offset": "0x0577ca",
+   "desc_en": "Shields protect your tank by absorbing damage from explosions. A weapon which hits a shield directly will not explode, though it damages the shield slightly.",
+   "desc_ko": "폭발 피해를 흡수한다. 방패에 직접 맞은 무기는 폭발하지 않지만 방패가 약간 손상된다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 42,
+   "name_en": "Force Shield",
+   "name_ko": "역장 방패",
+   "category": "defense",
+   "category_ko": "방어 장치",
+   "price": 25000,
+   "bundle_size": 3,
+   "arms_level": 3,
+   "blast_radius_raw": 0,
+   "handler_far_ptr": null,
+   "record_exe_offset": "0x0577fe",
+   "desc_en": "Force Shields deflect projectiles away from you, and generally sustain more damage than normal shields.",
+   "desc_ko": "투사체를 튕겨 내며 일반 방패보다 더 많은 피해를 견딘다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 43,
+   "name_en": "Heavy Shield",
+   "name_ko": "중형 방패",
+   "category": "defense",
+   "category_ko": "방어 장치",
+   "price": 30000,
+   "bundle_size": 2,
+   "arms_level": 4,
+   "blast_radius_raw": 0,
+   "handler_far_ptr": null,
+   "record_exe_offset": "0x057832",
+   "desc_en": "Heavy Shields are immune to shield failures and capable of sustaining tremendous damage.",
+   "desc_ko": "방패 고장에 면역이며 엄청난 피해를 견딘다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 44,
+   "name_en": "Super Mag",
+   "name_ko": "슈퍼 마그",
+   "category": "defense",
+   "category_ko": "방어 장치",
+   "price": 40000,
+   "bundle_size": 2,
+   "arms_level": 4,
+   "blast_radius_raw": 0,
+   "handler_far_ptr": null,
+   "record_exe_offset": "0x057866",
+   "desc_en": "Super Mags are the best shields: stronger than heavy shields, immune to lasers, with the side effects of Mag Deflectors.",
+   "desc_ko": "최고의 방패. 중형 방패보다 강하고 레이저에 면역이며 자기 편향기의 부작용을 가진다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 45,
+   "name_en": "Auto Defense",
+   "name_ko": "자동 방어",
+   "category": "defense",
+   "category_ko": "방어 장치",
+   "price": 1500,
+   "bundle_size": 1,
+   "arms_level": 3,
+   "blast_radius_raw": 0,
+   "handler_far_ptr": null,
+   "record_exe_offset": "0x05789a",
+   "desc_en": "Auto Defense lets you enable any defense system each round before combat begins. Cost is based on rounds left.",
+   "desc_ko": "매 라운드 전투 전에 방어 장치를 자동으로 켠다. 가격은 남은 라운드 수에 따른다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 46,
+   "name_en": "Fuel Tank",
+   "name_ko": "연료 탱크",
+   "category": "misc",
+   "category_ko": "기타",
+   "price": 10000,
+   "bundle_size": 10,
+   "arms_level": 3,
+   "blast_radius_raw": 0,
+   "handler_far_ptr": null,
+   "record_exe_offset": "0x0578ce",
+   "desc_en": "Fuel Tanks allow you to move your tank. Each tank gives 10 units of fuel; each unit moves 1 pixel, less uphill.",
+   "desc_ko": "탱크를 움직일 수 있게 한다. 하나당 연료 10단위, 1단위로 1픽셀 이동(오르막은 더 적게).",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  },
+  {
+   "id": 47,
+   "name_en": "Contact Trigger",
+   "name_ko": "접촉 신관",
+   "category": "misc",
+   "category_ko": "기타",
+   "price": 1000,
+   "bundle_size": 25,
+   "arms_level": 3,
+   "blast_radius_raw": 0,
+   "handler_far_ptr": null,
+   "record_exe_offset": "0x057902",
+   "desc_en": "Contact Triggers cause projectiles to explode the moment they touch something (equivalent to turning off Tunneling). One trigger covers all warheads of one shot.",
+   "desc_ko": "닿는 즉시 폭발하게 한다(터널링 끄기와 같음). 한 발의 모든 탄두에 신관 1개면 된다.",
+   "confidence": "확인됨(EXE 오프셋 record_exe_offset)"
+  }
+ ],
+ "language_table": [
+  {
+   "index": 0,
+   "ds_table_offset": "0x1f84",
+   "ds_string_offset": "0x2408",
+   "name_en": "Teleporter",
+   "name_ko": "텔레포터"
+  },
+  {
+   "index": 1,
+   "ds_table_offset": "0x1f88",
+   "ds_string_offset": "0x2413",
+   "name_en": "Jump Jets",
+   "name_ko": "점프 제트"
+  },
+  {
+   "index": 2,
+   "ds_table_offset": "0x1f8c",
+   "ds_string_offset": "0x241d",
+   "name_en": "Popcorn Bomb",
+   "name_ko": "팝콘 폭탄"
+  },
+  {
+   "index": 3,
+   "ds_table_offset": "0x1f90",
+   "ds_string_offset": "0x242a",
+   "name_en": "Baby Missile",
+   "name_ko": "아기 미사일"
+  },
+  {
+   "index": 4,
+   "ds_table_offset": "0x1f94",
+   "ds_string_offset": "0x2437",
+   "name_en": "Missile",
+   "name_ko": "미사일"
+  },
+  {
+   "index": 5,
+   "ds_table_offset": "0x1f98",
+   "ds_string_offset": "0x243f",
+   "name_en": "Baby Nuke",
+   "name_ko": "아기 핵"
+  },
+  {
+   "index": 6,
+   "ds_table_offset": "0x1f9c",
+   "ds_string_offset": "0x2449",
+   "name_en": "Nuke",
+   "name_ko": "핵"
+  },
+  {
+   "index": 7,
+   "ds_table_offset": "0x1fa0",
+   "ds_string_offset": "0x244e",
+   "name_en": "LeapFrog",
+   "name_ko": "개구리 폭탄"
+  },
+  {
+   "index": 8,
+   "ds_table_offset": "0x1fa4",
+   "ds_string_offset": "0x2457",
+   "name_en": "Funky Bomb",
+   "name_ko": "펑키 폭탄"
+  },
+  {
+   "index": 9,
+   "ds_table_offset": "0x1fa8",
+   "ds_string_offset": "0x2462",
+   "name_en": "MIRV",
+   "name_ko": "MIRV"
+  },
+  {
+   "index": 10,
+   "ds_table_offset": "0x1fac",
+   "ds_string_offset": "0x2467",
+   "name_en": "Death's Head",
+   "name_ko": "죽음의 머리"
+  },
+  {
+   "index": 11,
+   "ds_table_offset": "0x1fb0",
+   "ds_string_offset": "0x2474",
+   "name_en": "Napalm",
+   "name_ko": "네이팜"
+  },
+  {
+   "index": 12,
+   "ds_table_offset": "0x1fb4",
+   "ds_string_offset": "0x247b",
+   "name_en": "Hot Napalm",
+   "name_ko": "핫 네이팜"
+  },
+  {
+   "index": 13,
+   "ds_table_offset": "0x1fb8",
+   "ds_string_offset": "0x2486",
+   "name_en": "Tracer",
+   "name_ko": "예광탄"
+  },
+  {
+   "index": 14,
+   "ds_table_offset": "0x1fbc",
+   "ds_string_offset": "0x248d",
+   "name_en": "Smoke Tracer",
+   "name_ko": "연기 예광탄"
+  },
+  {
+   "index": 15,
+   "ds_table_offset": "0x1fc0",
+   "ds_string_offset": "0x249a",
+   "name_en": "Baby Roller",
+   "name_ko": "아기 롤러"
+  },
+  {
+   "index": 16,
+   "ds_table_offset": "0x1fc4",
+   "ds_string_offset": "0x24a6",
+   "name_en": "Roller",
+   "name_ko": "롤러"
+  },
+  {
+   "index": 17,
+   "ds_table_offset": "0x1fc8",
+   "ds_string_offset": "0x24ad",
+   "name_en": "Heavy Roller",
+   "name_ko": "헤비 롤러"
+  },
+  {
+   "index": 18,
+   "ds_table_offset": "0x1fcc",
+   "ds_string_offset": "0x24ba",
+   "name_en": "Plasma Blast",
+   "name_ko": "플라즈마 블라스트"
+  },
+  {
+   "index": 19,
+   "ds_table_offset": "0x1fd0",
+   "ds_string_offset": "0x24c7",
+   "name_en": "Riot Charge",
+   "name_ko": "폭동 진압탄"
+  },
+  {
+   "index": 20,
+   "ds_table_offset": "0x1fd4",
+   "ds_string_offset": "0x24d3",
+   "name_en": "Riot Blast",
+   "name_ko": "폭동 진압 폭발"
+  },
+  {
+   "index": 21,
+   "ds_table_offset": "0x1fd8",
+   "ds_string_offset": "0x24de",
+   "name_en": "Riot Bomb",
+   "name_ko": "폭동 진압 폭탄"
+  },
+  {
+   "index": 22,
+   "ds_table_offset": "0x1fdc",
+   "ds_string_offset": "0x24e8",
+   "name_en": "Heavy Riot Bomb",
+   "name_ko": "헤비 폭동 진압 폭탄"
+  },
+  {
+   "index": 23,
+   "ds_table_offset": "0x1fe0",
+   "ds_string_offset": "0x24f8",
+   "name_en": "Baby Digger",
+   "name_ko": "아기 굴착기"
+  },
+  {
+   "index": 24,
+   "ds_table_offset": "0x1fe4",
+   "ds_string_offset": "0x2504",
+   "name_en": "Digger",
+   "name_ko": "굴착기"
+  },
+  {
+   "index": 25,
+   "ds_table_offset": "0x1fe8",
+   "ds_string_offset": "0x250b",
+   "name_en": "Heavy Digger",
+   "name_ko": "헤비 굴착기"
+  },
+  {
+   "index": 26,
+   "ds_table_offset": "0x1fec",
+   "ds_string_offset": "0x2518",
+   "name_en": "Baby Sandhog",
+   "name_ko": "아기 샌드호그"
+  },
+  {
+   "index": 27,
+   "ds_table_offset": "0x1ff0",
+   "ds_string_offset": "0x2525",
+   "name_en": "Sandhog",
+   "name_ko": "샌드호그"
+  },
+  {
+   "index": 28,
+   "ds_table_offset": "0x1ff4",
+   "ds_string_offset": "0x252d",
+   "name_en": "Heavy Sandhog",
+   "name_ko": "헤비 샌드호그"
+  },
+  {
+   "index": 29,
+   "ds_table_offset": "0x1ff8",
+   "ds_string_offset": "0x253b",
+   "name_en": "Dirt Clod",
+   "name_ko": "흙덩이"
+  },
+  {
+   "index": 30,
+   "ds_table_offset": "0x1ffc",
+   "ds_string_offset": "0x2545",
+   "name_en": "Dirt Ball",
+   "name_ko": "흙공"
+  },
+  {
+   "index": 31,
+   "ds_table_offset": "0x2000",
+   "ds_string_offset": "0x254f",
+   "name_en": "Ton of Dirt",
+   "name_ko": "흙 한 톤"
+  },
+  {
+   "index": 32,
+   "ds_table_offset": "0x2004",
+   "ds_string_offset": "0x255b",
+   "name_en": "Liquid Dirt",
+   "name_ko": "액체 흙"
+  },
+  {
+   "index": 33,
+   "ds_table_offset": "0x2008",
+   "ds_string_offset": "0x2567",
+   "name_en": "Dirt Charge",
+   "name_ko": "흙 장약"
+  },
+  {
+   "index": 34,
+   "ds_table_offset": "0x200c",
+   "ds_string_offset": "0x2573",
+   "name_en": "Dirt Tower",
+   "name_ko": "흙 탑"
+  },
+  {
+   "index": 35,
+   "ds_table_offset": "0x2010",
+   "ds_string_offset": "0x257e",
+   "name_en": "Earth Disrupter",
+   "name_ko": "대지 교란기"
+  },
+  {
+   "index": 36,
+   "ds_table_offset": "0x2014",
+   "ds_string_offset": "0x258e",
+   "name_en": "Laser",
+   "name_ko": "레이저"
+  },
+  {
+   "index": 37,
+   "ds_table_offset": "0x2018",
+   "ds_string_offset": "0x2594",
+   "name_en": "Plasma Laser",
+   "name_ko": "플라즈마 레이저"
+  },
+  {
+   "index": 38,
+   "ds_table_offset": "0x201c",
+   "ds_string_offset": "0x25a1",
+   "name_en": "Heat Guidance",
+   "name_ko": "열 유도"
+  },
+  {
+   "index": 39,
+   "ds_table_offset": "0x2020",
+   "ds_string_offset": "0x25af",
+   "name_en": "Bal Guidance",
+   "name_ko": "탄도 유도"
+  },
+  {
+   "index": 40,
+   "ds_table_offset": "0x2024",
+   "ds_string_offset": "0x25bc",
+   "name_en": "Horz Guidance",
+   "name_ko": "수평 유도"
+  },
+  {
+   "index": 41,
+   "ds_table_offset": "0x2028",
+   "ds_string_offset": "0x25ca",
+   "name_en": "Vert Guidance",
+   "name_ko": "수직 유도"
+  },
+  {
+   "index": 42,
+   "ds_table_offset": "0x202c",
+   "ds_string_offset": "0x25d8",
+   "name_en": "Lazy Boy",
+   "name_ko": "게으름뱅이"
+  },
+  {
+   "index": 43,
+   "ds_table_offset": "0x2030",
+   "ds_string_offset": "0x25e1",
+   "name_en": "Parachute",
+   "name_ko": "낙하산"
+  },
+  {
+   "index": 44,
+   "ds_table_offset": "0x2034",
+   "ds_string_offset": "0x25eb",
+   "name_en": "Battery",
+   "name_ko": "배터리"
+  },
+  {
+   "index": 45,
+   "ds_table_offset": "0x2038",
+   "ds_string_offset": "0x25f3",
+   "name_en": "~Batteries:",
+   "name_ko": "배터리:"
+  },
+  {
+   "index": 46,
+   "ds_table_offset": "0x203c",
+   "ds_string_offset": "0x25ff",
+   "name_en": "Mag Deflector",
+   "name_ko": "자기 편향기"
+  },
+  {
+   "index": 47,
+   "ds_table_offset": "0x2040",
+   "ds_string_offset": "0x260d",
+   "name_en": "Shield",
+   "name_ko": "방패"
+  },
+  {
+   "index": 48,
+   "ds_table_offset": "0x2044",
+   "ds_string_offset": "0x2614",
+   "name_en": "Warp Shield",
+   "name_ko": "워프 방패"
+  },
+  {
+   "index": 49,
+   "ds_table_offset": "0x2048",
+   "ds_string_offset": "0x2620",
+   "name_en": "Teleport Shield",
+   "name_ko": "텔레포트 방패"
+  },
+  {
+   "index": 50,
+   "ds_table_offset": "0x204c",
+   "ds_string_offset": "0x2630",
+   "name_en": "Flicker Shield",
+   "name_ko": "깜빡이 방패"
+  },
+  {
+   "index": 51,
+   "ds_table_offset": "0x2050",
+   "ds_string_offset": "0x263f",
+   "name_en": "Force Shield",
+   "name_ko": "역장 방패"
+  },
+  {
+   "index": 52,
+   "ds_table_offset": "0x2054",
+   "ds_string_offset": "0x264c",
+   "name_en": "Heavy Shield",
+   "name_ko": "중형 방패"
+  },
+  {
+   "index": 53,
+   "ds_table_offset": "0x2058",
+   "ds_string_offset": "0x2659",
+   "name_en": "Super Mag",
+   "name_ko": "슈퍼 마그"
+  },
+  {
+   "index": 54,
+   "ds_table_offset": "0x205c",
+   "ds_string_offset": "0x2663",
+   "name_en": "Patriot Missiles",
+   "name_ko": "패트리어트 미사일"
+  },
+  {
+   "index": 55,
+   "ds_table_offset": "0x2060",
+   "ds_string_offset": "0x2674",
+   "name_en": "Auto Defense",
+   "name_ko": "자동 방어"
+  },
+  {
+   "index": 56,
+   "ds_table_offset": "0x2064",
+   "ds_string_offset": "0x2681",
+   "name_en": "Fuel Tank",
+   "name_ko": "연료 탱크"
+  },
+  {
+   "index": 57,
+   "ds_table_offset": "0x2068",
+   "ds_string_offset": "0x268b",
+   "name_en": "Contact Trigger",
+   "name_ko": "접촉 신관"
+  },
+  {
+   "index": 58,
+   "ds_table_offset": "0x206c",
+   "ds_string_offset": "0x269b",
+   "name_en": "Scorched Earth",
+   "name_ko": "스코치드 어스"
+  },
+  {
+   "index": 59,
+   "ds_table_offset": "0x2070",
+   "ds_string_offset": "0x26aa",
+   "name_en": "The Mother of All Games",
+   "name_ko": "모든 게임의 어머니"
+  },
+  {
+   "index": 60,
+   "ds_table_offset": "0x2074",
+   "ds_string_offset": "0x26c2",
+   "name_en": "Moron",
+   "name_ko": "얼간이"
+  },
+  {
+   "index": 61,
+   "ds_table_offset": "0x2078",
+   "ds_string_offset": "0x26c8",
+   "name_en": "Shooter",
+   "name_ko": "사수"
+  },
+  {
+   "index": 62,
+   "ds_table_offset": "0x207c",
+   "ds_string_offset": "0x26d0",
+   "name_en": "Poolshark",
+   "name_ko": "당구꾼"
+  },
+  {
+   "index": 63,
+   "ds_table_offset": "0x2080",
+   "ds_string_offset": "0x26da",
+   "name_en": "Tosser",
+   "name_ko": "투척수"
+  },
+  {
+   "index": 64,
+   "ds_table_offset": "0x2084",
+   "ds_string_offset": "0x26e1",
+   "name_en": "Chooser",
+   "name_ko": "선택자"
+  },
+  {
+   "index": 65,
+   "ds_table_offset": "0x2088",
+   "ds_string_offset": "0x26e9",
+   "name_en": "Spoiler",
+   "name_ko": "방해꾼"
+  },
+  {
+   "index": 66,
+   "ds_table_offset": "0x208c",
+   "ds_string_offset": "0x26f1",
+   "name_en": "Cyborg",
+   "name_ko": "사이보그"
+  },
+  {
+   "index": 67,
+   "ds_table_offset": "0x2090",
+   "ds_string_offset": "0x26f8",
+   "name_en": "Unknown",
+   "name_ko": "미지"
+  },
+  {
+   "index": 68,
+   "ds_table_offset": "0x2094",
+   "ds_string_offset": "0x2700",
+   "name_en": "Sentient",
+   "name_ko": "감각체"
+  },
+  {
+   "index": 69,
+   "ds_table_offset": "0x2098",
+   "ds_string_offset": "0x2709",
+   "name_en": "Sentient?",
+   "name_ko": "감각체?"
+  },
+  {
+   "index": 70,
+   "ds_table_offset": "0x209c",
+   "ds_string_offset": "0x2713",
+   "name_en": "~Moron",
+   "name_ko": "얼간이"
+  },
+  {
+   "index": 71,
+   "ds_table_offset": "0x20a0",
+   "ds_string_offset": "0x271a",
+   "name_en": "S~hooter",
+   "name_ko": "사수"
+  },
+  {
+   "index": 72,
+   "ds_table_offset": "0x20a4",
+   "ds_string_offset": "0x2723",
+   "name_en": "~Poolshark",
+   "name_ko": "당구꾼"
+  },
+  {
+   "index": 73,
+   "ds_table_offset": "0x20a8",
+   "ds_string_offset": "0x272e",
+   "name_en": "~Tosser",
+   "name_ko": "투척수"
+  },
+  {
+   "index": 74,
+   "ds_table_offset": "0x20ac",
+   "ds_string_offset": "0x2736",
+   "name_en": "~Chooser",
+   "name_ko": "선택자"
+  },
+  {
+   "index": 75,
+   "ds_table_offset": "0x20b0",
+   "ds_string_offset": "0x273f",
+   "name_en": "~Spoiler",
+   "name_ko": "방해꾼"
+  },
+  {
+   "index": 76,
+   "ds_table_offset": "0x20b4",
+   "ds_string_offset": "0x2748",
+   "name_en": "C~yborg",
+   "name_ko": "사이보그"
+  },
+  {
+   "index": 77,
+   "ds_table_offset": "0x20b8",
+   "ds_string_offset": "0x2750",
+   "name_en": "~Unknown",
+   "name_ko": "미지"
+  },
+  {
+   "index": 78,
+   "ds_table_offset": "0x20bc",
+   "ds_string_offset": "0x2759",
+   "name_en": "$%s",
+   "name_ko": "$%s"
+  },
+  {
+   "index": 79,
+   "ds_table_offset": "0x20c0",
+   "ds_string_offset": "0x275d",
+   "name_en": "Cash",
+   "name_ko": "현금"
+  },
+  {
+   "index": 80,
+   "ds_table_offset": "0x20c4",
+   "ds_string_offset": "0x2762",
+   "name_en": "Rankings",
+   "name_ko": "순위"
+  },
+  {
+   "index": 81,
+   "ds_table_offset": "0x20c8",
+   "ds_string_offset": "0x276b",
+   "name_en": "Off",
+   "name_ko": "끔"
+  },
+  {
+   "index": 82,
+   "ds_table_offset": "0x20cc",
+   "ds_string_offset": "0x276f",
+   "name_en": "On",
+   "name_ko": "켬"
+  },
+  {
+   "index": 83,
+   "ds_table_offset": "0x20d0",
+   "ds_string_offset": "0x2772",
+   "name_en": "Basic",
+   "name_ko": "기본"
+  },
+  {
+   "index": 84,
+   "ds_table_offset": "0x20d4",
+   "ds_string_offset": "0x2778",
+   "name_en": "Greedy",
+   "name_ko": "탐욕"
+  },
+  {
+   "index": 85,
+   "ds_table_offset": "0x20d8",
+   "ds_string_offset": "0x277f",
+   "name_en": "Erratic",
+   "name_ko": "불규칙"
+  },
+  {
+   "index": 86,
+   "ds_table_offset": "0x20dc",
+   "ds_string_offset": "0x2787",
+   "name_en": "Random",
+   "name_ko": "무작위"
+  },
+  {
+   "index": 87,
+   "ds_table_offset": "0x20e0",
+   "ds_string_offset": "0x278e",
+   "name_en": "Wrap-around",
+   "name_ko": "순환"
+  },
+  {
+   "index": 88,
+   "ds_table_offset": "0x20e4",
+   "ds_string_offset": "0x279a",
+   "name_en": "Padded",
+   "name_ko": "푹신한 벽"
+  },
+  {
+   "index": 89,
+   "ds_table_offset": "0x20e8",
+   "ds_string_offset": "0x27a1",
+   "name_en": "Rubber",
+   "name_ko": "고무벽"
+  },
+  {
+   "index": 90,
+   "ds_table_offset": "0x20ec",
+   "ds_string_offset": "0x27a8",
+   "name_en": "Spring",
+   "name_ko": "스프링 벽"
+  },
+  {
+   "index": 91,
+   "ds_table_offset": "0x20f0",
+   "ds_string_offset": "0x27af",
+   "name_en": "Concrete",
+   "name_ko": "콘크리트 벽"
+  },
+  {
+   "index": 92,
+   "ds_table_offset": "0x20f4",
+   "ds_string_offset": "0x27b8",
+   "name_en": "Small",
+   "name_ko": "작게"
+  },
+  {
+   "index": 93,
+   "ds_table_offset": "0x20f8",
+   "ds_string_offset": "0x27be",
+   "name_en": "Big",
+   "name_ko": "크게"
+  },
+  {
+   "index": 94,
+   "ds_table_offset": "0x20fc",
+   "ds_string_offset": "0x27c2",
+   "name_en": "Invisible",
+   "name_ko": "보이지 않음"
+  },
+  {
+   "index": 95,
+   "ds_table_offset": "0x2100",
+   "ds_string_offset": "0x27cc",
+   "name_en": "Normal",
+   "name_ko": "보통"
+  },
+  {
+   "index": 96,
+   "ds_table_offset": "0x2104",
+   "ds_string_offset": "0x27d3",
+   "name_en": "Medium",
+   "name_ko": "중간"
+  },
+  {
+   "index": 97,
+   "ds_table_offset": "0x2108",
+   "ds_string_offset": "0x27da",
+   "name_en": "Large",
+   "name_ko": "큼"
+  },
+  {
+   "index": 98,
+   "ds_table_offset": "0x210c",
+   "ds_string_offset": "0x27e0",
+   "name_en": "Standard",
+   "name_ko": "표준"
+  },
+  {
+   "index": 99,
+   "ds_table_offset": "0x2110",
+   "ds_string_offset": "0x27e9",
+   "name_en": "Vel",
+   "name_ko": "속도"
+  },
+  {
+   "index": 100,
+   "ds_table_offset": "0x2114",
+   "ds_string_offset": "0x27ed",
+   "name_en": "Pos",
+   "name_ko": "위치"
+  },
+  {
+   "index": 101,
+   "ds_table_offset": "0x2118",
+   "ds_string_offset": "0x27f1",
+   "name_en": "Corporate",
+   "name_ko": "기업형"
+  },
+  {
+   "index": 102,
+   "ds_table_offset": "0x211c",
+   "ds_string_offset": "0x27fb",
+   "name_en": "Vicious",
+   "name_ko": "잔혹형"
+  },
+  {
+   "index": 103,
+   "ds_table_offset": "0x2120",
+   "ds_string_offset": "0x2803",
+   "name_en": "Sequential",
+   "name_ko": "순차"
+  },
+  {
+   "index": 104,
+   "ds_table_offset": "0x2124",
+   "ds_string_offset": "0x280e",
+   "name_en": "Simultaneous",
+   "name_ko": "동시"
+  },
+  {
+   "index": 105,
+   "ds_table_offset": "0x2128",
+   "ds_string_offset": "0x281b",
+   "name_en": "Synchronous",
+   "name_ko": "동기"
+  },
+  {
+   "index": 106,
+   "ds_table_offset": "0x212c",
+   "ds_string_offset": "0x2827",
+   "name_en": "~Start",
+   "name_ko": "시작"
+  },
+  {
+   "index": 107,
+   "ds_table_offset": "0x2130",
+   "ds_string_offset": "0x282e",
+   "name_en": "~Players:",
+   "name_ko": "플레이어 수:"
+  },
+  {
+   "index": 108,
+   "ds_table_offset": "0x2134",
+   "ds_string_offset": "0x2838",
+   "name_en": "~Rounds:",
+   "name_ko": "라운드 수:"
+  },
+  {
+   "index": 109,
+   "ds_table_offset": "0x2138",
+   "ds_string_offset": "0x2841",
+   "name_en": "S~ound...",
+   "name_ko": "사운드..."
+  },
+  {
+   "index": 110,
+   "ds_table_offset": "0x213c",
+   "ds_string_offset": "0x284b",
+   "name_en": "~Hardware...",
+   "name_ko": "하드웨어..."
+  },
+  {
+   "index": 111,
+   "ds_table_offset": "0x2140",
+   "ds_string_offset": "0x2858",
+   "name_en": "~Economics...",
+   "name_ko": "경제..."
+  },
+  {
+   "index": 112,
+   "ds_table_offset": "0x2144",
+   "ds_string_offset": "0x2866",
+   "name_en": "~Landscape...",
+   "name_ko": "지형..."
+  },
+  {
+   "index": 113,
+   "ds_table_offset": "0x2148",
+   "ds_string_offset": "0x2874",
+   "name_en": "Ph~ysics...",
+   "name_ko": "물리..."
+  },
+  {
+   "index": 114,
+   "ds_table_offset": "0x214c",
+   "ds_string_offset": "0x2880",
+   "name_en": "Play Op~tions...",
+   "name_ko": "플레이 옵션..."
+  },
+  {
+   "index": 115,
+   "ds_table_offset": "0x2150",
+   "ds_string_offset": "0x2891",
+   "name_en": "~Weapons...",
+   "name_ko": "무기..."
+  },
+  {
+   "index": 116,
+   "ds_table_offset": "0x2154",
+   "ds_string_offset": "0x289d",
+   "name_en": "Save ~Changes",
+   "name_ko": "변경 저장"
+  },
+  {
+   "index": 117,
+   "ds_table_offset": "0x2158",
+   "ds_string_offset": "0x28ab",
+   "name_en": "~Sound:",
+   "name_ko": "사운드:"
+  },
+  {
+   "index": 118,
+   "ds_table_offset": "0x215c",
+   "ds_string_offset": "0x28b3",
+   "name_en": "~Flight Sounds:",
+   "name_ko": "비행음:"
+  },
+  {
+   "index": 119,
+   "ds_table_offset": "0x2160",
+   "ds_string_offset": "0x28c3",
+   "name_en": "~Graphics Mode:",
+   "name_ko": "그래픽 모드:"
+  },
+  {
+   "index": 120,
+   "ds_table_offset": "0x2164",
+   "ds_string_offset": "0x28d3",
+   "name_en": "~Bios Keyboard",
+   "name_ko": "BIOS 키보드"
+  },
+  {
+   "index": 121,
+   "ds_table_offset": "0x2168",
+   "ds_string_offset": "0x28e2",
+   "name_en": "~Small Memory",
+   "name_ko": "소형 메모리"
+  },
+  {
+   "index": 122,
+   "ds_table_offset": "0x216c",
+   "ds_string_offset": "0x28f0",
+   "name_en": "~Mouse Enabled",
+   "name_ko": "마우스 사용"
+  },
+  {
+   "index": 123,
+   "ds_table_offset": "0x2170",
+   "ds_string_offset": "0x28ff",
+   "name_en": "~Firing Delay:",
+   "name_ko": "발사 지연:"
+  },
+  {
+   "index": 124,
+   "ds_table_offset": "0x2174",
+   "ds_string_offset": "0x290e",
+   "name_en": "~Hardware Delay:",
+   "name_ko": "하드웨어 지연:"
+  },
+  {
+   "index": 125,
+   "ds_table_offset": "0x2178",
+   "ds_string_offset": "0x291f",
+   "name_en": "~Interest Rate:",
+   "name_ko": "이자율:"
+  },
+  {
+   "index": 126,
+   "ds_table_offset": "0x217c",
+   "ds_string_offset": "0x292f",
+   "name_en": "~Cash at Start:",
+   "name_ko": "시작 자금:"
+  },
+  {
+   "index": 127,
+   "ds_table_offset": "0x2180",
+   "ds_string_offset": "0x293f",
+   "name_en": "Computers ~Buy",
+   "name_ko": "컴퓨터 구매"
+  },
+  {
+   "index": 128,
+   "ds_table_offset": "0x2184",
+   "ds_string_offset": "0x294e",
+   "name_en": "~Free Market",
+   "name_ko": "자유 시장"
+  },
+  {
+   "index": 129,
+   "ds_table_offset": "0x2188",
+   "ds_string_offset": "0x295b",
+   "name_en": "~Scoring Mode:",
+   "name_ko": "점수 방식:"
+  },
+  {
+   "index": 130,
+   "ds_table_offset": "0x218c",
+   "ds_string_offset": "0x296a",
+   "name_en": "~Bumpiness:",
+   "name_ko": "울퉁불퉁함:"
+  },
+  {
+   "index": 131,
+   "ds_table_offset": "0x2190",
+   "ds_string_offset": "0x2976",
+   "name_en": "S~lope:",
+   "name_ko": "경사:"
+  },
+  {
+   "index": 132,
+   "ds_table_offset": "0x2194",
+   "ds_string_offset": "0x297e",
+   "name_en": "~Flatten Peaks",
+   "name_ko": "봉우리 평탄화"
+  },
+  {
+   "index": 133,
+   "ds_table_offset": "0x2198",
+   "ds_string_offset": "0x298d",
+   "name_en": "~Random Land",
+   "name_ko": "무작위 지형"
+  },
+  {
+   "index": 134,
+   "ds_table_offset": "0x219c",
+   "ds_string_offset": "0x299a",
+   "name_en": "~Air Viscosity:",
+   "name_ko": "공기 점성:"
+  },
+  {
+   "index": 135,
+   "ds_table_offset": "0x21a0",
+   "ds_string_offset": "0x29aa",
+   "name_en": "~Gravity:",
+   "name_ko": "중력:"
+  },
+  {
+   "index": 136,
+   "ds_table_offset": "0x21a4",
+   "ds_string_offset": "0x29b4",
+   "name_en": "~Borders Extend:",
+   "name_ko": "경계 확장:"
+  },
+  {
+   "index": 137,
+   "ds_table_offset": "0x21a8",
+   "ds_string_offset": "0x29c5",
+   "name_en": "~Effect of Walls:",
+   "name_ko": "벽의 효과:"
+  },
+  {
+   "index": 138,
+   "ds_table_offset": "0x21ac",
+   "ds_string_offset": "0x29d7",
+   "name_en": "~Suspend Dirt:",
+   "name_ko": "흙 공중 부유:"
+  },
+  {
+   "index": 139,
+   "ds_table_offset": "0x21b0",
+   "ds_string_offset": "0x29e6",
+   "name_en": "~Sky:",
+   "name_ko": "하늘:"
+  },
+  {
+   "index": 140,
+   "ds_table_offset": "0x21b4",
+   "ds_string_offset": "0x29ec",
+   "name_en": "~Max. Wind:",
+   "name_ko": "최대 바람:"
+  },
+  {
+   "index": 141,
+   "ds_table_offset": "0x21b8",
+   "ds_string_offset": "0x29f8",
+   "name_en": "~Changing Wind",
+   "name_ko": "바람 변화"
+  },
+  {
+   "index": 142,
+   "ds_table_offset": "0x21bc",
+   "ds_string_offset": "0x2a07",
+   "name_en": "Ta~lking Tanks:",
+   "name_ko": "말하는 탱크:"
+  },
+  {
+   "index": 143,
+   "ds_table_offset": "0x21c0",
+   "ds_string_offset": "0x2a17",
+   "name_en": "~Attack File:",
+   "name_ko": "공격 대사 파일:"
+  },
+  {
+   "index": 144,
+   "ds_table_offset": "0x21c4",
+   "ds_string_offset": "0x2a25",
+   "name_en": "~Die File:",
+   "name_ko": "사망 대사 파일:"
+  },
+  {
+   "index": 145,
+   "ds_table_offset": "0x21c8",
+   "ds_string_offset": "0x2a30",
+   "name_en": "Tanks ~Fall",
+   "name_ko": "탱크 낙하"
+  },
+  {
+   "index": 146,
+   "ds_table_offset": "0x21cc",
+   "ds_string_offset": "0x2a3c",
+   "name_en": "~Impact Damage",
+   "name_ko": "충격 피해"
+  },
+  {
+   "index": 147,
+   "ds_table_offset": "0x21d0",
+   "ds_string_offset": "0x2a4b",
+   "name_en": "~Arms Level:",
+   "name_ko": "무기 등급:"
+  },
+  {
+   "index": 148,
+   "ds_table_offset": "0x21d4",
+   "ds_string_offset": "0x2a58",
+   "name_en": "~Bomb Icon:",
+   "name_ko": "폭탄 아이콘:"
+  },
+  {
+   "index": 149,
+   "ds_table_offset": "0x21d8",
+   "ds_string_offset": "0x2a64",
+   "name_en": "~Tunneling",
+   "name_ko": "터널링"
+  },
+  {
+   "index": 150,
+   "ds_table_offset": "0x21dc",
+   "ds_string_offset": "0x2a6f",
+   "name_en": "~Scale:",
+   "name_ko": "크기:"
+  },
+  {
+   "index": 151,
+   "ds_table_offset": "0x21e0",
+   "ds_string_offset": "0x2a77",
+   "name_en": "Trace ~Paths",
+   "name_ko": "궤적 표시"
+  },
+  {
+   "index": 152,
+   "ds_table_offset": "0x21e4",
+   "ds_string_offset": "0x2a84",
+   "name_en": "~Extra Dirt",
+   "name_ko": "추가 흙"
+  },
+  {
+   "index": 153,
+   "ds_table_offset": "0x21e8",
+   "ds_string_offset": "0x2a90",
+   "name_en": "~Useless Items",
+   "name_ko": "쓸모없는 아이템"
+  },
+  {
+   "index": 154,
+   "ds_table_offset": "0x21ec",
+   "ds_string_offset": "0x2a9f",
+   "name_en": "Final Scoring",
+   "name_ko": "최종 점수"
+  },
+  {
+   "index": 155,
+   "ds_table_offset": "0x21f0",
+   "ds_string_offset": "0x2aad",
+   "name_en": "Initializing code... one moment.",
+   "name_ko": "초기화 중... 잠시만 기다려 주세요."
+  },
+  {
+   "index": 156,
+   "ds_table_offset": "0x21f4",
+   "ds_string_offset": "0x2ace",
+   "name_en": "Player",
+   "name_ko": "플레이어"
+  },
+  {
+   "index": 157,
+   "ds_table_offset": "0x21f8",
+   "ds_string_offset": "0x2ad5",
+   "name_en": "~Computer",
+   "name_ko": "컴퓨터"
+  },
+  {
+   "index": 158,
+   "ds_table_offset": "0x21fc",
+   "ds_string_offset": "0x2adf",
+   "name_en": "~Person",
+   "name_ko": "사람"
+  },
+  {
+   "index": 159,
+   "ds_table_offset": "0x2200",
+   "ds_string_offset": "0x2ae7",
+   "name_en": "Name",
+   "name_ko": "이름"
+  },
+  {
+   "index": 160,
+   "ds_table_offset": "0x2204",
+   "ds_string_offset": "0x2aec",
+   "name_en": "~Name",
+   "name_ko": "이름"
+  },
+  {
+   "index": 161,
+   "ds_table_offset": "0x2208",
+   "ds_string_offset": "0x2af2",
+   "name_en": "~Type",
+   "name_ko": "유형"
+  },
+  {
+   "index": 162,
+   "ds_table_offset": "0x220c",
+   "ds_string_offset": "0x2af8",
+   "name_en": "Power",
+   "name_ko": "파워"
+  },
+  {
+   "index": 163,
+   "ds_table_offset": "0x2210",
+   "ds_string_offset": "0x2afe",
+   "name_en": "Angle",
+   "name_ko": "각도"
+  },
+  {
+   "index": 164,
+   "ds_table_offset": "0x2214",
+   "ds_string_offset": "0x2b04",
+   "name_en": "Wind",
+   "name_ko": "바람"
+  },
+  {
+   "index": 165,
+   "ds_table_offset": "0x2218",
+   "ds_string_offset": "0x2b09",
+   "name_en": "No Wind",
+   "name_ko": "바람 없음"
+  },
+  {
+   "index": 166,
+   "ds_table_offset": "0x221c",
+   "ds_string_offset": "0x2b11",
+   "name_en": "deployed",
+   "name_ko": "전개됨"
+  },
+  {
+   "index": 167,
+   "ds_table_offset": "0x2220",
+   "ds_string_offset": "0x2b1a",
+   "name_en": "passive",
+   "name_ko": "대기"
+  },
+  {
+   "index": 168,
+   "ds_table_offset": "0x2224",
+   "ds_string_offset": "0x2b22",
+   "name_en": "System Menu",
+   "name_ko": "시스템 메뉴"
+  },
+  {
+   "index": 169,
+   "ds_table_offset": "0x2228",
+   "ds_string_offset": "0x2b2e",
+   "name_en": "~Clear Screen",
+   "name_ko": "화면 지우기"
+  },
+  {
+   "index": 170,
+   "ds_table_offset": "0x222c",
+   "ds_string_offset": "0x2b3c",
+   "name_en": "~Mass Kill",
+   "name_ko": "전원 몰살"
+  },
+  {
+   "index": 171,
+   "ds_table_offset": "0x2230",
+   "ds_string_offset": "0x2b47",
+   "name_en": "~Quit Game",
+   "name_ko": "게임 종료"
+  },
+  {
+   "index": 172,
+   "ds_table_offset": "0x2234",
+   "ds_string_offset": "0x2b52",
+   "name_en": "Reassign Players",
+   "name_ko": "플레이어 재배정"
+  },
+  {
+   "index": 173,
+   "ds_table_offset": "0x2238",
+   "ds_string_offset": "0x2b63",
+   "name_en": "Reassign ~Players",
+   "name_ko": "플레이어 재배정"
+  },
+  {
+   "index": 174,
+   "ds_table_offset": "0x223c",
+   "ds_string_offset": "0x2b75",
+   "name_en": "Reassign ~Teams",
+   "name_ko": "팀 재배정"
+  },
+  {
+   "index": 175,
+   "ds_table_offset": "0x2240",
+   "ds_string_offset": "0x2b85",
+   "name_en": "Save ~Game",
+   "name_ko": "게임 저장"
+  },
+  {
+   "index": 176,
+   "ds_table_offset": "0x2244",
+   "ds_string_offset": "0x2b90",
+   "name_en": "~Restore Game",
+   "name_ko": "게임 불러오기"
+  },
+  {
+   "index": 177,
+   "ds_table_offset": "0x2248",
+   "ds_string_offset": "0x2b9e",
+   "name_en": "~New Game",
+   "name_ko": "새 게임"
+  },
+  {
+   "index": 178,
+   "ds_table_offset": "0x224c",
+   "ds_string_offset": "0x2ba8",
+   "name_en": "Do you want to retreat?",
+   "name_ko": "후퇴하시겠습니까?"
+  },
+  {
+   "index": 179,
+   "ds_table_offset": "0x2250",
+   "ds_string_offset": "0x2bc0",
+   "name_en": "~Yes",
+   "name_ko": "예"
+  },
+  {
+   "index": 180,
+   "ds_table_offset": "0x2254",
+   "ds_string_offset": "0x2bc5",
+   "name_en": "~No",
+   "name_ko": "아니오"
+  },
+  {
+   "index": 181,
+   "ds_table_offset": "0x2258",
+   "ds_string_offset": "0x2bc9",
+   "name_en": "Do you want to quit?",
+   "name_ko": "종료하시겠습니까?"
+  },
+  {
+   "index": 182,
+   "ds_table_offset": "0x225c",
+   "ds_string_offset": "0x2bde",
+   "name_en": "Do you really want to restart the game?",
+   "name_ko": "정말 게임을 다시 시작하시겠습니까?"
+  },
+  {
+   "index": 183,
+   "ds_table_offset": "0x2260",
+   "ds_string_offset": "0x2c06",
+   "name_en": "Mass kill everyone?",
+   "name_ko": "모두 몰살시키겠습니까?"
+  },
+  {
+   "index": 184,
+   "ds_table_offset": "0x2264",
+   "ds_string_offset": "0x2c1a",
+   "name_en": "%s rounds remain",
+   "name_ko": "%s 라운드 남음"
+  },
+  {
+   "index": 185,
+   "ds_table_offset": "0x2268",
+   "ds_string_offset": "0x2c2b",
+   "name_en": "1 round remains",
+   "name_ko": "1 라운드 남음"
+  },
+  {
+   "index": 186,
+   "ds_table_offset": "0x226c",
+   "ds_string_offset": "0x2c3b",
+   "name_en": "Score",
+   "name_ko": "점수"
+  },
+  {
+   "index": 187,
+   "ds_table_offset": "0x2270",
+   "ds_string_offset": "0x2c41",
+   "name_en": "Weapons",
+   "name_ko": "무기"
+  },
+  {
+   "index": 188,
+   "ds_table_offset": "0x2274",
+   "ds_string_offset": "0x2c49",
+   "name_en": "Miscellaneous",
+   "name_ko": "기타"
+  },
+  {
+   "index": 189,
+   "ds_table_offset": "0x2278",
+   "ds_string_offset": "0x2c57",
+   "name_en": "~Done",
+   "name_ko": "완료"
+  },
+  {
+   "index": 190,
+   "ds_table_offset": "0x227c",
+   "ds_string_offset": "0x2c5d",
+   "name_en": "Remaining Power:",
+   "name_ko": "남은 파워:"
+  },
+  {
+   "index": 191,
+   "ds_table_offset": "0x2280",
+   "ds_string_offset": "0x2c6e",
+   "name_en": "Energy Left",
+   "name_ko": "남은 에너지"
+  },
+  {
+   "index": 192,
+   "ds_table_offset": "0x2284",
+   "ds_string_offset": "0x2c7a",
+   "name_en": "None",
+   "name_ko": "없음"
+  },
+  {
+   "index": 193,
+   "ds_table_offset": "0x2288",
+   "ds_string_offset": "0x2c7f",
+   "name_en": "Guidance",
+   "name_ko": "유도"
+  },
+  {
+   "index": 194,
+   "ds_table_offset": "0x228c",
+   "ds_string_offset": "0x2c88",
+   "name_en": "~Fuel Remaining:",
+   "name_ko": "남은 연료:"
+  },
+  {
+   "index": 195,
+   "ds_table_offset": "0x2290",
+   "ds_string_offset": "0x2c99",
+   "name_en": "~Hostile Environment",
+   "name_ko": "적대적 환경"
+  },
+  {
+   "index": 196,
+   "ds_table_offset": "0x2294",
+   "ds_string_offset": "0x2cae",
+   "name_en": "~Language",
+   "name_ko": "언어"
+  },
+  {
+   "index": 197,
+   "ds_table_offset": "0x2298",
+   "ds_string_offset": "0x2cb8",
+   "name_en": "Status ~Bar",
+   "name_ko": "상태 표시줄"
+  },
+  {
+   "index": 198,
+   "ds_table_offset": "0x229c",
+   "ds_string_offset": "0x2cc4",
+   "name_en": "~Icon Bar",
+   "name_ko": "아이콘 막대"
+  },
+  {
+   "index": 199,
+   "ds_table_offset": "0x22a0",
+   "ds_string_offset": "0x2cce",
+   "name_en": "Choose Target",
+   "name_ko": "목표 선택"
+  },
+  {
+   "index": 200,
+   "ds_table_offset": "0x22a4",
+   "ds_string_offset": "0x2cdc",
+   "name_en": "Mass Kill",
+   "name_ko": "전원 몰살"
+  },
+  {
+   "index": 201,
+   "ds_table_offset": "0x22a8",
+   "ds_string_offset": "0x2ce6",
+   "name_en": "No Winner",
+   "name_ko": "승자 없음"
+  },
+  {
+   "index": 202,
+   "ds_table_offset": "0x22ac",
+   "ds_string_offset": "0x2cf0",
+   "name_en": "Inventory",
+   "name_ko": "보유품"
+  },
+  {
+   "index": 203,
+   "ds_table_offset": "0x22b0",
+   "ds_string_offset": "0x2cfa",
+   "name_en": "Losers-First",
+   "name_ko": "패자 먼저"
+  },
+  {
+   "index": 204,
+   "ds_table_offset": "0x22b4",
+   "ds_string_offset": "0x2d07",
+   "name_en": "Winners-First",
+   "name_ko": "승자 먼저"
+  },
+  {
+   "index": 205,
+   "ds_table_offset": "0x22b8",
+   "ds_string_offset": "0x2d15",
+   "name_en": "Round-Robin",
+   "name_ko": "돌아가며"
+  },
+  {
+   "index": 206,
+   "ds_table_offset": "0x22bc",
+   "ds_string_offset": "0x2d21",
+   "name_en": "Computers",
+   "name_ko": "컴퓨터"
+  },
+  {
+   "index": 207,
+   "ds_table_offset": "0x22c0",
+   "ds_string_offset": "0x2d2b",
+   "name_en": "All",
+   "name_ko": "전체"
+  },
+  {
+   "index": 208,
+   "ds_table_offset": "0x22c4",
+   "ds_string_offset": "0x2d2f",
+   "name_en": "Mouse",
+   "name_ko": "마우스"
+  },
+  {
+   "index": 209,
+   "ds_table_offset": "0x22c8",
+   "ds_string_offset": "0x2d35",
+   "name_en": "Joystick",
+   "name_ko": "조이스틱"
+  },
+  {
+   "index": 210,
+   "ds_table_offset": "0x22cc",
+   "ds_string_offset": "0x2d3e",
+   "name_en": "~Pointer:",
+   "name_ko": "포인터:"
+  },
+  {
+   "index": 211,
+   "ds_table_offset": "0x22d0",
+   "ds_string_offset": "0x2d48",
+   "name_en": "~Mouse Rate:",
+   "name_ko": "마우스 속도:"
+  },
+  {
+   "index": 212,
+   "ds_table_offset": "0x22d4",
+   "ds_string_offset": "0x2d55",
+   "name_en": "~Joystick Rate:",
+   "name_ko": "조이스틱 속도:"
+  },
+  {
+   "index": 213,
+   "ds_table_offset": "0x22d8",
+   "ds_string_offset": "0x2d65",
+   "name_en": "Joystick ~Threshold:",
+   "name_ko": "조이스틱 임계값:"
+  },
+  {
+   "index": 214,
+   "ds_table_offset": "0x22dc",
+   "ds_string_offset": "0x2d7a",
+   "name_en": "Falling ~Delay:",
+   "name_ko": "낙하 지연:"
+  },
+  {
+   "index": 215,
+   "ds_table_offset": "0x22e0",
+   "ds_string_offset": "0x2d8a",
+   "name_en": "~Calibrate Joystick",
+   "name_ko": "조이스틱 보정"
+  },
+  {
+   "index": 216,
+   "ds_table_offset": "0x22e4",
+   "ds_string_offset": "0x2d9e",
+   "name_en": "~Fast Computers",
+   "name_ko": "빠른 컴퓨터"
+  },
+  {
+   "index": 217,
+   "ds_table_offset": "0x22e8",
+   "ds_string_offset": "0x2dae",
+   "name_en": "Talk ~Probability:",
+   "name_ko": "대사 확률:"
+  },
+  {
+   "index": 218,
+   "ds_table_offset": "0x22ec",
+   "ds_string_offset": "0x2dc1",
+   "name_en": "~Mode:",
+   "name_ko": "모드:"
+  },
+  {
+   "index": 219,
+   "ds_table_offset": "0x22f0",
+   "ds_string_offset": "0x2dc8",
+   "name_en": "Play ~Order:",
+   "name_ko": "플레이 순서:"
+  },
+  {
+   "index": 220,
+   "ds_table_offset": "0x22f4",
+   "ds_string_offset": "0x2dd5",
+   "name_en": "~Teams:",
+   "name_ko": "팀:"
+  },
+  {
+   "index": 221,
+   "ds_table_offset": "0x22f8",
+   "ds_string_offset": "0x2ddd",
+   "name_en": "Cash Left:",
+   "name_ko": "남은 현금:"
+  },
+  {
+   "index": 222,
+   "ds_table_offset": "0x22fc",
+   "ds_string_offset": "0x2de8",
+   "name_en": "Plain",
+   "name_ko": "평범"
+  },
+  {
+   "index": 223,
+   "ds_table_offset": "0x2300",
+   "ds_string_offset": "0x2dee",
+   "name_en": "Shaded",
+   "name_ko": "음영"
+  },
+  {
+   "index": 224,
+   "ds_table_offset": "0x2304",
+   "ds_string_offset": "0x2df5",
+   "name_en": "Stars",
+   "name_ko": "별"
+  },
+  {
+   "index": 225,
+   "ds_table_offset": "0x2308",
+   "ds_string_offset": "0x2dfb",
+   "name_en": "Storm",
+   "name_ko": "폭풍"
+  },
+  {
+   "index": 226,
+   "ds_table_offset": "0x230c",
+   "ds_string_offset": "0x2e01",
+   "name_en": "Sunset",
+   "name_ko": "노을"
+  },
+  {
+   "index": 227,
+   "ds_table_offset": "0x2310",
+   "ds_string_offset": "0x2e08",
+   "name_en": "Black",
+   "name_ko": "검정"
+  },
+  {
+   "index": 228,
+   "ds_table_offset": "0x2314",
+   "ds_string_offset": "0x2e0e",
+   "name_en": "Preparing Next Level...",
+   "name_ko": "다음 레벨 준비 중..."
+  },
+  {
+   "index": 229,
+   "ds_table_offset": "0x2318",
+   "ds_string_offset": "0x2e26",
+   "name_en": "~Ok",
+   "name_ko": "확인"
+  },
+  {
+   "index": 230,
+   "ds_table_offset": "0x231c",
+   "ds_string_offset": "0x2e2a",
+   "name_en": "NO KIBITZING!!",
+   "name_ko": "훈수 금지!!"
+  },
+  {
+   "index": 231,
+   "ds_table_offset": "0x2320",
+   "ds_string_offset": "0x2e39",
+   "name_en": "~Update",
+   "name_ko": "갱신"
+  },
+  {
+   "index": 232,
+   "ds_table_offset": "0x2324",
+   "ds_string_offset": "0x2e41",
+   "name_en": "Update",
+   "name_ko": "갱신"
+  },
+  {
+   "index": 233,
+   "ds_table_offset": "0x2328",
+   "ds_string_offset": "0x2e48",
+   "name_en": "Fuel",
+   "name_ko": "연료"
+  },
+  {
+   "index": 234,
+   "ds_table_offset": "0x232c",
+   "ds_string_offset": "0x2e4d",
+   "name_en": "Identify Tank",
+   "name_ko": "탱크 식별"
+  },
+  {
+   "index": 235,
+   "ds_table_offset": "0x2330",
+   "ds_string_offset": "0x2e5b",
+   "name_en": "~Parachutes",
+   "name_ko": "낙하산"
+  },
+  {
+   "index": 236,
+   "ds_table_offset": "0x2334",
+   "ds_string_offset": "0x2e67",
+   "name_en": "~Triggers",
+   "name_ko": "신관"
+  },
+  {
+   "index": 237,
+   "ds_table_offset": "0x2338",
+   "ds_string_offset": "0x2e71",
+   "name_en": "~Guidance",
+   "name_ko": "유도"
+  },
+  {
+   "index": 238,
+   "ds_table_offset": "0x233c",
+   "ds_string_offset": "0x2e7b",
+   "name_en": "Description",
+   "name_ko": "설명"
+  },
+  {
+   "index": 239,
+   "ds_table_offset": "0x2340",
+   "ds_string_offset": "0x2e87",
+   "name_en": "Amount in stock",
+   "name_ko": "보유 수량"
+  },
+  {
+   "index": 240,
+   "ds_table_offset": "0x2344",
+   "ds_string_offset": "0x2e97",
+   "name_en": "~Quantity to sell:",
+   "name_ko": "판매 수량:"
+  },
+  {
+   "index": 241,
+   "ds_table_offset": "0x2348",
+   "ds_string_offset": "0x2eaa",
+   "name_en": "Offer",
+   "name_ko": "제안"
+  },
+  {
+   "index": 242,
+   "ds_table_offset": "0x234c",
+   "ds_string_offset": "0x2eb0",
+   "name_en": "Sell Equipment",
+   "name_ko": "장비 판매"
+  },
+  {
+   "index": 243,
+   "ds_table_offset": "0x2350",
+   "ds_string_offset": "0x2ebf",
+   "name_en": "~Accept",
+   "name_ko": "수락"
+  },
+  {
+   "index": 244,
+   "ds_table_offset": "0x2354",
+   "ds_string_offset": "0x2ec7",
+   "name_en": "~Reject",
+   "name_ko": "거절"
+  },
+  {
+   "index": 245,
+   "ds_table_offset": "0x2358",
+   "ds_string_offset": "0x2ecf",
+   "name_en": "Configure Teams",
+   "name_ko": "팀 설정"
+  },
+  {
+   "index": 246,
+   "ds_table_offset": "0x235c",
+   "ds_string_offset": "0x2edf",
+   "name_en": "Earned interest",
+   "name_ko": "받은 이자"
+  },
+  {
+   "index": 247,
+   "ds_table_offset": "0x2360",
+   "ds_string_offset": "0x2eef",
+   "name_en": "~Inventory",
+   "name_ko": "보유품"
+  },
+  {
+   "index": 248,
+   "ds_table_offset": "0x2364",
+   "ds_string_offset": "0x2efa",
+   "name_en": "Max",
+   "name_ko": "최대"
+  },
+  {
+   "index": 249,
+   "ds_table_offset": "0x2368",
+   "ds_string_offset": "0x2efe",
+   "name_en": "Shields",
+   "name_ko": "방패"
+  },
+  {
+   "index": 250,
+   "ds_table_offset": "0x236c",
+   "ds_string_offset": "0x2f06",
+   "name_en": "Batteries to discharge:",
+   "name_ko": "방전할 배터리 수:"
+  },
+  {
+   "index": 251,
+   "ds_table_offset": "0x2370",
+   "ds_string_offset": "0x2f1e",
+   "name_en": "Engage",
+   "name_ko": "가동"
+  },
+  {
+   "index": 252,
+   "ds_table_offset": "0x2374",
+   "ds_string_offset": "0x2f25",
+   "name_en": "~Go",
+   "name_ko": "실행"
+  },
+  {
+   "index": 253,
+   "ds_table_offset": "0x2378",
+   "ds_string_offset": "0x2f29",
+   "name_en": "~Quit",
+   "name_ko": "종료"
+  },
+  {
+   "index": 254,
+   "ds_table_offset": "0x237c",
+   "ds_string_offset": "0x2f2f",
+   "name_en": "New ~Game",
+   "name_ko": "새 게임"
+  },
+  {
+   "index": 255,
+   "ds_table_offset": "0x2380",
+   "ds_string_offset": "0x2f39",
+   "name_en": "Saving Configuration",
+   "name_ko": "설정 저장 중"
+  },
+  {
+   "index": 256,
+   "ds_table_offset": "0x2384",
+   "ds_string_offset": "0x2f4e",
+   "name_en": "Please Wait...",
+   "name_ko": "잠시만 기다려 주세요..."
+  },
+  {
+   "index": 257,
+   "ds_table_offset": "0x2388",
+   "ds_string_offset": "0x2f5d",
+   "name_en": "Internal Error... sorry!\n",
+   "name_ko": "내부 오류... 죄송합니다!\n"
+  },
+  {
+   "index": 258,
+   "ds_table_offset": "0x238c",
+   "ds_string_offset": "0x2f77",
+   "name_en": "Out of memory... needed %ld byte%s.\n",
+   "name_ko": "메모리 부족... %ld 바이트가 필요합니다.\n"
+  },
+  {
+   "index": 259,
+   "ds_table_offset": "0x2390",
+   "ds_string_offset": "0x2f9c",
+   "name_en": "Automatic Defense System",
+   "name_ko": "자동 방어 시스템"
+  },
+  {
+   "index": 260,
+   "ds_table_offset": "0x2394",
+   "ds_string_offset": "0x2fb5",
+   "name_en": "~Energy Left",
+   "name_ko": "남은 에너지"
+  },
+  {
+   "index": 261,
+   "ds_table_offset": "0x2398",
+   "ds_string_offset": "0x2fc2",
+   "name_en": "~Launch",
+   "name_ko": "발사"
+  },
+  {
+   "index": 262,
+   "ds_table_offset": "0x239c",
+   "ds_string_offset": "0x2fca",
+   "name_en": "Unable to open file \"%s\".",
+   "name_ko": "파일 \"%s\"을(를) 열 수 없습니다."
+  },
+  {
+   "index": 263,
+   "ds_table_offset": "0x23a0",
+   "ds_string_offset": "0x2fe4",
+   "name_en": "Thanks for registering!",
+   "name_ko": "등록해 주셔서 감사합니다!"
+  },
+  {
+   "index": 264,
+   "ds_table_offset": "0x23a4",
+   "ds_string_offset": "0x2ffc",
+   "name_en": "Walls",
+   "name_ko": "벽"
+  },
+  {
+   "index": 265,
+   "ds_table_offset": "0x23a8",
+   "ds_string_offset": "0x3002",
+   "name_en": "%d of %d rounds fought.",
+   "name_ko": "%d / %d 라운드 진행됨."
+  },
+  {
+   "index": 266,
+   "ds_table_offset": "0x23ac",
+   "ds_string_offset": "0x301a",
+   "name_en": "Calibrate Joystick",
+   "name_ko": "조이스틱 보정"
+  },
+  {
+   "index": 267,
+   "ds_table_offset": "0x23b0",
+   "ds_string_offset": "0x302d",
+   "name_en": "Center joystick and press",
+   "name_ko": "조이스틱을 중앙에 두고"
+  },
+  {
+   "index": 268,
+   "ds_table_offset": "0x23b4",
+   "ds_string_offset": "0x3047",
+   "name_en": "the fire button.",
+   "name_ko": "발사 버튼을 누르세요."
+  },
+  {
+   "index": 269,
+   "ds_table_offset": "0x23b8",
+   "ds_string_offset": "0x3058",
+   "name_en": "(Press any key to cancel.)",
+   "name_ko": "(아무 키나 누르면 취소됩니다.)"
+  },
+  {
+   "index": 270,
+   "ds_table_offset": "0x23bc",
+   "ds_string_offset": "0x3073",
+   "name_en": "You seriously want to disgrace",
+   "name_ko": "정말로 불명예스럽게"
+  },
+  {
+   "index": 271,
+   "ds_table_offset": "0x23c0",
+   "ds_string_offset": "0x3092",
+   "name_en": "and humiliate yourself",
+   "name_ko": "굴욕을 자초하며"
+  },
+  {
+   "index": 272,
+   "ds_table_offset": "0x23c4",
+   "ds_string_offset": "0x30a9",
+   "name_en": "by retreating?",
+   "name_ko": "후퇴하시겠습니까?"
+  },
+  {
+   "index": 273,
+   "ds_table_offset": "0x23c8",
+   "ds_string_offset": "0x30b8",
+   "name_en": "~File:",
+   "name_ko": "파일:"
+  },
+  {
+   "index": 274,
+   "ds_table_offset": "0x23cc",
+   "ds_string_offset": "0x30bf",
+   "name_en": "File \"%s\" exists.  Delete it?",
+   "name_ko": "파일 \"%s\"이(가) 이미 있습니다. 삭제하시겠습니까?"
+  },
+  {
+   "index": 275,
+   "ds_table_offset": "0x23d0",
+   "ds_string_offset": "0x30dd",
+   "name_en": "Error trying to rename file \"%s\" to \"%s\"!",
+   "name_ko": "파일 \"%s\"의 이름을 \"%s\"(으)로 바꾸는 중 오류가 발생했습니다!"
+  },
+  {
+   "index": 276,
+   "ds_table_offset": "0x23d4",
+   "ds_string_offset": "0x3107",
+   "name_en": "Error trying to create file \"%s\"!",
+   "name_ko": "파일 \"%s\" 생성 중 오류가 발생했습니다!"
+  },
+  {
+   "index": 277,
+   "ds_table_offset": "0x23d8",
+   "ds_string_offset": "0x3129",
+   "name_en": "File \"%s\" doesn't exist!",
+   "name_ko": "파일 \"%s\"이(가) 없습니다!"
+  },
+  {
+   "index": 278,
+   "ds_table_offset": "0x23dc",
+   "ds_string_offset": "0x3142",
+   "name_en": "~Cancel",
+   "name_ko": "취소"
+  },
+  {
+   "index": 279,
+   "ds_table_offset": "0x23e0",
+   "ds_string_offset": "0x314a",
+   "name_en": "Error Message",
+   "name_ko": "오류 메시지"
+  },
+  {
+   "index": 280,
+   "ds_table_offset": "0x23e4",
+   "ds_string_offset": "0x3158",
+   "name_en": "Save Game in Progress",
+   "name_ko": "게임 저장 중"
+  },
+  {
+   "index": 281,
+   "ds_table_offset": "0x23e8",
+   "ds_string_offset": "0x316e",
+   "name_en": "Restore a Previous Game",
+   "name_ko": "이전 게임 불러오기"
+  },
+  {
+   "index": 282,
+   "ds_table_offset": "0x23ec",
+   "ds_string_offset": "0x3186",
+   "name_en": "~Save",
+   "name_ko": "저장"
+  },
+  {
+   "index": 283,
+   "ds_table_offset": "0x23f0",
+   "ds_string_offset": "0x318c",
+   "name_en": "~Restore",
+   "name_ko": "불러오기"
+  },
+  {
+   "index": 284,
+   "ds_table_offset": "0x23f4",
+   "ds_string_offset": "0x3195",
+   "name_en": "\"%s\" is not a saved game.",
+   "name_ko": "\"%s\"은(는) 저장된 게임이 아닙니다."
+  },
+  {
+   "index": 285,
+   "ds_table_offset": "0x23f8",
+   "ds_string_offset": "0x31af",
+   "name_en": "File \"%s\" was created by a different version.",
+   "name_ko": "파일 \"%s\"은(는) 다른 버전에서 만들어졌습니다."
+  },
+  {
+   "index": 286,
+   "ds_table_offset": "0x23fc",
+   "ds_string_offset": "0x31dd",
+   "name_en": "Version",
+   "name_ko": "버전"
+  },
+  {
+   "index": 287,
+   "ds_table_offset": "0x2400",
+   "ds_string_offset": "0x31e5",
+   "name_en": "(of %d)",
+   "name_ko": "(총 %d)"
+  },
+  {
+   "index": 288,
+   "ds_table_offset": "0x2404",
+   "ds_string_offset": "0x31ed",
+   "name_en": "Cavern",
+   "name_ko": "동굴"
+  }
+ ],
+ "talk": {
+  "TALK1.CFG": [
+   {
+    "en": "In times of trouble, go with what you know.",
+    "ko": "곤란할 땐, 아는 걸로 간다."
+   },
+   {
+    "en": "Die!",
+    "ko": "죽어라!"
+   },
+   {
+    "en": "Eat my shorts!",
+    "ko": "내 반바지나 먹어라!"
+   },
+   {
+    "en": "You're toast!",
+    "ko": "넌 이제 토스트야!"
+   },
+   {
+    "en": "Banzai!",
+    "ko": "반자이!"
+   },
+   {
+    "en": "From Hell's heart I stab at thee...",
+    "ko": "지옥의 심장에서 너를 찌르노라..."
+   },
+   {
+    "en": "I didn't do it.  Nobody saw me do it.",
+    "ko": "난 안 했어. 아무도 내가 하는 걸 못 봤거든."
+   },
+   {
+    "en": "Take a hike!",
+    "ko": "꺼져 버려!"
+   },
+   {
+    "en": "You're dead meat.",
+    "ko": "넌 죽은 고기야."
+   },
+   {
+    "en": "Make my day.",
+    "ko": "어디 한번 해 보시지."
+   },
+   {
+    "en": "Charge!",
+    "ko": "돌격!"
+   },
+   {
+    "en": "Attack!",
+    "ko": "공격!"
+   },
+   {
+    "en": "You're outta here.",
+    "ko": "여기서 사라져 줘야겠다."
+   },
+   {
+    "en": "Wattsa matta you?",
+    "ko": "뭘 그리 쳐다봐?"
+   },
+   {
+    "en": "Freeze, or I'll shoot!",
+    "ko": "꼼짝 마, 안 그러면 쏜다!"
+   },
+   {
+    "en": "Ha ha ha.",
+    "ko": "하하하."
+   },
+   {
+    "en": "We come in peace - Shoot to kill!",
+    "ko": "우린 평화를 위해 왔다 - 보이면 쏴라!"
+   },
+   {
+    "en": "In your face!",
+    "ko": "얼굴에 한 방!"
+   },
+   {
+    "en": "Die Commie Pig!",
+    "ko": "죽어라, 빨갱이 돼지!"
+   },
+   {
+    "en": "I love the smell of Napalm in the morning.",
+    "ko": "아침의 네이팜 냄새는 정말 좋아."
+   },
+   {
+    "en": "Victory!",
+    "ko": "승리!"
+   },
+   {
+    "en": "Show some respect.",
+    "ko": "예의를 좀 갖춰."
+   },
+   {
+    "en": "Just who do you think you are?",
+    "ko": "네가 대체 누구라고 생각하는 거야?"
+   },
+   {
+    "en": "Look out below!",
+    "ko": "아래 조심해!"
+   },
+   {
+    "en": "Knock, Knock.",
+    "ko": "똑똑, 계십니까?"
+   },
+   {
+    "en": "Look over there.",
+    "ko": "저쪽을 봐."
+   },
+   {
+    "en": "Guess what's coming for dinner?",
+    "ko": "저녁 식사로 뭐가 날아올지 맞혀 봐?"
+   },
+   {
+    "en": "Merry Christmas.",
+    "ko": "메리 크리스마스."
+   },
+   {
+    "en": "Open wide!",
+    "ko": "입 크게 벌려!"
+   },
+   {
+    "en": "Here goes nothing...",
+    "ko": "에라, 모르겠다..."
+   },
+   {
+    "en": "Don't worry, it isn't a live round.",
+    "ko": "걱정 마, 실탄 아니야."
+   },
+   {
+    "en": "Blood, Pain, Violence!",
+    "ko": "피, 고통, 폭력!"
+   },
+   {
+    "en": "Take this, sissy!",
+    "ko": "이거나 받아, 겁쟁이!"
+   },
+   {
+    "en": "I shall flatten you!",
+    "ko": "널 납작하게 만들어 주마!"
+   },
+   {
+    "en": "I shall smash your ugly tank!",
+    "ko": "네 못생긴 탱크를 박살내 주마!"
+   },
+   {
+    "en": "I wonder what this button does?",
+    "ko": "이 버튼은 뭘 하는 걸까?"
+   },
+   {
+    "en": "Don't take this personally.",
+    "ko": "개인적인 감정은 아니야."
+   },
+   {
+    "en": "Would this make you mad?",
+    "ko": "이러면 화가 나려나?"
+   },
+   {
+    "en": "I told you to leave my sister alone!",
+    "ko": "내 여동생 건드리지 말랬지!"
+   },
+   {
+    "en": "I could spare you, but why?",
+    "ko": "살려 줄 수도 있지만, 왜 그래야 하지?"
+   },
+   {
+    "en": "My bomb is bigger than yours.",
+    "ko": "내 폭탄이 네 것보다 크다."
+   },
+   {
+    "en": "Don't forget about me!",
+    "ko": "날 잊지 마!"
+   },
+   {
+    "en": "Hasta la vista, Baby!",
+    "ko": "아스타 라 비스타, 베이비!"
+   },
+   {
+    "en": "This is your brain on Scorch.",
+    "ko": "이것이 스코치에 빠진 네 뇌다."
+   },
+   {
+    "en": "Take this!",
+    "ko": "이거나 받아!"
+   },
+   {
+    "en": "This screen ain't big enough for the both of us.",
+    "ko": "이 화면은 우리 둘이 쓰기엔 좁아."
+   },
+   {
+    "en": "Die, Alien Swine!",
+    "ko": "죽어라, 외계 돼지!"
+   },
+   {
+    "en": "Say \"Arrgghhhhh....\"",
+    "ko": "\"으아아악...\" 해 봐."
+   },
+   {
+    "en": "I shall oil my turret with your blood.",
+    "ko": "네 피로 내 포탑에 기름칠을 하겠다."
+   },
+   {
+    "en": "Die, tank-scum!",
+    "ko": "죽어라, 탱크 쓰레기!"
+   },
+   {
+    "en": "I'm gonna break your face!",
+    "ko": "네 얼굴을 박살내 주마!"
+   },
+   {
+    "en": "Mama said knock you out!",
+    "ko": "엄마가 널 때려눕히랬어!"
+   },
+   {
+    "en": "I hope you enjoy pain!",
+    "ko": "고통을 즐기길 바란다!"
+   },
+   {
+    "en": "Parting is such sweet sorrow... Not!",
+    "ko": "이별은 참 달콤한 슬픔이지... 는 무슨!"
+   }
+  ],
+  "TALK2.CFG": [
+   {
+    "en": "Ugh!",
+    "ko": "으윽!"
+   },
+   {
+    "en": "Aargh!",
+    "ko": "아아악!"
+   },
+   {
+    "en": "Aaagghhh!",
+    "ko": "아아아악!"
+   },
+   {
+    "en": "I'm melting!",
+    "ko": "녹는다!"
+   },
+   {
+    "en": "Oof..",
+    "ko": "웁.."
+   },
+   {
+    "en": "Oh!",
+    "ko": "어!"
+   },
+   {
+    "en": "Eeek!",
+    "ko": "끼익!"
+   },
+   {
+    "en": "Aacch!",
+    "ko": "아야!"
+   },
+   {
+    "en": "I hate it when that happens.",
+    "ko": "이런 일 정말 싫어."
+   },
+   {
+    "en": "One direct hit can ruin your whole day.",
+    "ko": "직격 한 방이면 하루를 망칠 수 있지."
+   },
+   {
+    "en": "Oh no!",
+    "ko": "안 돼!"
+   },
+   {
+    "en": "Not me!",
+    "ko": "나는 아니야!"
+   },
+   {
+    "en": "Ouch.",
+    "ko": "아야."
+   },
+   {
+    "en": "Oh no, not again.",
+    "ko": "안 돼, 또 이래?"
+   },
+   {
+    "en": "Another one bites the dust.",
+    "ko": "또 한 명이 쓰러지는군."
+   },
+   {
+    "en": "Goodbye.",
+    "ko": "안녕."
+   },
+   {
+    "en": "Help me!",
+    "ko": "살려 줘!"
+   },
+   {
+    "en": "Farewell, cruel world.",
+    "ko": "잔인한 세상이여, 안녕."
+   },
+   {
+    "en": "Remember the Alamo!",
+    "ko": "알라모를 기억하라!"
+   },
+   {
+    "en": "Oh man!",
+    "ko": "이런!"
+   },
+   {
+    "en": "Doough!",
+    "ko": "으아!"
+   },
+   {
+    "en": "Another day, another bomb.",
+    "ko": "하루하루가 폭탄이야."
+   },
+   {
+    "en": "This is the End, my only friend.",
+    "ko": "이것이 끝이야, 나의 유일한 친구여."
+   },
+   {
+    "en": "It's all over.",
+    "ko": "다 끝났어."
+   },
+   {
+    "en": "The fat lady sang.",
+    "ko": "뚱뚱한 여자가 노래를 불렀군."
+   },
+   {
+    "en": "Why does everything happen to me?",
+    "ko": "왜 나한테만 이런 일이 생기지?"
+   },
+   {
+    "en": "I'm going down.",
+    "ko": "가라앉고 있어."
+   },
+   {
+    "en": "I've got a bad feeling about this.",
+    "ko": "이거 느낌이 안 좋은데."
+   },
+   {
+    "en": "Crapola.",
+    "ko": "젠장."
+   },
+   {
+    "en": "Pow!",
+    "ko": "퍽!"
+   },
+   {
+    "en": "Bif!",
+    "ko": "빡!"
+   },
+   {
+    "en": "Bam!",
+    "ko": "쾅!"
+   },
+   {
+    "en": "Zonk!",
+    "ko": "쿵!"
+   },
+   {
+    "en": "I should've listened to my mother...",
+    "ko": "엄마 말을 들었어야 했는데..."
+   },
+   {
+    "en": "No... a Bud light!",
+    "ko": "아니... 버드 라이트라니!"
+   },
+   {
+    "en": "What was that noise?",
+    "ko": "방금 그 소리는 뭐지?"
+   },
+   {
+    "en": "Mama said there'd be days like this.",
+    "ko": "엄마가 이런 날도 있을 거라고 했지."
+   },
+   {
+    "en": "Its just one of those days...",
+    "ko": "그냥 그런 날이야..."
+   },
+   {
+    "en": "I see a bright light...",
+    "ko": "밝은 빛이 보여..."
+   },
+   {
+    "en": "Mommy? Is that you?",
+    "ko": "엄마? 엄마예요?"
+   },
+   {
+    "en": "I let you hit me!",
+    "ko": "일부러 맞아 준 거야!"
+   },
+   {
+    "en": "Sucker shot!",
+    "ko": "비겁한 한 방이야!"
+   },
+   {
+    "en": "I didn't want to live anyway.",
+    "ko": "어차피 살고 싶지도 않았어."
+   },
+   {
+    "en": "-<sob>-",
+    "ko": "-<흑>-"
+   },
+   {
+    "en": "Was that as close as I think it was?",
+    "ko": "방금 그거, 내 생각만큼 아슬아슬했어?"
+   },
+   {
+    "en": "Join the army, see the world they said.",
+    "ko": "군대에 가면 세상을 본다고 했는데."
+   },
+   {
+    "en": "It wasn't just a job it was an adventure!",
+    "ko": "그냥 일이 아니라 모험이라고 했잖아!"
+   },
+   {
+    "en": "I didn't like violence anyway!",
+    "ko": "난 어차피 폭력이 싫었어!"
+   },
+   {
+    "en": "I thought you liked me?",
+    "ko": "날 좋아하는 줄 알았는데?"
+   },
+   {
+    "en": "Such senseless violence!  I don't understand it.",
+    "ko": "이런 무의미한 폭력이라니! 이해할 수가 없어."
+   },
+   {
+    "en": "I think this guy's a little crazy.",
+    "ko": "이 사람 좀 미친 것 같아."
+   },
+   {
+    "en": "Somehow I don't feel like killing anymore.",
+    "ko": "왠지 더는 죽이고 싶지 않아."
+   },
+   {
+    "en": "Hey!  Killin' ain't cool.",
+    "ko": "이봐! 죽이는 건 멋진 게 아니야."
+   },
+   {
+    "en": "Gee... thanks.",
+    "ko": "어... 고마워."
+   },
+   {
+    "en": "I've fallen and I can't get up!",
+    "ko": "넘어져서 일어날 수가 없어!"
+   },
+   {
+    "en": "911?",
+    "ko": "911이죠?"
+   },
+   {
+    "en": "Oh No!  Here I blow again!",
+    "ko": "아, 안 돼! 또 터진다!"
+   },
+   {
+    "en": "I'll be back...",
+    "ko": "다시 돌아올 거야..."
+   },
+   {
+    "en": "Hey - I've got lawyers.",
+    "ko": "이봐 - 나한테는 변호사가 있다고."
+   },
+   {
+    "en": "Time to call 1-900-SUE-TANK.",
+    "ko": "1-900-탱크-고소에 전화할 시간이군."
+   }
+  ]
+ },
+ "tank_default_names": [
+  {
+   "en": "Bob",
+   "ko": "밥"
+  },
+  {
+   "en": "Joe",
+   "ko": "조"
+  },
+  {
+   "en": "Ralph",
+   "ko": "랠프"
+  },
+  {
+   "en": "Fred",
+   "ko": "프레드"
+  },
+  {
+   "en": "Max",
+   "ko": "맥스"
+  },
+  {
+   "en": "George",
+   "ko": "조지"
+  },
+  {
+   "en": "Wolfgang",
+   "ko": "볼프강"
+  },
+  {
+   "en": "Pepe",
+   "ko": "페페"
+  },
+  {
+   "en": "Ronald",
+   "ko": "로널드"
+  },
+  {
+   "en": "Arnold",
+   "ko": "아놀드"
+  },
+  {
+   "en": "Chuck",
+   "ko": "척"
+  },
+  {
+   "en": "Doug",
+   "ko": "더그"
+  },
+  {
+   "en": "Edward",
+   "ko": "에드워드"
+  },
+  {
+   "en": "Hank",
+   "ko": "행크"
+  },
+  {
+   "en": "Jacque",
+   "ko": "자크"
+  },
+  {
+   "en": "Lou",
+   "ko": "루"
+  },
+  {
+   "en": "Norm",
+   "ko": "놈"
+  },
+  {
+   "en": "Otto",
+   "ko": "오토"
+  },
+  {
+   "en": "Ted",
+   "ko": "테드"
+  },
+  {
+   "en": "Ajax",
+   "ko": "아약스"
+  },
+  {
+   "en": "Sam",
+   "ko": "샘"
+  },
+  {
+   "en": "Frank",
+   "ko": "프랭크"
+  },
+  {
+   "en": "Bubba",
+   "ko": "버바"
+  },
+  {
+   "en": "Biff",
+   "ko": "비프"
+  },
+  {
+   "en": "Leroy",
+   "ko": "르로이"
+  },
+  {
+   "en": "Newton",
+   "ko": "뉴턴"
+  },
+  {
+   "en": "Galileo",
+   "ko": "갈릴레오"
+  },
+  {
+   "en": "Bach",
+   "ko": "바흐"
+  },
+  {
+   "en": "Mozart",
+   "ko": "모차르트"
+  },
+  {
+   "en": "Gilligan",
+   "ko": "길리건"
+  },
+  {
+   "en": "Saddam",
+   "ko": "사담"
+  },
+  {
+   "en": "Atilla",
+   "ko": "아틸라"
+  },
+  {
+   "en": "Tito",
+   "ko": "티토"
+  },
+  {
+   "en": "Castro",
+   "ko": "카스트로"
+  },
+  {
+   "en": "Khadafi",
+   "ko": "카다피"
+  },
+  {
+   "en": "Amin",
+   "ko": "아민"
+  },
+  {
+   "en": "Cleopatra",
+   "ko": "클레오파트라"
+  },
+  {
+   "en": "Mussolini",
+   "ko": "무솔리니"
+  },
+  {
+   "en": "Napolean",
+   "ko": "나폴레옹"
+  },
+  {
+   "en": "Juan",
+   "ko": "후안"
+  },
+  {
+   "en": "Barbarella",
+   "ko": "바바렐라"
+  },
+  {
+   "en": "Antoinette",
+   "ko": "앙투아네트"
+  },
+  {
+   "en": "Helen",
+   "ko": "헬렌"
+  },
+  {
+   "en": "Elizabeth",
+   "ko": "엘리자베스"
+  },
+  {
+   "en": "Mary",
+   "ko": "메리"
+  },
+  {
+   "en": "Diane",
+   "ko": "다이앤"
+  },
+  {
+   "en": "Zoe",
+   "ko": "조이"
+  },
+  {
+   "en": "Persephone",
+   "ko": "페르세포네"
+  },
+  {
+   "en": "Esther",
+   "ko": "에스더"
+  },
+  {
+   "en": "Rose",
+   "ko": "로즈"
+  },
+  {
+   "en": "Mata Hari",
+   "ko": "마타 하리"
+  },
+  {
+   "en": "Moria",
+   "ko": "모리아"
+  },
+  {
+   "en": "Bethsheba",
+   "ko": "밧세바"
+  },
+  {
+   "en": "Jezebel",
+   "ko": "이세벨"
+  },
+  {
+   "en": "Guineverre",
+   "ko": "기네비어"
+  },
+  {
+   "en": "Godiva",
+   "ko": "고디바"
+  },
+  {
+   "en": "Medusa",
+   "ko": "메두사"
+  },
+  {
+   "en": "Elvira",
+   "ko": "엘비라"
+  },
+  {
+   "en": "Roseanne",
+   "ko": "로잔"
+  },
+  {
+   "en": "Sonja",
+   "ko": "손야"
+  },
+  {
+   "en": "Charo",
+   "ko": "차로"
+  },
+  {
+   "en": "Cher",
+   "ko": "셰어"
+  },
+  {
+   "en": "Madonna",
+   "ko": "마돈나"
+  },
+  {
+   "en": "Grace",
+   "ko": "그레이스"
+  },
+  {
+   "en": "Bubbles",
+   "ko": "버블스"
+  },
+  {
+   "en": "Tiffany",
+   "ko": "티파니"
+  },
+  {
+   "en": "Angie",
+   "ko": "앤지"
+  }
+ ],
+ "quotes": [
+  {
+   "en": "There's many a boy here today who looks on war as all glory,\nbut, boys, it is all hell.",
+   "ko": "오늘 여기 있는 많은 소년들이 전쟁을 온통 영광이라고 보지만,\n얘들아, 전쟁은 온통 지옥이란다.",
+   "author_en": "Gen. William T. Sherman",
+   "author_ko": "윌리엄 T. 셔먼 장군"
+  },
+  {
+   "en": "The essence of war is violence.  Moderation in war is imbecility.",
+   "ko": "전쟁의 본질은 폭력이다. 전쟁에서의 절제는 어리석음이다.",
+   "author_en": "Fisher",
+   "author_ko": "피셔"
+  },
+  {
+   "en": "War is the science of destruction.",
+   "ko": "전쟁은 파괴의 과학이다.",
+   "author_en": "John Abbott",
+   "author_ko": "존 애벗"
+  },
+  {
+   "en": "Providence is always on the side of the big battalions.",
+   "ko": "섭리는 언제나 큰 대대의 편이다.",
+   "author_en": "Sevigne",
+   "author_ko": "세비녜"
+  },
+  {
+   "en": "War is a matter of vital importance to the State; the province of\nlife or death; the road to survival or ruin.  It is mandatory that\nit be throughly studied.",
+   "ko": "전쟁은 국가의 사활이 걸린 중대사다. 삶과 죽음의 영역이며\n생존 혹은 파멸로 가는 길이다. 반드시 철저히 연구해야 한다.",
+   "author_en": "Sun Tzu",
+   "author_ko": "손자"
+  },
+  {
+   "en": "War should be the only study of a prince.  He should consider\npeace only as a breathing-time, which gives him leisure to\ncontrive, and furnishes as ability to execute, military plans.",
+   "ko": "전쟁은 군주가 연구해야 할 유일한 학문이어야 한다. 평화는\n숨 돌릴 틈일 뿐이며, 그동안 군사 계획을 구상하고 실행할\n능력을 마련하는 시간으로 여겨야 한다.",
+   "author_en": "Macchiavelli",
+   "author_ko": "마키아벨리"
+  },
+  {
+   "en": "Not with dreams but with blood and iron,\nShall a nation be moulded at last.",
+   "ko": "꿈이 아니라 피와 철로써\n마침내 한 나라가 빚어지리라.",
+   "author_en": "Swinburne",
+   "author_ko": "스윈번"
+  },
+  {
+   "en": "No one can guarantee success in war, but only deserve it.",
+   "ko": "전쟁에서 성공을 보장할 수 있는 사람은 없다. 다만 그럴 자격을 갖출 뿐이다.",
+   "author_en": "Winston Churchill",
+   "author_ko": "윈스턴 처칠"
+  },
+  {
+   "en": "The grim fact is that we prepare for war like precocious giants\nand for peace like retarded pygmies.",
+   "ko": "냉혹한 사실은, 우리가 전쟁은 조숙한 거인처럼 준비하면서\n평화는 발육이 늦은 난쟁이처럼 준비한다는 것이다.",
+   "author_en": "Lester Pearson",
+   "author_ko": "레스터 피어슨"
+  },
+  {
+   "en": "We cannot live by power, and a culture that seeks to live\nby it becomes brutal and sterile.  But we can die without it.",
+   "ko": "우리는 힘만으로 살 수 없고, 힘으로 살려는 문화는 잔인하고 메마르게 된다.\n그러나 힘이 없으면 죽을 수는 있다.",
+   "author_en": "Max Lerner",
+   "author_ko": "맥스 러너"
+  },
+  {
+   "en": "No man is wise enough, nor good enough to be trusted with\nunlimited power.",
+   "ko": "무한한 권력을 맡길 만큼 현명하거나 선한 사람은 없다.",
+   "author_en": "Charles Colton",
+   "author_ko": "찰스 콜턴"
+  },
+  {
+   "en": "Nothing good ever comes of violence.",
+   "ko": "폭력에서 좋은 것이 나온 적은 없다.",
+   "author_en": "Martin Luther",
+   "author_ko": "마르틴 루터"
+  },
+  {
+   "en": "Give me the money that has been spent in war, and ... I will\nclothe every man, woman and child in attire of which kings and\nqueens would be proud.",
+   "ko": "전쟁에 쓰인 돈을 내게 준다면... 모든 남자, 여자, 아이에게\n왕과 왕비가 자랑스러워할 옷을 입혀 주겠다.",
+   "author_en": "Henry Richard",
+   "author_ko": "헨리 리처드"
+  },
+  {
+   "en": "That mad game the world so loves to play.",
+   "ko": "세상이 그토록 즐겨 하는 저 미친 놀이.",
+   "author_en": "Jonathon Swift",
+   "author_ko": "조너선 스위프트"
+  },
+  {
+   "en": "Nearly all men can stand adversity, but if you want to test a man's\ncharacter, give him power.",
+   "ko": "거의 모든 사람이 역경은 견디지만, 사람의 인격을 시험하려면\n그에게 권력을 줘 보라.",
+   "author_en": "Abraham Lincoln",
+   "author_ko": "에이브러햄 링컨"
+  }
+ ],
+ "messages": [
+  {
+   "en": "Register Scorch!",
+   "ko": "스코치를 등록하세요!"
+  },
+  {
+   "en": "Pay for Scorch!",
+   "ko": "스코치 값을 내세요!"
+  },
+  {
+   "en": "Support Shareware!",
+   "ko": "셰어웨어를 후원하세요!"
+  },
+  {
+   "en": "Send a check to Sprig!",
+   "ko": "스프릭에게 수표를 보내세요!"
+  },
+  {
+   "en": "Buy now, play later!",
+   "ko": "지금 사고, 나중에 즐기세요!"
+  },
+  {
+   "en": "Scorch is Shareware!",
+   "ko": "스코치는 셰어웨어입니다!"
+  },
+  {
+   "en": "Don't forget to register!",
+   "ko": "등록하는 것을 잊지 마세요!"
+  },
+  {
+   "en": "What more do you want for $20?",
+   "ko": "20달러에 뭘 더 바라세요?"
+  },
+  {
+   "en": "Wow, only 20 bucks!",
+   "ko": "와, 겨우 20달러!"
+  },
+  {
+   "en": "A registered user is a happy user... be happy!",
+   "ko": "등록 사용자는 행복한 사용자... 행복해지세요!"
+  },
+  {
+   "en": "Registering shareware is cool.",
+   "ko": "셰어웨어 등록은 멋진 일입니다."
+  },
+  {
+   "en": "Some dumb tank: %s",
+   "ko": "어떤 멍청한 탱크: %s"
+  },
+  {
+   "en": "Current weapon <= 0 in TankPlays",
+   "ko": "TankPlays에서 현재 무기가 0 이하입니다"
+  },
+  {
+   "en": "Preparing Next Level...",
+   "ko": "다음 레벨 준비 중..."
+  },
+  {
+   "en": "<<Press any key>>",
+   "ko": "<<아무 키나 누르세요>>"
+  },
+  {
+   "en": "** Shareware Version **",
+   "ko": "** 셰어웨어 버전 **"
+  },
+  {
+   "en": "Thank you for playing the shareware version of Scorched Earth.  If you enjoy this game (and don't we all?), you are encouraged to register it.",
+   "ko": "스코치드 어스 셰어웨어 버전을 즐겨 주셔서 감사합니다. 이 게임이 마음에 드신다면(우리 모두 그렇지 않나요?) 등록해 주시기 바랍니다."
+  },
+  {
+   "en": "Basic registration costs $20, and includes a disk with the registered version - including 25 new mountains and enabling the triple-turreted tank.",
+   "ko": "기본 등록비는 20달러이며, 등록 버전이 담긴 디스크를 제공합니다. 새 산 25개와 3연장 포탑 탱크 기능이 포함됩니다."
+  },
+  {
+   "en": "Deluxe registration costs $30, and includes the above, plus a printed, illustrated copy of the manual.",
+   "ko": "디럭스 등록비는 30달러이며, 위 내용에 더해 삽화가 들어간 인쇄본 설명서를 제공합니다."
+  },
+  {
+   "en": "For more information, consult the files README and ORDER.FRM",
+   "ko": "자세한 내용은 README와 ORDER.FRM 파일을 참조하세요."
+  },
+  {
+   "en": "Scorch HQ can be reached at:",
+   "ko": "스코치 본부 연락처:"
+  },
+  {
+   "en": "Initializing code... one moment.",
+   "ko": "초기화 중... 잠시만 기다려 주세요."
+  },
+  {
+   "en": "Unable to initialize svga graphics mode: %s.",
+   "ko": "SVGA 그래픽 모드를 초기화할 수 없습니다: %s."
+  },
+  {
+   "en": "Unable to initialize graphics mode: %s.",
+   "ko": "그래픽 모드를 초기화할 수 없습니다: %s."
+  },
+  {
+   "en": "Graphics mode changed!",
+   "ko": "그래픽 모드가 변경되었습니다!"
+  },
+  {
+   "en": "Unable to allocate memory.",
+   "ko": "메모리를 할당할 수 없습니다."
+  },
+  {
+   "en": "Failed to identify item",
+   "ko": "아이템을 식별하지 못했습니다"
+  },
+  {
+   "en": "bad case in find_mtn_file",
+   "ko": "find_mtn_file에서 잘못된 경우"
+  },
+  {
+   "en": "Percent Scanned Mountains:",
+   "ko": "스캔 산 비율(%):"
+  },
+  {
+   "en": "Floating point error: %s.",
+   "ko": "부동소수점 오류: %s."
+  },
+  {
+   "en": "Abnormal program termination",
+   "ko": "프로그램이 비정상 종료되었습니다"
+  }
+ ],
+ "physics": {
+  "confidence_note": "각 값의 confidence 필드: 확인됨(EXE 오프셋)/매뉴얼/추정/미상",
+  "number_format": {
+   "value": "IEEE 754 double(8087/80387, Borland FP 에뮬 INT 34h~3Dh). 고정소수점 아님",
+   "confidence": "확인됨(EXE)"
+  },
+  "launch": {
+   "vx": "(int)(cos(angle_rad)*power)  — 정수로 절단(RTL 0000:14df)",
+   "vy": "(int)(sin(angle_rad)*power)",
+   "angle_rad": "angle_deg * 0.017453293 (DS:0x1d08 double)",
+   "angle_range_deg": [
+    0,
+    180
+   ],
+   "power_range": [
+    0,
+    1000
+   ],
+   "angle_convention": "0=오른쪽, 90=수직 위, 180=왼쪽. 탱크 필드 +0x92(각)/+0x94(방향 플래그): 방향==1이면 각 그대로, 아니면 180-각",
+   "power_cap": "탱크 에너지*10 (AI 구동부 11b5에서 clamp). 라운드 시작 power=200",
+   "code": "1a4a:02f2 Fire(), 28b5:1102 호출",
+   "confidence": "확인됨(EXE)"
+  },
+  "integrator": {
+   "per_step": [
+    "speed2=vx^2+vy^2; if speed2>1e6 { s=sqrt(speed2)/1000; vx/=s; vy/=s }  (속도 상한 1000)",
+    "x += vx*dt",
+    "y -= vy*dt   (화면 y는 아래가 +, vy는 위가 +)",
+    "if airvisc!=1.0 { vx*=visc; vy*=visc }",
+    "vy -= gravStep",
+    "vx += windStep"
+   ],
+   "dt": 0.02,
+   "gravStep": "50*GRAVITY (기본 0.2 -> 10.0)",
+   "windStep": "wind/40  (wind 정수, DS:0x515a)",
+   "viscosity_factor": "1 - AIR_VISCOSITY/10000 (DS:0x5178, AIR_VISCOSITY 0..20 정수)",
+   "effective_units": "dt=0.02,중력 가속 500px/s^2(기본),바람 가속 wind*1.25 px/s^2",
+   "code": "1a4a:0b1f 시뮬 루프, 0c0d~0e64 스텝(속도 상한 0c4e, 위치 0d05~0d6e, 점성 0db7~0e16, 중력/바람 0e1b~0e64)",
+   "confidence": "확인됨(EXE)"
+  },
+  "time_scaling_caveat": {
+   "text": "1a4a:01c4 는 FAST_COMPUTERS(DS:0x50f0)=OFF 이고 s>0 일 때 s=FIRE_DELAY*BogoMips/(live_projectiles*100) 로 dt=1/(50*s), gravStep=50G/s, windStep=wind/(40*s) 로 바꾼다. s=1 이면 기본값과 동일. 즉 원본은 적분 시간 간격이 기계 속도·발사체 수에 따라 달라질 수 있어 비트 단위 재현은 불가능. 기본 분기(s=1)를 정본으로 삼는 것을 권장",
+   "confidence": "확인됨(EXE) / 정본 선택은 추정"
+  },
+  "defaults": {
+   "GRAVITY": {
+    "default": 0.2,
+    "range": [
+     0.05,
+     10
+    ],
+    "ds": "0x512a(double)",
+    "confidence": "확인됨(EXE)"
+   },
+   "AIR_VISCOSITY": {
+    "default": 0,
+    "range": [
+     0,
+     20
+    ],
+    "ds": "0x5180",
+    "confidence": "확인됨(EXE)"
+   },
+   "MAX_WIND": {
+    "default": 200,
+    "range": [
+     0,
+     500
+    ],
+    "ds": "0x515c",
+    "confidence": "확인됨(EXE)"
+   },
+   "EDGES_EXTEND": {
+    "default": 75,
+    "range": [
+     0,
+     10000
+    ],
+    "ds": "0x513e",
+    "confidence": "확인됨(EXE)"
+   },
+   "FIRE_DELAY": {
+    "default": 100,
+    "range": [
+     0,
+     500
+    ],
+    "ds": "0x5140",
+    "confidence": "확인됨(EXE)"
+   },
+   "FALLING_DELAY": {
+    "default": 10,
+    "range": [
+     0,
+     1000
+    ],
+    "ds": "0x5116",
+    "confidence": "확인됨(EXE)"
+   },
+   "INTEREST_RATE": {
+    "default": 0.05,
+    "range": [
+     0,
+     0.3
+    ],
+    "ds": "0x5190(double)",
+    "confidence": "확인됨(EXE)"
+   },
+   "INITIAL_CASH": {
+    "default": 0,
+    "range": [
+     0,
+     1000000
+    ],
+    "ds": "0x516a(long)",
+    "confidence": "확인됨(EXE)"
+   },
+   "MAXROUNDS": {
+    "default": 10,
+    "ds": "0x5160",
+    "confidence": "확인됨(EXE)"
+   },
+   "SUSPEND_DIRT": {
+    "default": 0,
+    "range": [
+     0,
+     100
+    ],
+    "note": "[0x5158]=100-값 = 흙이 떨어질 확률(%)",
+    "confidence": "확인됨(EXE)"
+   },
+   "MTN_PERCENT": {
+    "default": 20.0,
+    "range": [
+     0,
+     100
+    ],
+    "ds": "0x5132(double)",
+    "confidence": "확인됨(EXE)"
+   },
+   "LAND1_bumpiness": {
+    "default": 20,
+    "range": [
+     0,
+     100
+    ],
+    "ds": "0x516e",
+    "confidence": "확인됨(EXE)(기본값·범위)/매뉴얼(의미)"
+   },
+   "LAND2_slope": {
+    "default": 20,
+    "range": [
+     0,
+     100
+    ],
+    "ds": "0x5170",
+    "confidence": "확인됨(EXE)"
+   },
+   "FLATLAND": {
+    "default": false,
+    "ds": "0x5172",
+    "confidence": "확인됨(EXE)"
+   },
+   "RANDOM_LAND": {
+    "default": false,
+    "ds": "0x5150",
+    "confidence": "확인됨(EXE)"
+   },
+   "TALK_PROBABILITY": {
+    "default": 100,
+    "range": [
+     0,
+     100
+    ],
+    "ds": "0x511a",
+    "confidence": "확인됨(EXE)"
+   },
+   "TALK_DELAY": {
+    "default": 18,
+    "range": [
+     0,
+     100
+    ],
+    "ds": "0x511c",
+    "confidence": "확인됨(EXE)"
+   },
+   "HOSTILE_ENVIRONMENT": {
+    "default": true,
+    "ds": "0x513c",
+    "confidence": "확인됨(EXE)"
+   },
+   "FALLING_TANKS": {
+    "default": true,
+    "ds": "0x5162",
+    "confidence": "확인됨(EXE)"
+   },
+   "DAMAGE_TANKS_ON_IMPACT": {
+    "default": true,
+    "ds": "0x5114",
+    "confidence": "확인됨(EXE)"
+   },
+   "SCORING": {
+    "default": "STANDARD",
+    "values": [
+     "BASIC",
+     "STANDARD",
+     "GREEDY"
+    ],
+    "ds": "0x5148",
+    "confidence": "매뉴얼(기본)/확인됨(EXE)(코드 0/1/2)"
+   },
+   "COMPUTERS_BUY": {
+    "default": true,
+    "ds": "0x515e",
+    "confidence": "매뉴얼"
+   },
+   "FREE_MARKET": {
+    "default": false,
+    "ds": "0x514a",
+    "confidence": "매뉴얼"
+   },
+   "EXPLOSION_SCALE": {
+    "default": "NORMAL",
+    "values": [
+     "NORMAL",
+     "MEDIUM",
+     "LARGE"
+    ],
+    "confidence": "확인됨(EXE)"
+   }
+  }
+ },
+ "rng": {
+  "game_rng": {
+   "type": "R250 shift-register(lagged XOR, taps 250/103)",
+   "state": "word w[250] @DS:0xea12, idx @DS:0xec06",
+   "next": "j=(idx<147)?idx+103:idx-147; w[idx]^=w[j]; v=w[idx]; idx=(idx>=249)?0:idx+1; return v(16bit)",
+   "rand_n": "n==0?0:(unsigned)r250()%n  (2bf9:0x48b)",
+   "frand": "r250()/65535.0 (2bf9:0xf7)",
+   "init": "srand(seed16); for k<250 w[k]=BorlandRand(); for k<250 if(BorlandRand()>0x4000) w[k]|=0x8000; for i<16 {j=11*i+3; w[j]=(w[j]&m)|b; m>>=1; b>>=1} (m=0xFFFF,b=0x8000)  (2bf9:0x004)",
+   "seed": "time(NULL) 하위 16비트 (23a1:01d1)",
+   "confidence": "확인됨(EXE)"
+  },
+  "borland_lcg": {
+   "srand": "seed32=seed16",
+   "rand": "seed=seed*0x015A4E35+1; return (seed>>16)&0x7fff (seg0:1fa5)",
+   "use": "R250 초기화, 가중 선택 2bf9:0x165, PC 스피커 노이즈",
+   "confidence": "확인됨(EXE)"
+  },
+  "sample_seed0_rand100": [
+   11,
+   77,
+   10,
+   77,
+   75,
+   81,
+   99,
+   14,
+   85,
+   2
+  ],
+  "sample_note": "분석 에이전트의 파이썬 클론 출력. 게임과 대조 검증 안 됨",
+  "sample_confidence": "추정"
+ },
+ "wind": {
+  "per_round": "wind = rand(MAX_WIND/2) - MAX_WIND/4; if rand(100)<20 {wind*=2; if rand(100)<40 wind*=2}  (223a:069a~06de)",
+  "changing_wind": "CHANGING_WIND ON 이면 매 턴 시작 wind += rand(11)-5, ±MAX_WIND 로 clamp (223a:00f9, 호출 28b5:1269)",
+  "display": "'Wind: %d' + 화살촉, 0이면 'No Wind'",
+  "confidence": "확인됨(EXE)"
+ },
+ "terrain": {
+  "storage": "높이 배열 없음. 지형=비디오 메모리 픽셀. 색 0x50~0x68=흙(고체), 0x00~0x4f=탱크 픽셀(탱크 n은 n*8..n*8+7), 0x69 이상=하늘/기타",
+  "procedural": {
+   "entry": "223a:04de 레벨 셋업(라운드당 1회, 23a1:0620), 223a:0a68 DefaultLand::generate",
+   "algorithm": [
+    "slope=0",
+    "y=rand(bottom-top-60)+top+40",
+    "x=(dir==+1)?left:right; dir 은 라운드마다 번갈아 바뀜",
+    "각 열: 하늘 위/흙(0x50) 아래로 채움",
+    "if rand(100)<LAND1 { d=rand(3)-1; if rand(100)<LAND2 d*=2; slope+=d; if FLATLAND && |slope|>3 slope=0 }",
+    "y+=slope; if y<top+40 {y=top+40; if slope<0 slope=1}; if y>bottom-1 {y=bottom-1; if slope>0 slope=0}",
+    "x+=dir 반복"
+   ],
+   "cavern": "동굴 하늘(5)은 생성기를 두 번(바닥, 천장)",
+   "random_land": "rand(2)->FLATLAND, rand(100)->LAND1, rand(100)->LAND2 (223a:07c4)",
+   "ground_colors_6bit_rgb": [
+    [
+     38,
+     25,
+     17
+    ],
+    [
+     54,
+     36,
+     28
+    ],
+    [
+     53,
+     53,
+     47
+    ],
+    [
+     20,
+     62,
+     20
+    ],
+    [
+     9,
+     35,
+     9
+    ],
+    [
+     36,
+     54,
+     28
+    ]
+   ],
+   "ground_color_pick": "rand(6) (223a:049c, 표 DS:0x5036)",
+   "confidence": "확인됨(EXE)",
+   "unresolved": "LAND1/LAND2/FLATLAND(DS:516e/5170/5172)가 생성기 객체(+0xa/+0xc/+0xe)로 복사되는 코드를 못 찾음. 의미는 매뉴얼 기준(추정)"
+  },
+  "mountains": {
+   "probability": "sky!=CAVERN && frand()*100<=MTN_PERCENT && MTN 파일 존재",
+   "file_pick": "rand(n)",
+   "format": "MT BE EF 헤더, +6 폭, +8 상단 트림, +0xa 높이, +0xc 색수(16), +0x10 기준색, +0x12 흙색 마스크, +0x18 16*RGB(8bit,>>2->DAC 0x58+i), 열마다 u16 h + ceil(h/2)바이트(하위 니블 먼저, 아래→위)",
+   "loader": "2bf9:04b4",
+   "confidence": "확인됨(EXE)"
+  },
+  "tank_placement": {
+   "x": "slot=(right-left+1)/N; x_i=left+slot/2+i*slot (무작위는 순서 셔플뿐)",
+   "pad": "탱크 폭 아래 가장 낮은 지면에 평탄 패드, 위의 흙 제거 (23a1:07f2)",
+   "initial_aim": "atan2(y-top, W/2-x) 도(추정: 인수 순서)",
+   "code": "23a1:0a43",
+   "confidence": "확인됨(EXE)"
+  }
+ },
+ "screen": {
+  "default_mode": "360x480x256 (GRAPHICS_MODE 인덱스 4, DS:0x6e26)",
+  "modes": [
+   "320x200",
+   "320x240",
+   "320x400",
+   "320x480",
+   "360x480",
+   "640x400",
+   "640x480",
+   "800x600",
+   "1024x768"
+  ],
+  "pixel_aspect": {
+   "360x480": 0.55,
+   "320x400": 0.5,
+   "320x480": 0.5,
+   "others": 1.0
+  },
+  "playfield_vars": {
+   "LEFT": "DS:ef42",
+   "TOP": "DS:ef40",
+   "RIGHT": "DS:ef3c",
+   "BOTTOM": "DS:ef38",
+   "origin": "좌상단, y 아래 +, 경계 포함"
+  },
+  "hud_shrink": "223a:02bd: left+=3,right-=3,bottom-=3,top=rows*14+[518e]*2 + 3px 테두리",
+  "explosion_scale_factor": {
+   "320폭": {
+    "NORMAL": 0.5,
+    "MEDIUM": 0.75,
+    "LARGE": 1.0
+   },
+   "그 외": {
+    "NORMAL": 1.0,
+    "MEDIUM": 2.0,
+    "LARGE": 3.0
+   },
+   "applied_to": "핸들러 3d1e:0021,2fbd:0003,2f76:03bd 의 반경만(+MIRV/리프로그/라이엇 내부 표)",
+   "confidence": "확인됨(EXE)"
+  },
+  "confidence": "확인됨(EXE)"
+ },
+ "sky": {
+  "types": [
+   "PLAIN",
+   "SHADED",
+   "STARS",
+   "STORMY",
+   "SUNSET",
+   "CAVERN",
+   "BLACK"
+  ],
+  "random": "rand(6) (BLACK 제외)",
+  "palette_block": "DAC 0x78~0x95",
+  "plain": [
+   9,
+   9,
+   31
+  ],
+  "shaded": "(29-i,29-i,63) i=0..29",
+  "stars": "base (5,5,10), 0x79.. (7+2i,7+2i,7+2i)",
+  "stormy": "i<10:(i,i,i+30), 이후 2(i-10) 회색 램프",
+  "sunset": "해 (63,63,0) + 3밴드 램프",
+  "cavern": "지형색*(i+8)/45",
+  "black": "DAC 0~0x67 = 0",
+  "lightning": "STORMY, HOSTILE_ENVIRONMENT ON: 턴마다 rand(4)==1 번개(탱크 피격 시 10 피해, 3912:04b2(tank,10,1)), 아니면 rand(2)==0 섬광",
+  "confidence": "확인됨(EXE)(별/구름 세부는 부분 해독)"
+ },
+ "palette_6bit_rgb": {
+  "note": "VGA DAC 6비트(0..63). 8비트로 쓰려면 *255/63 (원본 값 보존 위해 6비트로 기록)",
+  "boot": {
+   "0x98": [
+    0,
+    0,
+    0
+   ],
+   "0x50": [
+    20,
+    63,
+    20
+   ],
+   "0x9e": [
+    5,
+    5,
+    5
+   ],
+   "0x9c": [
+    15,
+    15,
+    15
+   ],
+   "0x99": [
+    30,
+    30,
+    30
+   ],
+   "0x97": [
+    45,
+    45,
+    45
+   ],
+   "0x9f": [
+    55,
+    55,
+    55
+   ],
+   "0x9b": [
+    63,
+    63,
+    63
+   ],
+   "0x78": [
+    9,
+    9,
+    31
+   ],
+   "0x9a": [
+    40,
+    40,
+    63
+   ],
+   "0x57": [
+    40,
+    40,
+    63
+   ],
+   "0x96": [
+    50,
+    50,
+    50
+   ],
+   "0x9d": [
+    50,
+    50,
+    50
+   ],
+   "0xa1": [
+    10,
+    63,
+    63
+   ]
+  },
+  "player_colors_0x6e_0x77": [
+   [
+    63,
+    10,
+    10
+   ],
+   [
+    35,
+    55,
+    10
+   ],
+   [
+    40,
+    20,
+    63
+   ],
+   [
+    63,
+    63,
+    10
+   ],
+   [
+    10,
+    63,
+    63
+   ],
+   [
+    63,
+    10,
+    63
+   ],
+   [
+    60,
+    60,
+    60
+   ],
+   [
+    63,
+    40,
+    20
+   ],
+   [
+    20,
+    63,
+    40
+   ],
+   [
+    0,
+    0,
+    63
+   ]
+  ],
+  "wall_frame_0x9d": {
+   "none": [
+    50,
+    50,
+    50
+   ],
+   "wrap": [
+    63,
+    63,
+    23
+   ],
+   "padded": [
+    23,
+    63,
+    23
+   ],
+   "rubber": [
+    63,
+    23,
+    63
+   ],
+   "spring": [
+    23,
+    63,
+    63
+   ],
+   "concrete": [
+    63,
+    63,
+    63
+   ]
+  },
+  "explosion_fire": "그림자 팔레트 0..19: R=i*63/19, 20..39: R=(19-i)*63/19 (G=B=0) -> DAC 200..239 업로드",
+  "index_map": {
+   "0x00-0x4f": "탱크 색 램프(탱크 n: n*8..n*8+7)",
+   "0x50": "흙 기본색",
+   "0x58-0x67": "산/흙 16색",
+   "0x6e-0x77": "플레이어 색",
+   "0x78-0x95": "하늘",
+   "0x96-0xa2": "UI",
+   "0xc8-0xef": "폭발 불꽃(200..239)",
+   "0xaa-0xc7": "네이팜/펑키 팔레트",
+   "0xfe": "불꽃/라이엇 임시색",
+   "0xff": "롤러 픽셀/번개"
+  },
+  "confidence": "확인됨(EXE)(탱크 램프·세부 폭발 색은 미상)"
+ },
+ "walls": {
+  "modes": {
+   "0": "None",
+   "1": "Wrap",
+   "2": "Padded",
+   "3": "Rubber",
+   "4": "Spring",
+   "5": "Concrete",
+   "6": "Random(라운드당 rand(6))",
+   "7": "Erratic(발사마다 rand(6))"
+  },
+  "bounce_factor": {
+   "padded": -0.5,
+   "rubber": -1.0,
+   "spring": -2.0
+  },
+  "after_6_hits": "계수 *= proj+0x32, proj+0x32 *= 0.8",
+  "none_mode": "EDGES_EXTEND 만큼 화면 밖까지 추적",
+  "code": "1a4a:1349",
+  "confidence": "확인됨(EXE)"
+ },
+ "damage": {
+  "tank_hp_max": {
+   "value": 100,
+   "ds": "0x50e4",
+   "confidence": "확인됨(EXE)"
+  },
+  "radial_explosion": "d=거리; if R>d: pct=(int)((R-d)*100/R); dmg=pct*(weaponIndex+1); if dmg>100 dmg=110; DamageTank(tank,dmg,1)  (3d1e:015a). 무기 인덱스 곱: 아기 미사일 x1 … 핵 x4, 롤러 x13~15, MIRV x7, 죽음의머리 x8 (코드 그대로)",
+  "variants": {
+   "funky_bits": "곱셈 없음",
+   "plasma": "(int)((R-d)*100/R)+80, >100 이면 110, 발사 탱크 제외",
+   "napalm_hot(p>15)": "d<40 -> (int)(50-d)",
+   "napalm": "d<25 -> (int)(30-d)",
+   "laser": "단계마다 min(p,10) 피해, p-=50"
+  },
+  "direct_hit": "탱크 본체 직격=에너지 전부(즉사) 후 폭발, 방패 픽셀 직격=방패에만 10 피해(폭발 없음)",
+  "pipeline": "DamageTank 3912:04b2 -> ShieldAbsorb 3191:0034(방패=HP 풀, 초과분 1:1 관통) -> ApplyHealth 2a16:0fe8",
+  "confidence": "확인됨(EXE)"
+ },
+ "shields": {
+  "table_ds": "0x616c(+0x10*k)",
+  "list": [
+   {
+    "name_en": "Mag Deflector",
+    "name_ko": "자기 편향기",
+    "hp": 55,
+    "flags": 2
+   },
+   {
+    "name_en": "Shield",
+    "name_ko": "방패",
+    "hp": 100,
+    "flags": 0
+   },
+   {
+    "name_en": "Force Shield",
+    "name_ko": "역장 방패",
+    "hp": 100,
+    "flags": 1,
+    "note": "투사체 반사, 방패 HP -= int(speed/100)"
+   },
+   {
+    "name_en": "Heavy Shield",
+    "name_ko": "중형 방패",
+    "hp": 150,
+    "flags": 0
+   },
+   {
+    "name_en": "Super Mag",
+    "name_ko": "슈퍼 마그",
+    "hp": 200,
+    "flags": 4
+   }
+  ],
+  "activation": "재고 1 소모, 방패 HP=최대. 매 라운드 시작 0으로 초기화 (3191:0455)",
+  "unresolved": "자기력(휘어짐) 법칙, 중형 방패 특수 면역: 코드 미확인(매뉴얼만)",
+  "confidence": "확인됨(EXE)"
+ },
+ "fall_parachute": {
+  "damage_per_pixel": 2,
+  "parachute_rule": "예상 낙하 피해(2*픽셀) > 임계값(탱크+0x2c, 기본 5; 0=항상)이면 전개, 낙하산 소모",
+  "chute_drift": "|wind|>10 이고 rand(100)<|wind| 이면 바람 방향 이동",
+  "land_on_tank": "피격 탱크 acc+50, 낙하자 acc/2+10",
+  "confidence": "확인됨(EXE)"
+ },
+ "economy": {
+  "interest": "cash*int(rate*10000)/10000 (정수 절단), 쇼핑 단계 후 라운드마다",
+  "sell_ratio": {
+   "normal": 0.8,
+   "free_market": 0.65
+  },
+  "stock_cap": 99,
+  "free_market": "A=0.7A+0.3*D/N; r=cur/base; S=0.7S+0.03*r*r; cur=int(cur*(1+(A-S)*rate)); 가격이 base*[0.1,100] 밖이면 초기화",
+  "mkt_file": "SCORCH.MKT: int16 ver=2, int16 count=48, 48 x (int32 price,int16 idle,double S,double A)=1060바이트",
+  "auto_defense_price": "P*sum_{k=0..n}(1+r)^-k, n=MAXROUNDS-진행라운드-1, P=1500",
+  "computers_buy": "현금>=50000 일 때 중형방패, 역장방패, 방패, 낙하산, 아기 핵/미사일(재고<5), 배터리(<8) 순",
+  "confidence": "확인됨(EXE)"
+ },
+ "scoring": {
+  "score_equals_cash": true,
+  "hp_damage_enemy": 30,
+  "hp_damage_teamkill": -15,
+  "shield_damage_enemy": 2,
+  "shield_damage_other": -1,
+  "kill": {
+   "basic": 4000,
+   "standard_greedy": 500,
+   "teamkill": -2000,
+   "suicide": -1500
+  },
+  "round_win_bonus": {
+   "standard": 5000,
+   "basic": "players*1000"
+  },
+  "survivor_pool": {
+   "non_basic": "5000+500*n+sum(30*energy+2*shield)",
+   "basic": "players*1000+n*4000",
+   "split": "생존자 균등 분배"
+  },
+  "unresolved": "팀 보너스 분배, GREEDY 순자산 순위 코드",
+  "confidence": "확인됨(EXE)"
+ },
+ "weapon_handlers": {
+  "3d1e:0021": {
+   "weapons": [
+    "Baby Missile",
+    "Missile",
+    "Baby Nuke",
+    "Nuke"
+   ],
+   "param": "폭발 반경(EXPLOSION_SCALE 배율 적용)",
+   "behavior": "원형 폭발+원형 분화구+피해"
+  },
+  "3d1e:0002": {
+   "weapons": [
+    "Tracer",
+    "Smoke Tracer"
+   ],
+   "behavior": "폭발·분화구·피해 없음, 200Hz 30ms"
+  },
+  "2382:0006": {
+   "weapons": [
+    "LeapFrog"
+   ],
+   "param": "단계 수 3",
+   "behavior": "충돌마다 반경 {30,25,20} 폭발 후 이전 속도/1.5, 같은 발사각으로 재발사"
+  },
+  "1dce:0000": {
+   "weapons": [
+    "Funky Bomb"
+   ],
+   "param": "산포 80",
+   "behavior": "5~10개 조각, 착지 x=x+rand(160)-80, 반경 (rand(10)+15)*S"
+  },
+  "25d5:0239": {
+   "weapons": [
+    "MIRV",
+    "Death's Head"
+   ],
+   "behavior": "정점(vy<0)에서 분리: MIRV 5발(반경20, 속도 오프셋 50 간격), DH 9발(반경35, 오프셋 20 간격), 정점 전 충돌은 불발"
+  },
+  "26e6:01a0": {
+   "weapons": [
+    "Napalm",
+    "Hot Napalm",
+    "Liquid Dirt"
+   ],
+   "param": "15/20/-20(음수=액체 흙)",
+   "behavior": "액체 입자 흐름(아래→좌우(바람 방향 우선)→위로 쌓임), 약 280~380픽셀"
+  },
+  "2fbd:0003": {
+   "weapons": [
+    "Baby Roller",
+    "Roller",
+    "Heavy Roller"
+   ],
+   "param": "반경 10/20/45",
+   "behavior": "착지 후 내리막 굴러 1px/step, 막히면 폭발"
+  },
+  "2f76:000d": {
+   "weapons": [
+    "Riot Charge",
+    "Riot Blast"
+   ],
+   "param": "인덱스 0/1: 반경 36/60, 반각 45/60도",
+   "behavior": "포탑 방향 부채꼴 흙 제거"
+  },
+  "2f76:03bd": {
+   "weapons": [
+    "Riot Bomb",
+    "Heavy Riot Bomb"
+   ],
+   "param": "반경 30/45",
+   "behavior": "구형 흙 제거, 피해 없음"
+  },
+  "151b:000a": {
+   "weapons": [
+    "Baby/Digger/Heavy Digger",
+    "Baby/Sandhog/Heavy Sandhog"
+   ],
+   "param": "-10/-20/-35(디거), 10/20/35(샌드호그)",
+   "behavior": "분기 무작위 보행 터널러(최대 20마리, 예산 20/40/70 또는 10/20/35)"
+  },
+  "15a0:0009": {
+   "weapons": [
+    "Dirt Clod",
+    "Dirt Ball",
+    "Ton of Dirt"
+   ],
+   "param": "반경 20/35/70(배율 없음)",
+   "behavior": "충돌 지점에 흙 원판 생성, 피해 없음"
+  },
+  "15a0:0081": {
+   "weapons": [
+    "Dirt Charge"
+   ],
+   "behavior": "쐐기 모양 흙 분사"
+  },
+  "162c:013e": {
+   "weapons": [
+    "Earth Disrupter"
+   ],
+   "behavior": "공중 부유 흙 즉시 낙하"
+  },
+  "2770:0009": {
+   "weapons": [
+    "Plasma Blast"
+   ],
+   "param": "반경=Rmin+(Rmax-Rmin)*배터리/10",
+   "behavior": "탱크 중심 에너지 폭발, 발사자 제외 80+ 피해"
+  },
+  "2319:0004": {
+   "weapons": [
+    "Laser"
+   ],
+   "behavior": "핸들러 빈 스텁, 빔 코드는 2319:16/d8/1fe"
+  }
+ },
+ "explosion_fx": {
+  "radius_semantics": "반경 R = 레코드 +0x14(=param*EXPLOSION_SCALE, 일부 핸들러만). 분화구=반경 R 꽉 찬 원판(중점 원 알고리즘 수평 스캔라인), 지름 2R+1. 피해 반경=분화구 반경",
+  "fireball": "si=1..R(R<40 이면 step 1, 아니면 2): 색 0xDC-si*20/R 로 반경 si 원판, 이미 그려진 색 범위는 건너뜀. R>30 이면 49회 팔레트 회전(200..239)+5ms 지연, 톤 100Hz(i%10==5)/200Hz(i%10==0), 이후 팔레트 0..24 검정",
+  "nuke_variant": "R>=아기 핵 반경 이고 폭발 비트맵 캐시가 있으면(SMALL_MEMORY OFF) 텍스처 불덩이(3c70:0ec3)",
+  "dirt_fall": "흙 낙하(1a1e:0107): 아래가 하늘인 흙 덩어리를 열마다 1픽셀/프레임 하강(맨 위 픽셀 지우고 맨 아래 하늘 칸에 새 흙 1픽셀). SUSPEND_DIRT=0 이면 매 폭발 후, >0 이면 턴당 최대 1회 (100-s)% 확률",
+  "confidence": "확인됨(EXE)"
+ },
+ "ai": {
+  "types": [
+   {
+    "id": 1,
+    "name_en": "Moron",
+    "name_ko": "얼간이"
+   },
+   {
+    "id": 2,
+    "name_en": "Shooter",
+    "name_ko": "사수"
+   },
+   {
+    "id": 3,
+    "name_en": "Poolshark",
+    "name_ko": "당구꾼"
+   },
+   {
+    "id": 4,
+    "name_en": "Tosser",
+    "name_ko": "투척수"
+   },
+   {
+    "id": 5,
+    "name_en": "Chooser",
+    "name_ko": "선택자"
+   },
+   {
+    "id": 6,
+    "name_en": "Spoiler",
+    "name_ko": "방해꾼"
+   },
+   {
+    "id": 7,
+    "name_en": "Cyborg",
+    "name_ko": "사이보그"
+   },
+   {
+    "id": 8,
+    "name_en": "Unknown",
+    "name_ko": "미지",
+    "note": "rand(7)+1 로 숨김 유형 결정"
+   }
+  ],
+  "note_sentient": "'Sentient' 문자열은 있으나 레코드 없음(미사용)",
+  "ballistic_solver": "v^2 = g_eff*dx'^2/(2cos^2(theta')(dx' tan(theta')-dy')); power=sqrt(v^2)*50; 바람 a=wind/2000, 공기 점성 항 없음 (1e50:05e9)",
+  "per_type": {
+   "Moron": "무작위 파워 (rand(energy)+1)*10, 각 rand(181), 가중 무작위 무기",
+   "Shooter": "시선이 깨끗한 적을 풀이, 없으면 Tosser로 위임",
+   "Poolshark": "벽이 고무/스프링일 때만 천장 반사 조준, 아니면 Shooter",
+   "Tosser": "각 rand(70)+10, 이전 착탄과 비교해 파워 ±10 보정",
+   "Chooser": "상황별로 Shooter/Poolshark/Spoiler 선택",
+   "Spoiler": "해석해로 정확히 풀이, 불가 시 재목표",
+   "Cyborg": "Shooter 우선, 아니면 피격/승패/거리/방패/가림 점수로 목표 선정"
+  },
+  "turn_driver": "11b5:0007: 에너지<85 이면 배터리 사용, 방패/낙하산 자동 활성, 파워 15씩/각 1씩 애니메이션(10ms), FAST_COMPUTERS 면 즉시",
+  "unresolved": "Shooter 의 풀이 파워 저장 위치, Poolshark 피드백 해독, 연료/유도 사용 여부(증거 없음), 팀 로직",
+  "confidence": "확인됨(EXE)"
+ },
+ "controls": {
+  "keys": "Up/Down 파워 ±1, PgUp/PgDn ±15, Left/Right 각도 ±1, Tab 무기 순환, Enter/Space 발사, Shift 는 반복 느리게, Alt 는 눌러서 1단위",
+  "confidence": "확인됨(EXE)"
+ },
+ "sound": {
+  "hardware": "PC 스피커 (0:a281 sound(freq Hz)=분주비 0x1234DD/freq, 0:a2b1 nosound), 지연 0:9af6 delay(ms); DS:ef46=사운드 모드",
+  "tone_helper": "4571:0007 tone(Hz,ms)",
+  "events": [
+   {
+    "event": "폭발 성장",
+    "hz": "100/200 교대",
+    "note": "R>30 이면 이후 100Hz(i%10==5)/200Hz(i%10==0) 5ms"
+   },
+   {
+    "event": "예광탄 발사",
+    "hz": 200,
+    "ms": 30
+   },
+   {
+    "event": "방패 직격",
+    "hz": 1000,
+    "ms": 10
+   },
+   {
+    "event": "굴착기 불발",
+    "hz": 200,
+    "ms": 40
+   },
+   {
+    "event": "MIRV 분리",
+    "hz": 100,
+    "ms": 15
+   },
+   {
+    "event": "롤러 벽 반사",
+    "hz": 1000,
+    "ms": 20
+   },
+   {
+    "event": "라이엇",
+    "hz": "r*1000",
+    "ms": 10
+   },
+   {
+    "event": "흙 무기",
+    "hz": "((si%5)+1)*100",
+    "ms": 10
+   },
+   {
+    "event": "네이팜",
+    "hz": "rand(50)",
+    "ms": 0
+   },
+   {
+    "event": "대지 교란기",
+    "hz": "1000+rand(100)*100"
+   },
+   {
+    "event": "펑키",
+    "hz": "rand(3000)"
+   },
+   {
+    "event": "탱크 파괴",
+    "hz": "6000 에서 100씩 하강",
+    "ms": 20,
+    "steps": 50,
+    "final": "1000Hz 10ms"
+   }
+  ],
+  "confidence": "확인됨(EXE)"
+ },
+ "tank_struct": {
+  "size": "0xCA bytes @DS:0xd568, 개수 DS:0x50d4",
+  "fields": {
+   "+0x0c": "낙하산 열림",
+   "+0x0e": "x",
+   "+0x10": "y",
+   "+0x16": "선택 무기",
+   "+0x18": "생존",
+   "+0x22": "AI 유형(0 사람)",
+   "+0x28": "낙하산 사용",
+   "+0x2a": "접촉 신관",
+   "+0x2c": "낙하산 임계값(5)",
+   "+0x92": "각도",
+   "+0x94": "방향",
+   "+0x96": "방패 HP",
+   "+0x9e": "파워(초기 200)",
+   "+0xa2": "에너지(long, 100)",
+   "+0xb2": "인벤토리 far ptr int16[48]",
+   "+0xba": "점수",
+   "+0xbe": "현금"
+  },
+  "sprite_size": "미상(탱크 반폭은 레코드 +8)",
+  "confidence": "확인됨(EXE)"
+ },
+ "unknown_or_open": [
+  "탱크 스프라이트/포탑 모양 비트맵과 크기",
+  "유도 장치(열/탄도/수평/수직/게으름뱅이) 조향식",
+  "접촉 신관 소비, 자기 편향기 힘 법칙, 중형 방패 면역",
+  "레이저 빔 코드(2319:16/d8/1fe)",
+  "펑키 조각 경로(1dce:05df), 흙 장약 쐐기 기하",
+  "플레이어 순서(패자/승자 먼저/라운드 로빈) 정렬",
+  "팀 점수 분배, GREEDY 순위",
+  "LAND1/LAND2/FLATLAND 가 생성기로 전달되는 경로",
+  "FIRE_DELAY 기반 시간 스케일(BogoMips)의 실기계 값",
+  "탱크 색 램프(DAC 0..0x4f)와 폭발 색 세부"
+ ]
+}

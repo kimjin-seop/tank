@@ -1,0 +1,10 @@
+{
+  "name": "scorch-engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Scorched Earth v1.5 server-authoritative deterministic game engine core",
+  "main": "index.js",
+  "scripts": { "test": "node --test" },
+  "engines": { "node": ">=20" }
+}
