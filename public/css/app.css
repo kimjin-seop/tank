@@ -33,11 +33,11 @@ h1 { font-size: 22px; } h2 { font-size: 17px; } h3 { font-size: 15px; }
 
 /* ---------- 버튼 ---------- */
 .btn { min-height: var(--tap); padding: 0 16px; border-radius: var(--radius-s); border: 1px solid var(--line2); background: var(--panel2); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap; transition: background .12s, border-color .12s, transform .05s; touch-action: manipulation; }
-.btn:hover:not(:disabled) { background: #263050; border-color: #4A5778; }
-.btn:active:not(:disabled) { transform: translateY(1px); }
-.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn:hover:not(:disabled, [aria-disabled=true]) { background: #263050; border-color: #4A5778; }
+.btn:active:not(:disabled, [aria-disabled=true]) { transform: translateY(1px); }
+.btn:is(:disabled, [aria-disabled=true]) { opacity: .45; cursor: not-allowed; }
 .btn.primary { background: var(--accent2); border-color: var(--accent); color: #fff; font-weight: 600; }
-.btn.primary:hover:not(:disabled) { background: var(--accent); }
+.btn.primary:hover:not(:disabled, [aria-disabled=true]) { background: var(--accent); }
 .btn.danger { background: #5A1F26; border-color: #8A2C36; color: #FFD9DC; }
 .btn.ok { background: #1D5A36; border-color: #2E8A52; color: #D8FFE6; }
 .btn.small { min-height: 36px; padding: 0 10px; font-size: 13px; }

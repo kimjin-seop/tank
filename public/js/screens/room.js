@@ -16,8 +16,11 @@ export function mount(root, app) {
   const form = h('form.chat-form', { onsubmit: e => { e.preventDefault(); const t = input.value.trim(); if (!t) return; net.send('chat', { text: t }); input.value = ''; } }, input, h('button.btn', { type: 'submit' }, '전송'));
   const settingsBtn = h('button.btn.small', { type: 'button', onclick: () => openSettings(app) }, '설정');
   const readyBtn = h('button.btn', { type: 'button', onclick: () => { const me = mySlot(); net.send('ready', { ready: !me?.ready }); } }, '준비');
-  const startBtn = h('button.btn.primary', { type: 'button', onclick: () => net.send('start') }, '시작');
-  const startWhy = h('span.muted', { style: { fontSize: '13px' } });
+  // 시작 불가 상태에서도 클릭·키보드 입력은 받는다(aria-disabled) → 사유는 토스트로
+  const startBtn = h('button.btn.primary', { type: 'button', onclick: () => {
+    const st = app.room?.start || { ok: false };
+    if (st.ok) net.send('start'); else if (st.msg) toast(st.msg, 'error');
+  } }, '시작');
   const leaveBtn = h('button.btn', { type: 'button', onclick: async () => { if (await confirmDialog('방에서 나갈까요?', { okLabel: '나가기' })) net.send('leave_room'); } }, '나가기');
 
   root.append(h('div.screen',
@@ -26,7 +29,7 @@ export function mount(root, app) {
       h('div.room-grid',
         h('section', { 'aria-label': '참가자 슬롯' }, h('div', { style: { marginBottom: '10px' } }, sub), slotsEl),
         h('section.card.chat', { 'aria-label': '채팅' }, h('div.layer-head', h('h2', '채팅')), log, form))),
-    h('footer.bottombar', leaveBtn, h('div.spacer'), startWhy, readyBtn, startBtn)));
+    h('footer.bottombar', leaveBtn, h('div.spacer'), readyBtn, startBtn)));
 
   const mySlot = () => app.room?.slots.find(s => s.id === app.you);
   const isHost = () => app.room?.hostId === app.you;
@@ -96,9 +99,8 @@ export function mount(root, app) {
     readyBtn.className = 'btn' + (me?.ready ? '' : '.ok').replace('.', ' ');
     startBtn.hidden = !host;
     const st = r.start || { ok: false };
-    startBtn.disabled = !st.ok;
+    startBtn.setAttribute('aria-disabled', String(!st.ok));
     startBtn.title = st.ok ? '' : (st.msg || '');
-    startWhy.textContent = host && !st.ok ? (st.msg || '') : '';
     settingsBtn.textContent = host ? '설정 변경' : '설정 보기';
   }
   function renderChat() { clear(log); for (const m of app.chat) log.append(chatLine(m)); log.scrollTop = log.scrollHeight; }

@@ -33,12 +33,13 @@
 :is([data-view=nick], [data-view=lobby], [data-view=room]) :is(.btn, .icon-btn, .step) {
   background: var(--se-face); color: var(--se-ink); border: 0; box-shadow: var(--se-raised); font-weight: 700; transition: none;
 }
-:is([data-view=nick], [data-view=lobby], [data-view=room]) :is(.btn, .icon-btn, .step):hover:not(:disabled) { background: var(--se-face-hi); border-color: transparent; }
-:is([data-view=nick], [data-view=lobby], [data-view=room]) :is(.btn, .icon-btn, .step):active:not(:disabled) { box-shadow: var(--se-sunken); transform: translate(1px, 1px); }
-:is([data-view=nick], [data-view=lobby], [data-view=room]) :is(.btn, .step):disabled { opacity: 1; color: var(--se-dim); text-shadow: 1px 1px 0 var(--se-white); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) :is(.btn, .icon-btn, .step):hover:not(:disabled, [aria-disabled=true]) { background: var(--se-face-hi); border-color: transparent; }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) :is(.btn, .icon-btn, .step):active:not(:disabled, [aria-disabled=true]) { box-shadow: var(--se-sunken); transform: translate(1px, 1px); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) :is(.btn, .step):is(:disabled, [aria-disabled=true]) { opacity: 1; color: var(--se-dim); text-shadow: 1px 1px 0 var(--se-white); }
 :is([data-view=nick], [data-view=lobby], [data-view=room]) .btn.primary { background: var(--se-face); color: var(--se-ink); box-shadow: 0 0 0 2px var(--se-ink), var(--se-raised); }
-:is([data-view=nick], [data-view=lobby], [data-view=room]) .btn.primary:hover:not(:disabled) { background: var(--se-face-hi); }
-:is([data-view=nick], [data-view=lobby], [data-view=room]) .btn.primary:active:not(:disabled) { box-shadow: 0 0 0 2px var(--se-ink), var(--se-sunken); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .btn.primary:hover:not(:disabled, [aria-disabled=true]) { background: var(--se-face-hi); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .btn.primary:active:not(:disabled, [aria-disabled=true]) { box-shadow: 0 0 0 2px var(--se-ink), var(--se-sunken); }
+:is([data-view=nick], [data-view=lobby], [data-view=room]) .btn.primary[aria-disabled=true] { color: var(--se-dim); box-shadow: 0 0 0 2px var(--se-dim), var(--se-raised); }
 :is([data-view=nick], [data-view=lobby], [data-view=room]) .btn.primary::before { content: ""; width: 0; height: 0; border: 6px solid transparent; border-left: 8px solid currentColor; border-right: 0; margin-right: 4px; }
 :is([data-view=nick], [data-view=lobby], [data-view=room]) .btn.danger { background: var(--se-face); color: var(--se-danger-text); }
 :is([data-view=nick], [data-view=lobby], [data-view=room]) .btn.ok { background: var(--se-face); color: var(--se-ink); }
@@ -163,7 +164,6 @@
 [data-view=room] .chat-form input { min-width: 0; }
 [data-view=room] .bottombar { padding-top: 10px; padding-bottom: max(10px, env(safe-area-inset-bottom)); }
 [data-view=room] .bottombar .btn { min-width: 132px; }
-[data-view=room] .bottombar .muted { color: var(--se-ink); font-weight: 700; }
 
 /* ---- 모달·드로어·토스트(이 3화면에서 뜨는 것): 창 규칙 공통. 전환 애니메이션 없음(원작처럼 즉시) ---- */
 :is([data-view=nick], [data-view=lobby], [data-view=room]) :is(.layer, .layer-panel, .toast) { transition: none; }
