@@ -96,7 +96,8 @@ export async function createServer({ engine, clock = realClock, config, gameConf
   };
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+// 직접 실행(node server/index.js) 또는 pm2 아래(argv[1]이 pm2 래퍼가 되므로 pm_id로 판별)에서만 서버를 시작한다
+if ((process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) || process.env.pm_id !== undefined) {
   const srv = await createServer({ log: (lvl, e) => console.error(`[${lvl}]`, e) });
   const port = await srv.listen();
   console.log(`서버 시작: http://localhost:${port}  (WebSocket ws://localhost:${port}/ws)`);
