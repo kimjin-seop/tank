@@ -45,7 +45,8 @@ export class Renderer {
     this._ro.observe(wrap);
     this.resize();
     this.running = true;
-    const loop = now => { if (!this.running) return; const dt = Math.min(0.05, (now - this._last) / 1000); this._last = now; this.frame(dt); requestAnimationFrame(loop); };
+    // 브라우저 확대(Ctrl +/-)·모니터 이동으로 devicePixelRatio 만 바뀌고 CSS 크기는 그대로여서 ResizeObserver 가 안 불리는 경우도 프레임마다 비교해 백버퍼를 다시 맞춤
+    const loop = now => { if (!this.running) return; if ((window.devicePixelRatio || 1) !== this.dpr) this.resize(); const dt = Math.min(0.05, (now - this._last) / 1000); this._last = now; this.frame(dt); requestAnimationFrame(loop); };
     requestAnimationFrame(loop);
   }
   destroy() { this.running = false; this._ro.disconnect(); }

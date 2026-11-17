@@ -20,9 +20,19 @@ export const app = {
     this.view = name;
     this.screen = mods[name].mount(root, this, data) || {};
     document.body.dataset.view = name;
+    setZoomLock(name === 'game');
   },
 };
 window.__app = app; window.__net = net; // 디버그·검증용
+
+// 게임 화면에서만 모바일 확대 잠금(Android Chrome 은 viewport 를 따름. iOS Safari 는 무시하므로 game.js 의 gesture·touch 차단과 CSS touch-action 이 담당).
+// 로비·대기실은 저시력 사용자 확대를 위해 허용 유지
+const VIEWPORT_BASE = 'width=device-width, initial-scale=1, viewport-fit=cover';
+function setZoomLock(lock) {
+  const meta = document.querySelector('meta[name=viewport]'); if (!meta) return;
+  const v = lock ? VIEWPORT_BASE + ', maximum-scale=1, user-scalable=no' : VIEWPORT_BASE;
+  if (meta.content !== v) meta.content = v;
+}
 
 function errText(m) { return m.msg || ERR[m.code] || ERR.UNKNOWN; }
 

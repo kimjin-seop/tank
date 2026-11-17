@@ -704,6 +704,26 @@ export function mount(root, app, data) {
   function onBlur() { held.clear(); }
   window.addEventListener('keydown', onKeyDown); window.addEventListener('keyup', onKeyUp); window.addEventListener('blur', onBlur);
 
+  // ---------- 브라우저 기본 동작 차단(게임 화면 한정, unmount 때 해제) ----------
+  // 텍스트 선택·우클릭 메뉴·드래그·확대. 채팅 입력·기록 등 텍스트 영역은 예외(선택·복사 가능)
+  const textZone = n => { const t = n?.nodeType === 3 ? n.parentElement : n; return t instanceof Element && (isTyping(t) || !!t.closest('.chat-log, input, textarea, [contenteditable]')); }; // selectstart 대상은 텍스트 노드일 수 있음
+  const guards = [
+    [document, 'selectstart', e => { if (!textZone(e.target)) e.preventDefault(); }],
+    [document, 'dragstart', e => { if (!textZone(e.target)) e.preventDefault(); }],
+    [document, 'contextmenu', e => { if (!textZone(e.target)) e.preventDefault(); }],
+    // Ctrl+휠·트랙패드 핀치(브라우저가 ctrlKey 붙은 wheel 로 보냄) 확대 차단. passive:false 여야 취소됨
+    [window, 'wheel', e => { if (e.ctrlKey || e.metaKey) e.preventDefault(); }, { passive: false }],
+    // iOS Safari 핀치(viewport user-scalable 무시)
+    [document, 'gesturestart', e => e.preventDefault()],
+    [document, 'gesturechange', e => e.preventDefault()],
+    [document, 'gestureend', e => e.preventDefault()],
+    [document, 'touchmove', e => { if (e.touches.length > 1 && e.cancelable) e.preventDefault(); }, { passive: false }],
+    // 캔버스: 마우스 누름의 텍스트 선택 시작·더블클릭 단어 선택 차단(포커스는 직접 캔버스로 옮겨 채팅 입력에서 빠져나오게 유지)
+    [canvas, 'mousedown', e => { e.preventDefault(); if (document.activeElement !== canvas) canvas.focus({ preventScroll: true }); }],
+    [canvas, 'dblclick', e => e.preventDefault()],
+  ];
+  for (const [el, type, fn, opt] of guards) el.addEventListener(type, fn, opt);
+
   // act 결과 후 열린 패널 갱신
   off.push(net.on('act_result', () => { G.redrawControl && G.redrawControl(); G.moveLayer && G.moveLayer.upd(); }));
 
@@ -716,6 +736,7 @@ export function mount(root, app, data) {
       off.forEach(f => f()); R.destroy(); layoutRO.disconnect(); delete window.__terrainCheck; delete window.__deathFx; shop.destroy?.();
       window.removeEventListener('keydown', onKeyDown); window.removeEventListener('keyup', onKeyUp); window.removeEventListener('blur', onBlur);
       document.removeEventListener('visibilitychange', onVis);
+      for (const [el, type, fn, opt] of guards) el.removeEventListener(type, fn, opt);
     },
   };
 }

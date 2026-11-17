@@ -440,3 +440,14 @@ input.angle-range::-moz-range-track { background: linear-gradient(to right, var(
   .game:not(.wide):not(.portrait) .ctrl { gap: 4px 10px; padding-top: 4px; padding-bottom: max(4px, env(safe-area-inset-bottom)); }
   .game:not(.wide):not(.portrait) .ctrl .qi .ql { display: none; }
 }
+
+/* ---------- 게임 화면 입력 보호: 텍스트·이미지 선택, 길게 누름 메뉴, 더블탭·핀치 확대 차단 ---------- */
+/* 로비·대기실은 그대로(선택·확대 허용). 채팅 입력·채팅 기록은 선택·복사 가능 유지 */
+body[data-view="game"] { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; overscroll-behavior: none; }
+/* touch-action 은 스크롤 컨테이너에서 끊기므로 모든 요소에 적용. :where 로 특이도 0 → .stage·canvas 의 none 이 우선 */
+html:has(body[data-view="game"]), :where(body[data-view="game"]), :where(body[data-view="game"]) * { touch-action: pan-x pan-y; }
+body[data-view="game"] .stage, body[data-view="game"] canvas { touch-action: none; }
+body[data-view="game"] img, body[data-view="game"] canvas, body[data-view="game"] svg { -webkit-user-drag: none; }
+body[data-view="game"] input:not([type=range]):not([type=checkbox]):not([type=radio]),
+body[data-view="game"] textarea,
+body[data-view="game"] .chat-log { -webkit-user-select: text; user-select: text; -webkit-touch-callout: default; }
